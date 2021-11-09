@@ -14,7 +14,9 @@ exports.create = (req, res) => {
       luogo: req.body.luogo,
       userid: req.body.userid,
       data_avvio: req.body.data_avvio,
-      data_scadenza: req.body.data_scadenza
+      data_scadenza: req.body.data_scadenza,
+      nomePaziente: req.body.nomePaziente,
+      cognomePaziente: req.body.cognomePaziente,
     });
   
     // Save Visita in the database
@@ -67,6 +69,23 @@ exports.findByConditions = (req, res) => {
         .status(500)
         .send({ message: "Error retrieving Visita with findId=" + id });
     });    
+};
+
+// Find a single Visita with an id
+exports.findOne = (req, res) => {
+  const id = req.params.id;
+
+  Visita.findById(id)
+    .then(data => {
+      if (!data)
+        res.status(404).send({ message: "Not found Visita with id " + id });
+      else res.send(data);
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .send({ message: "Error retrieving Visita with id=" + id });
+    });
 };
 
 

@@ -13,7 +13,7 @@ module.exports = app => {
     //router.get("/published", visitas.findAllPublished);
   
     // Retrieve a single Visita with id
-    router.get("/:id", visitas.findByConditions);
+    router.get("/:id", visitas.findOne);
   
     // Update a Visita with id
     router.put("/:id", visitas.update);

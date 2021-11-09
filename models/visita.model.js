@@ -8,7 +8,9 @@ module.exports = mongoose => {
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User"
-        }
+        },
+        nomePaziente: String,
+        cognomePaziente: String
       },
       { timestamps: true }
     );
