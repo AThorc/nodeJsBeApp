@@ -35,7 +35,7 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     const userid = req.query.userid;
     const luogo = req.query.luogo;
-    var condition = luogo ? { userid:userid, luogo: { $regex: new RegExp(luogo), $options: "i" } } : condition;
+    var condition = luogo ? { userid:userid, luogo: { $regex: new RegExp(luogo), $options: "i" } } : {userid:userid};
   
     Visita.find(condition)
       .then(data => {
