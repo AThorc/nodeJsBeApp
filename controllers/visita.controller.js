@@ -14,7 +14,9 @@ exports.create = (req, res) => {
       luogo: req.body.luogo,
       userid: req.body.userid,
       data_avvio: req.body.data_avvio,
-      data_scadenza: req.body.data_scadenza
+      data_scadenza: req.body.data_scadenza,
+      nomePaziente: req.body.nomePaziente,
+      cognomePaziente: req.body.cognomePaziente,
     });
   
     // Save Visita in the database
