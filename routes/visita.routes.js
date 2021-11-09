@@ -6,14 +6,14 @@ module.exports = app => {
     // Create a new Visita
     router.post("/", visitas.create);
   
-    // Retrieve all Visitas
-    //router.get("/", visitas.findAll);
+    // Retrieve all Visitas with specific conditions
+    router.get("/", visitas.findAll);
   
     // Retrieve all published Visitas
     //router.get("/published", visitas.findAllPublished);
   
     // Retrieve a single Visita with id
-    router.get("/:id", visitas.findOne);
+    router.get("/:id", visitas.findByConditions);
   
     // Update a Visita with id
     router.put("/:id", visitas.update);
@@ -26,7 +26,7 @@ module.exports = app => {
 
 
     // Retrieve Visita with userid
-    router.get("/:userid", visitas.findOne);
+    router.get("/:userid", visitas.findByConditions);
     
     // Delete a Visita with userid
     //router.delete("/:userid", visitas.delete);

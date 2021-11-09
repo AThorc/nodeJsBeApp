@@ -32,10 +32,10 @@ exports.create = (req, res) => {
 };
 
 // Retrieve all Visitas from the database.
-/*
 exports.findAll = (req, res) => {
     const userid = req.query.userid;
-    var condition = userid ? { userid: { $regex: new RegExp(userid), $options: "i" } } : {};
+    const luogo = req.query.luogo;
+    var condition = luogo ? { userid:userid, luogo: { $regex: new RegExp(luogo), $options: "i" } } : condition;
   
     Visita.find(condition)
       .then(data => {
@@ -48,24 +48,27 @@ exports.findAll = (req, res) => {
         });
       });
 };
-*/
 
 // Find all Visita with an userid
-exports.findOne = (req, res) => {
-    const userid = req.params.userid;
+exports.findByConditions = (req, res) => {
+  const id = req.params.id;
   
-    Visita.findById(userid)
-      .then(data => {
-        if (!data)
-          res.status(404).send({ message: "Not found Visita with id " + userid });
-        else res.send(data);
-      })
-      .catch(err => {
-        res
-          .status(500)
-          .send({ message: "Error retrieving Visita with id=" + userid });
-      });
+  Visita.find({ $or: [
+    {"_id" :id},
+    {"userid" :id},
+  ]})
+    .then(data => {
+      if (!data)
+        res.status(404).send({ message: "Not found Visita with findId " + id });
+      else res.send(data);
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .send({ message: "Error retrieving Visita with findId=" + id });
+    });    
 };
+
 
 // Update a Visita by the id in the request
 exports.update = (req, res) => {
