@@ -26,7 +26,7 @@ module.exports = app => {
 
 
     // Retrieve Visita with userid
-    router.get("/:userid", visitas.findByConditions);
+    //router.get("/:userid", visitas.findByConditions);
     
     // Delete a Visita with userid
     //router.delete("/:userid", visitas.delete);

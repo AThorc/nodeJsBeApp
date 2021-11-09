@@ -51,7 +51,7 @@ exports.findAll = (req, res) => {
       });
 };
 
-// Find all Visita with an userid
+// Find all Visita with an userid or id
 exports.findByConditions = (req, res) => {
   const id = req.params.id;
   
