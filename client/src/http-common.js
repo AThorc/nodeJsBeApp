@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = "/api";
+const baseURL = process.env.REACT_APP_HEROKU_URL + "/api";
 
 export default axios.create({
   baseURL: baseURL,

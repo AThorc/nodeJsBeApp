@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "/api/auth/";
+const API_URL = process.env.REACT_APP_HEROKU_URL + "/api/auth/";
 
 class AuthService {
   login(username, password) {
@@ -12,7 +12,7 @@ class AuthService {
       .then(response => {
         if (response.data.accessToken) {
           localStorage.setItem("user", JSON.stringify(response.data));
-          console.log('.env var: '+ process.env.REACT_APP_HEROKU_URL);
+          //console.log('.env var: '+ process.env.REACT_APP_HEROKU_URL);
         }
 
         return response.data;
