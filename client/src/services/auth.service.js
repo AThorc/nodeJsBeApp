@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://multifinanceservice.herokuapp.com/api/auth/";
+const API_URL = process.env.HEROKU_URL + "api/auth/";
 
 class AuthService {
   login(username, password) {
