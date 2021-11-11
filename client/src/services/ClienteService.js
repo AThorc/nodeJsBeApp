@@ -24,8 +24,8 @@ const removeAll = () => {
   return http.delete(`/clientes`);
 };
 
-const findByConditions = (codiceFiscale,pIVA) => {
-  return http.get(`/clientes?codiceFiscale=${codiceFiscale}&?pIVA=${pIVA}`);
+const findByCodiceFiscale = (codiceFiscale) => {
+  return http.get(`/clientes?codiceFiscale=${codiceFiscale}`);
 };
 
 export default {
@@ -35,5 +35,5 @@ export default {
   update,
   remove,
   removeAll,
-  findByConditions
+  findByCodiceFiscale
 };
