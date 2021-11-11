@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const path = require("path")
 
 const app = express();
 
@@ -16,11 +17,13 @@ app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(express.static(path.join(__dirname, "client", "build")))
+
 const db = require("./models");
 const Role = db.role;
 
 db.mongoose
-  .connect(db.url, {
+  .connect((process.env.MONGODB_MULTIFINANCESERVICE_URI || db.url), {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
@@ -52,6 +55,12 @@ require('./routes/contatto.routes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
+
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
