@@ -1,5 +1,4 @@
 import axios from "axios";
-require('dotenv').config();
 
 const baseURL = process.env.HEROKU_URL + "/api";
 

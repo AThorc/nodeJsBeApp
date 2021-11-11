@@ -25,6 +25,8 @@ import BoardAdmin from "./components/board-admin.component";
 import AddVisita from "./components/AddVisita";
 import Visita from "./components/Visita";
 
+require('dotenv').config();
+
 class App extends Component {
   constructor(props) {
     super(props);
