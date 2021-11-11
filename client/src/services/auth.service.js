@@ -12,6 +12,7 @@ class AuthService {
       .then(response => {
         if (response.data.accessToken) {
           localStorage.setItem("user", JSON.stringify(response.data));
+          console.log('.env var: '+ process.env.REACT_APP_HEROKU_URL);
         }
 
         return response.data;
