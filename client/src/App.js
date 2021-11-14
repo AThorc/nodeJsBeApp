@@ -22,6 +22,7 @@ import BoardModerator from "./components/board-moderator.component";
 import BoardAdmin from "./components/board-admin.component";
 
 import AddCliente from "./components/AddCliente";
+import Cliente from "./components/Cliente";
 
 import AddVisita from "./components/AddVisita";
 import Visita from "./components/Visita";
@@ -90,8 +91,8 @@ class App extends Component {
 
             {currentUser && (
               <li className="nav-item">
-                <Link to={"/user"} className="nav-link">
-                  User
+                <Link to={"/anagrafica"} className="nav-link">
+                  Anagrafica
                 </Link>
               </li>
             )}
@@ -133,12 +134,13 @@ class App extends Component {
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/profile" component={Profile} />
-            <Route path="/user" component={BoardUser} />
+            <Route path="/anagrafica" component={BoardUser} />
             <Route path="/mod" component={BoardModerator} />
             <Route path="/admin" component={BoardAdmin} />
             <Route exact path="/addVisita" component={AddVisita} />
             <Route path="/visitas/:id" component={Visita} />
             <Route exact path="/addCliente" component={AddCliente} />
+            <Route path="/clientes/:id" component={Cliente} />
           </Switch>
         </div>
       </div>

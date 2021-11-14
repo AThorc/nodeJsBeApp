@@ -56,10 +56,8 @@ const AddCliente = () => {
         attIstatAteco2007: cliente.attIstatAteco2007,
         settore: cliente.settore,
       };
-    }
-    
 
-    ClienteDataService.create(data)
+      ClienteDataService.create(data)
       .then(response => {
         setCliente({
           id: response.data.id,
@@ -87,6 +85,7 @@ const AddCliente = () => {
       .catch(e => {
         console.log(e);
       });
+    }   
   };
 
   const newCliente = () => {
@@ -94,246 +93,257 @@ const AddCliente = () => {
     setSubmitted(false);
   };
 
-  return (
-    <div className="submit-form">
-      {submitted ? (
-        <div>
-          <h4>You submitted successfully!</h4>
-          <button className="btn btn-success" onClick={newCliente}>
-            Add
-          </button>
-        </div>
-      ) : (
-        <div>
-          <div className="form-group">
-            <label htmlFor="title">Codice fiscale</label>
-            <input
-              type="text"
-              className="form-control"
-              id="codiceFiscale"
-              required
-              value={cliente.codiceFiscale}
-              onChange={handleInputChange}
-              name="codiceFiscale"
-            />
-          </div>
 
-          <div className="form-group">
-            <label htmlFor="title">Partita IVA</label>
-            <input
-              type="text"
-              className="form-control"
-              id="partitaIVA"
-              required
-              value={cliente.partitaIVA}
-              onChange={handleInputChange}
-              name="partitaIVA"
-            />
+  if(user){
+    return (
+      <div className="submit-form">
+        {submitted ? (
+          <div>
+            <h4>You submitted successfully!</h4>
+            <button className="btn btn-success" onClick={newCliente}>
+              Add
+            </button>
           </div>
-
-          <div className="form-group">
-            <label htmlFor="title">Legale Rappresentate</label>
-            <input
-              type="text"
-              className="form-control"
-              id="legaleRappresentate"
-              required
-              value={cliente.legaleRappresentate}
-              onChange={handleInputChange}
-              name="legaleRappresentate"
-            />
+        ) : (
+          <div>
+            <div className="form-group">
+              <label htmlFor="title">Codice fiscale</label>
+              <input
+                type="text"
+                className="form-control"
+                id="codiceFiscale"
+                required
+                value={cliente.codiceFiscale}
+                onChange={handleInputChange}
+                name="codiceFiscale"
+              />
+            </div>
+  
+            <div className="form-group">
+              <label htmlFor="title">Partita IVA</label>
+              <input
+                type="text"
+                className="form-control"
+                id="partitaIVA"
+                required
+                value={cliente.partitaIVA}
+                onChange={handleInputChange}
+                name="partitaIVA"
+              />
+            </div>
+  
+            <div className="form-group">
+              <label htmlFor="title">Legale Rappresentate</label>
+              <input
+                type="text"
+                className="form-control"
+                id="legaleRappresentate"
+                required
+                value={cliente.legaleRappresentate}
+                onChange={handleInputChange}
+                name="legaleRappresentate"
+              />
+            </div>
+  
+            <div className="form-group">
+              <label htmlFor="title">Telefono</label>
+              <input
+                type="text"
+                className="form-control"
+                id="telefono"
+                required
+                value={cliente.telefono}
+                onChange={handleInputChange}
+                name="telefono"
+              />
+            </div>
+  
+            <div className="form-group">
+              <label htmlFor="title">Cellulare</label>
+              <input
+                type="text"
+                className="form-control"
+                id="cellulare"
+                required
+                value={cliente.cellulare}
+                onChange={handleInputChange}
+                name="cellulare"
+              />
+            </div>
+  
+            <div className="form-group">
+              <label htmlFor="title">Mail</label>
+              <input
+                type="text"
+                className="form-control"
+                id="mail"
+                required
+                value={cliente.mail}
+                onChange={handleInputChange}
+                name="mail"
+              />
+            </div>
+  
+            <div className="form-group">
+              <label htmlFor="title">Pec</label>
+              <input
+                type="text"
+                className="form-control"
+                id="pec"
+                required
+                value={cliente.pec}
+                onChange={handleInputChange}
+                name="pec"
+              />
+            </div>
+  
+            <div className="form-group">
+              <label htmlFor="title">Sede</label>
+              <input
+                type="text"
+                className="form-control"
+                id="sede"
+                required
+                value={cliente.sede}
+                onChange={handleInputChange}
+                name="sede"
+              />
+            </div>
+  
+            <div className="form-group">
+              <label htmlFor="title">Localita</label>
+              <input
+                type="text"
+                className="form-control"
+                id="localita"
+                required
+                value={cliente.localita}
+                onChange={handleInputChange}
+                name="localita"
+              />
+            </div>
+  
+            <div className="form-group">
+              <label htmlFor="title">Cap</label>
+              <input
+                type="text"
+                className="form-control"
+                id="cap"
+                required
+                value={cliente.cap}
+                onChange={handleInputChange}
+                name="cap"
+              />
+            </div>
+  
+            <div className="form-group">
+              <label htmlFor="title">Ragione sociale</label>
+              <input
+                type="text"
+                className="form-control"
+                id="ragioneSociale"
+                required
+                value={cliente.ragioneSociale}
+                onChange={handleInputChange}
+                name="ragioneSociale"
+              />
+            </div>
+  
+  
+            <div className="form-group">
+              <label htmlFor="description">Data costituzione</label>
+              <input
+                type="date"
+                className="form-control"
+                id="dataCostituzione"
+                required
+                value={cliente.dataCostituzione}
+                onChange={handleInputChange}
+                name="dataCostituzione"
+              />
+            </div>
+  
+            <div className="form-group">
+              <label htmlFor="title">Inizio Attivita</label>
+              <input
+                type="date"
+                className="form-control"
+                id="inizioAttivita"
+                required
+                value={cliente.inizioAttivita}
+                onChange={handleInputChange}
+                name="inizioAttivita"
+              />
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="title">Tipo</label>
+              <input
+                type="text"
+                className="form-control"
+                id="tipo"
+                required
+                value={cliente.tipo}
+                onChange={handleInputChange}
+                name="tipo"
+              />
+            </div>
+  
+            <div className="form-group">
+              <label htmlFor="title">Dimensione</label>
+              <input
+                type="text"
+                className="form-control"
+                id="dimensione"
+                required
+                value={cliente.dimensione}
+                onChange={handleInputChange}
+                name="dimensione"
+              />
+            </div>
+  
+            <div className="form-group">
+              <label htmlFor="title">Att. Istat Ateco 2007</label>
+              <input
+                type="text"
+                className="form-control"
+                id="attIstatAteco2007"
+                required
+                value={cliente.attIstatAteco2007}
+                onChange={handleInputChange}
+                name="attIstatAteco2007"
+              />
+            </div>
+  
+            <div className="form-group">
+              <label htmlFor="title">Settore</label>
+              <input
+                type="text"
+                className="form-control"
+                id="settore"
+                required
+                value={cliente.settore}
+                onChange={handleInputChange}
+                name="settore"
+              />
+            </div>
+  
+            <button onClick={saveCliente} className="btn btn-success">
+              Conferma
+            </button>
           </div>
-
-          <div className="form-group">
-            <label htmlFor="title">Telefono</label>
-            <input
-              type="text"
-              className="form-control"
-              id="telefono"
-              required
-              value={cliente.telefono}
-              onChange={handleInputChange}
-              name="telefono"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="title">Cellulare</label>
-            <input
-              type="text"
-              className="form-control"
-              id="cellulare"
-              required
-              value={cliente.cellulare}
-              onChange={handleInputChange}
-              name="cellulare"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="title">Mail</label>
-            <input
-              type="text"
-              className="form-control"
-              id="mail"
-              required
-              value={cliente.mail}
-              onChange={handleInputChange}
-              name="mail"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="title">Pec</label>
-            <input
-              type="text"
-              className="form-control"
-              id="pec"
-              required
-              value={cliente.pec}
-              onChange={handleInputChange}
-              name="pec"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="title">Sede</label>
-            <input
-              type="text"
-              className="form-control"
-              id="sede"
-              required
-              value={cliente.sede}
-              onChange={handleInputChange}
-              name="sede"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="title">Localita</label>
-            <input
-              type="text"
-              className="form-control"
-              id="localita"
-              required
-              value={cliente.localita}
-              onChange={handleInputChange}
-              name="localita"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="title">Cap</label>
-            <input
-              type="text"
-              className="form-control"
-              id="cap"
-              required
-              value={cliente.cap}
-              onChange={handleInputChange}
-              name="cap"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="title">Ragione sociale</label>
-            <input
-              type="text"
-              className="form-control"
-              id="ragioneSociale"
-              required
-              value={cliente.ragioneSociale}
-              onChange={handleInputChange}
-              name="ragioneSociale"
-            />
-          </div>
-
-
-          <div className="form-group">
-            <label htmlFor="description">Data costituzione</label>
-            <input
-              type="date"
-              className="form-control"
-              id="dataCostituzione"
-              required
-              value={cliente.dataCostituzione}
-              onChange={handleInputChange}
-              name="dataCostituzione"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="title">Inizio Attivita</label>
-            <input
-              type="date"
-              className="form-control"
-              id="inizioAttivita"
-              required
-              value={cliente.inizioAttivita}
-              onChange={handleInputChange}
-              name="inizioAttivita"
-            />
-          </div>
-          
-          <div className="form-group">
-            <label htmlFor="title">Tipo</label>
-            <input
-              type="text"
-              className="form-control"
-              id="tipo"
-              required
-              value={cliente.tipo}
-              onChange={handleInputChange}
-              name="tipo"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="title">Dimensione</label>
-            <input
-              type="text"
-              className="form-control"
-              id="dimensione"
-              required
-              value={cliente.dimensione}
-              onChange={handleInputChange}
-              name="dimensione"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="title">Att. Istat Ateco 2007</label>
-            <input
-              type="text"
-              className="form-control"
-              id="attIstatAteco2007"
-              required
-              value={cliente.attIstatAteco2007}
-              onChange={handleInputChange}
-              name="attIstatAteco2007"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="title">Settore</label>
-            <input
-              type="text"
-              className="form-control"
-              id="settore"
-              required
-              value={cliente.settore}
-              onChange={handleInputChange}
-              name="settore"
-            />
-          </div>
-
-          <button onClick={saveCliente} className="btn btn-success">
-            Conferma
-          </button>
-        </div>
-      )}
-    </div>
-  );
+        )}
+      </div>
+    );
+  }else{
+    return(
+      <div>
+        <br />
+          <p>Effettua il login per vedere i clienti...</p>
+      </div>
+    );
+  }
+  
 };
 
 export default AddCliente;
