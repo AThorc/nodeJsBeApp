@@ -21,6 +21,7 @@ import BoardUser from "./components/ClientesList";
 import BoardModerator from "./components/board-moderator.component";
 import BoardAdmin from "./components/board-admin.component";
 
+import AddCliente from "./components/AddCliente";
 
 import AddVisita from "./components/AddVisita";
 import Visita from "./components/Visita";
@@ -137,6 +138,7 @@ class App extends Component {
             <Route path="/admin" component={BoardAdmin} />
             <Route exact path="/addVisita" component={AddVisita} />
             <Route path="/visitas/:id" component={Visita} />
+            <Route exact path="/addCliente" component={AddCliente} />
           </Switch>
         </div>
       </div>

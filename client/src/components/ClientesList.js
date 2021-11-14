@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ClienteDataService from "../services/ClienteService";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import AuthService from "../services/auth.service";
 
@@ -11,6 +11,7 @@ const ClientesList = () => {
   const [searchRagioneSociale, setSearchRagioneSociale] = useState("");
 
   const user = AuthService.getCurrentUser();
+  const history = useHistory();
 
   useEffect(() => {
     if(user){
@@ -81,6 +82,10 @@ const ClientesList = () => {
       });
     }    
   };
+  
+  function handleAggiungiClienteClick() {
+    history.push("/addCliente");
+  }
 
 
   if(user){
@@ -103,6 +108,13 @@ const ClientesList = () => {
               >
                 Search
               </button>
+              <button
+              className="btn btn-success float-right"
+              type="button"
+              onClick={handleAggiungiClienteClick}
+            >
+              Aggiungi cliente
+            </button>
             </div>
           </div>
         </div>
@@ -123,13 +135,13 @@ const ClientesList = () => {
                 </li>
               ))}
           </ul>
-  
+          
           <button
-            className="m-3 btn btn-sm btn-danger"
+            className="m-3 btn btn-sm btn-danger d-none"
             onClick={removeAllClientes}
           >
             Remove All
-          </button>
+          </button>          
         </div>
         <div className="col-md-6">
           {currentCliente ? (
