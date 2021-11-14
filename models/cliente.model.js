@@ -1,11 +1,6 @@
 module.exports = mongoose => {
     var schema = mongoose.Schema(
       {
-        ragioneSocialeid:
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "RagioneSociale"
-        },
         codiceFiscale: String,
         partitaIVA: String,
         legaleRappresentate: String,
@@ -15,7 +10,15 @@ module.exports = mongoose => {
         pec: String,
         sede: String,
         localita: String,
-        cap: String
+        cap: String,
+        //Unica entità
+        ragioneSociale: String,      
+        dataCostituzione: Date,
+        inizioAttivita: Date,
+        tipo: String,
+        dimensione: String,
+        attIstatAteco2007: String,
+        settore: String
       },
       { timestamps: true }
     );

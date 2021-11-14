@@ -15,7 +15,6 @@ db.visitas = require("./visita.model.js")(mongoose);
 
 db.ROLES = ["user", "admin", "moderator"];
 
-db.ragioneSociales = require("./ragioneSociale.model.js")(mongoose);
 db.clientes = require("./cliente.model.js")(mongoose);
 db.servizios = require("./servizio.model.js")(mongoose);
 db.partners = require("./partner.model.js")(mongoose);

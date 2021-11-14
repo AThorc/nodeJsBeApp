@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import ClienteDataService from "../services/ClienteService";
-import RagioneSocialeDataService from "../services/RagioneSocialeService";
 import { Link } from "react-router-dom";
 
 import AuthService from "../services/auth.service";
@@ -9,8 +8,7 @@ const ClientesList = () => {
   const [clientes, setClientes] = useState([]);
   const [currentCliente, setCurrentCliente] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
-  const [searchCodiceFiscale, setSearchCodiceFiscale] = useState("");
-  const [searchDenominazioneRS, setSearchDenominazioneRS] = useState("");
+  const [searchRagioneSociale, setSearchRagioneSociale] = useState("");
 
   const user = AuthService.getCurrentUser();
 
@@ -20,10 +18,11 @@ const ClientesList = () => {
     }    
   }, []);
 
-  const onChangeSearchCodiceFiscale = e => {
+
+  const onChangeSearchRagioneSociale = e => {
     if(user){
-      const searchCodiceFiscale = e.target.value;
-      setSearchCodiceFiscale(searchCodiceFiscale);
+      const searchRagioneSociale = e.target.value;
+      setSearchRagioneSociale(searchRagioneSociale);
     }
   };
 
@@ -40,21 +39,13 @@ const ClientesList = () => {
     }    
   };
 
-  const retrieveDenominazioneRS = (rsId) => {
-    if(user){
-      RagioneSocialeDataService.get(rsId)
-      .then(response => {        
-        setSearchDenominazioneRS(response.data.denominazione);
-        console.log(response.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
-    }
-  };
-
   const refreshList = () => {
     retrieveClientes();
+    retrieveClientes();
+    refreshSearchedList();
+  };
+
+  const refreshSearchedList = () => {    
     setCurrentCliente(null);
     setCurrentIndex(-1);
   };
@@ -62,7 +53,6 @@ const ClientesList = () => {
   const setActiveCliente = (cliente, index) => {
     setCurrentCliente(cliente);
     setCurrentIndex(index);
-    retrieveDenominazioneRS(cliente.ragioneSocialeid);
   };
 
   const removeAllClientes = () => {
@@ -78,18 +68,20 @@ const ClientesList = () => {
     }    
   };
 
-  const findByCodiceFiscale = () => {
+  const findByRs = () => {
     if(user){
-      ClienteDataService.findByCodiceFiscale(searchCodiceFiscale)
+      ClienteDataService.findByRs(searchRagioneSociale)
       .then(response => {
         setClientes(response.data);
         console.log(response.data);
+        refreshSearchedList();
       })
       .catch(e => {
         console.log(e);
       });
     }    
   };
+
 
   if(user){
     return (
@@ -99,15 +91,15 @@ const ClientesList = () => {
             <input
               type="text"
               className="form-control"
-              placeholder="Search by codice fiscale"
-              value={searchCodiceFiscale}
-              onChange={onChangeSearchCodiceFiscale}
+              placeholder="Cerca per ragione sociale"
+              value={searchRagioneSociale}
+              onChange={onChangeSearchRagioneSociale}
             />
             <div className="input-group-append">
               <button
                 className="btn btn-outline-secondary"
                 type="button"
-                onClick={findByCodiceFiscale}
+                onClick={findByRs}
               >
                 Search
               </button>
@@ -147,7 +139,7 @@ const ClientesList = () => {
                 <label>
                   <strong>Ragione sociale:</strong>
                 </label>{" "}
-                {searchDenominazioneRS}
+                {currentCliente.ragioneSociale}
               </div>          
               <div>
                 <label>

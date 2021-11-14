@@ -21,7 +21,15 @@ exports.create = (req, res) => {
       pec: req.body.pec,
       sede: req.body.sede,
       localita: req.body.localita,
-      cap: req.body.cap
+      cap: req.body.cap,
+      //Unica entità
+      ragioneSociale: req.body.ragioneSociale,      
+      dataCostituzione: req.body.dataCostituzione,
+      inizioAttivita: req.body.inizioAttivita,
+      tipo: req.body.tipo,
+      dimensione: req.body.dimensione,
+      attIstatAteco2007: req.body.attIstatAteco2007,
+      settore: req.body.settore
     });
   
     // Save Cliente in the database
@@ -40,12 +48,8 @@ exports.create = (req, res) => {
 
 // Retrieve all Clientes from the database.
 exports.findAll = (req, res) => {
-    const codiceFiscale = req.query.codiceFiscale;
-    const partitaIVA = req.query.partitaIVA;
-    var conditionCF = codiceFiscale ? { codiceFiscale: { $regex: new RegExp(codiceFiscale), $options: "i" } } : {};
-    var conditionPiva = partitaIVA ? { partitaIVA: { $regex: new RegExp(partitaIVA), $options: "i" } } : {};
-    var condition = conditionCF || conditionPiva;
-
+    const ragioneSociale = req.query.ragioneSociale;
+    var condition = ragioneSociale ? { ragioneSociale: { $regex: new RegExp(ragioneSociale), $options: "i" } } : {};
     Cliente.find(condition)
       .then(data => {
         res.send(data);

@@ -47,7 +47,6 @@ require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
 require('./routes/visita.routes')(app);
 require('./routes/cliente.routes')(app);
-require('./routes/ragioneSociale.routes')(app);
 require('./routes/servizio.routes')(app);
 require('./routes/partner.routes')(app);
 require('./routes/segnalatore.routes')(app);

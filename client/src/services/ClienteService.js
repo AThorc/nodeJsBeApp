@@ -24,8 +24,8 @@ const removeAll = () => {
   return http.delete(`/clientes`);
 };
 
-const findByCodiceFiscale = (codiceFiscale) => {
-  return http.get(`/clientes?codiceFiscale=${codiceFiscale}`);
+const findByRs = (ragioneSociale) => {
+  return http.get(`/clientes?ragioneSociale=${ragioneSociale}`);
 };
 
 export default {
@@ -35,5 +35,5 @@ export default {
   update,
   remove,
   removeAll,
-  findByCodiceFiscale
+  findByRs
 };
