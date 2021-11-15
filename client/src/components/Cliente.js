@@ -3,6 +3,8 @@ import ClienteDataService from "../services/ClienteService";
 
 import AuthService from "../services/auth.service";
 
+import ConfirmDialog from "./confirmDialog.component";
+
 import moment from 'moment'
 
 const Cliente = props => {
@@ -302,13 +304,20 @@ const Cliente = props => {
               </div>
             </form>          
   
-            <button className="badge badge-danger mr-2 " onClick={deleteCliente}>
+            <ConfirmDialog 
+              title= 'Delete'
+              message= 'Sei sicuro di voler cancellare il cliente?'
+              onClickYes= {deleteCliente}
+              className="btn btn-danger"
+            />
+
+            <button className="badge badge-danger mr-2 d-none" onClick={deleteCliente}>
               Delete
             </button>
   
             <button
               type="submit"
-              className="badge badge-success"
+              className="btn btn-primary"
               onClick={updateCliente}
             >
               Update

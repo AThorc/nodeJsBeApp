@@ -47,3 +47,7 @@ label {
   -webkit-border-radius: 50%;
   border-radius: 50%;
 }
+
+body.react-confirm-alert-body-element {
+  overflow: auto!important;
+}

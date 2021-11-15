@@ -151,7 +151,12 @@ const ClientesList = () => {
                 <label>
                   <strong>Ragione sociale:</strong>
                 </label>{" "}
-                {currentCliente.ragioneSociale}
+                <Link
+                  to={"/clientes/" + currentCliente.id}
+                  className="badge badge-warning"
+                >
+                  {currentCliente.ragioneSociale}
+                </Link>                
               </div>          
               <div>
                 <label>
@@ -166,12 +171,7 @@ const ClientesList = () => {
                 {currentCliente.partitaIVA}
               </div>           
   
-              <Link
-                to={"/clientes/" + currentCliente.id}
-                className="badge badge-warning"
-              >
-                Edit
-              </Link>
+              
             </div>
           ) : (
             <div>
