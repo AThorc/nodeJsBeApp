@@ -24,6 +24,12 @@ import BoardAdmin from "./components/board-admin.component";
 import AddCliente from "./components/AddCliente";
 import Cliente from "./components/Cliente";
 
+
+import PartnerList from "./components/PartnersList";
+import AddPartner from "./components/AddPartner";
+import Partner from "./components/Partner";
+
+
 import AddVisita from "./components/AddVisita";
 import Visita from "./components/Visita";
 
@@ -96,6 +102,15 @@ class App extends Component {
                 </Link>
               </li>
             )}
+
+            {currentUser && (
+              <li className="nav-item">
+                <Link to={"/listaPartner"} className="nav-link">
+                  Partners
+                </Link>
+              </li>
+            )}
+
           </div>
 
           {currentUser ? (
@@ -141,6 +156,10 @@ class App extends Component {
             <Route path="/visitas/:id" component={Visita} />
             <Route exact path="/addCliente" component={AddCliente} />
             <Route path="/clientes/:id" component={Cliente} />
+            <Route path="/listaPartner" component={PartnerList} />
+            <Route exact path="/addPartner" component={AddPartner} />
+            <Route path="/partners/:id" component={Partner} />
+
           </Switch>
         </div>
       </div>

@@ -6,6 +6,12 @@ module.exports = mongoose => {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Servizio"
         },
+        clientes: [
+          {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Cliente"
+          }
+        ],
         denominazione: String,
         dataInizio: Date,
         fatturatoPartner: Number

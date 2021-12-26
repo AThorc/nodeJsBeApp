@@ -52,8 +52,8 @@ exports.findAll = (req, res) => {
 
 // Retrieve all Segnalatores from the database even by clientId.
 exports.findAll = (req, res) => {
-  const servizioid = req.query.servizioid;      
-  var condition = servizioid ? { servizioid: { $regex: new RegExp(servizioid), $options: "i" } } : {};
+  const denominazione = req.query.denominazione;      
+  var condition = denominazione ? { denominazione: { $regex: new RegExp(denominazione), $options: "i" } } : {};
 
   Segnalatore.find(condition)
     .then(data => {

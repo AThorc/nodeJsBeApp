@@ -8,7 +8,13 @@ module.exports = mongoose => {
         },
         denominazione: String,
         dataInizio: Date,
-        fatturatoSegnalatore: Number
+        fatturatoSegnalatore: Number,
+        clientes: [
+          {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Cliente"
+          }
+        ]    
       },
       { timestamps: true }
     );
