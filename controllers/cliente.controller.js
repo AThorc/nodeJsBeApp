@@ -52,9 +52,10 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     const ragioneSociale = req.query.ragioneSociale;
     const partners = new mongoose.Types.ObjectId(req.query.partners);
-    //const partners = new mongoose.ObjectId(req.query.partners);    
-    var condition = ragioneSociale ? { ragioneSociale: { $regex: new RegExp(ragioneSociale), $options: "i" } } : {};
-    condition = !ragioneSociale && partners ? { partners: partners } : {};
+    //const partners = new mongoose.ObjectId(req.query.partners);
+    var condition = {};
+    condition = ragioneSociale ? { ragioneSociale: { $regex: new RegExp(ragioneSociale), $options: "i" } } : {};
+    condition = !ragioneSociale && req.query.partners ? { partners: partners } : condition;
 
     Cliente.find(condition)
       .then(data => {
