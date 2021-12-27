@@ -4,7 +4,7 @@ const Servizio = db.servizios;
 // Create and Save a new Servizio
 exports.create = (req, res) => {
     // Validate request
-    if (!req.body.denominazione && !req.body.dataCostituzione) {
+    if (!req.body.servizi && !req.body.dataInizio) {
       res.status(400).send({ message: "Content can not be empty!" });
       return;
     }

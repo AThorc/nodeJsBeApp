@@ -1,41 +1,41 @@
 import React, { useState } from "react";
-import PartnerDataService from "../services/PartnerService";
+import MacroservizioDataService from "../services/MacroservizioService";
 
 import AuthService from "../services/auth.service";
 
-const AddPartner = () => {
-  const initialPartnerState = {
+const AddMacroservizio = () => {
+  const initialMacroservizioState = {
     id: null,
-    denominazione: "",
+    servizi: "",
     dataInizio: "",
-    fatturatoPartner: ""
+    fatturato: ""
 
   };
-  const [partner, setPartner] = useState(initialPartnerState);
+  const [macroservizio, setMacroservizio] = useState(initialMacroservizioState);
   const [submitted, setSubmitted] = useState(false);
 
   const user = AuthService.getCurrentUser();
 
   const handleInputChange = event => {
     const { name, value } = event.target;
-    setPartner({ ...partner, [name]: value });
+    setMacroservizio({ ...macroservizio, [name]: value });
   };
 
-  const savePartner = () => {
+  const saveMacroservizio = () => {
     if(user){
       var data = {        
-        denominazione: partner.denominazione,
-        dataInizio: partner.dataInizio,
-        fatturatoPartner: partner.fatturatoPartner
+        servizi: macroservizio.servizi,
+        dataInizio: macroservizio.dataInizio,
+        fatturato: macroservizio.fatturato
       };
 
-      PartnerDataService.create(data)
+      MacroservizioDataService.create(data)
       .then(response => {
-        setPartner({
+        setMacroservizio({
           id: response.data.id,
-          denominazione: response.data.denominazione,
+          servizi: response.data.servizi,
           dataInizio: response.data.dataInizio,
-          fatturatoPartner: response.data.fatturatoPartner
+          fatturato: response.data.fatturato
         });
         setSubmitted(true);
         console.log(response.data);
@@ -46,8 +46,8 @@ const AddPartner = () => {
     }   
   };
 
-  const newPartner = () => {
-    setPartner(initialPartnerState);
+  const newMacroservizio = () => {
+    setMacroservizio(initialMacroservizioState);
     setSubmitted(false);
   };
 
@@ -58,22 +58,22 @@ const AddPartner = () => {
         {submitted ? (
           <div>
             <h4>You submitted successfully!</h4>
-            <button className="btn btn-success" onClick={newPartner}>
+            <button className="btn btn-success" onClick={newMacroservizio}>
               Add
             </button>
           </div>
         ) : (
           <div>
             <div className="form-group">
-              <label htmlFor="title">Denominazione</label>
+              <label htmlFor="title">Servizi</label>
               <input
                 type="text"
                 className="form-control"
-                id="denominazione"
+                id="servizi"
                 required
-                value={partner.denominazione}
+                value={macroservizio.servizi}
                 onChange={handleInputChange}
-                name="denominazione"
+                name="servizi"
               />
             </div>
   
@@ -84,26 +84,26 @@ const AddPartner = () => {
                 className="form-control"
                 id="dataInizio"
                 required
-                value={partner.dataInizio}
+                value={macroservizio.dataInizio}
                 onChange={handleInputChange}
                 name="dataInizio"
               />
             </div>
   
             <div className="form-group">
-              <label htmlFor="title">Fatturato partner</label>
+              <label htmlFor="title">Fatturato macroservizio</label>
               <input
                 type="number"
                 className="form-control"
-                id="fatturatoPartner"
+                id="fatturato"
                 required
-                value={partner.fatturatoPartner}
+                value={macroservizio.fatturato}
                 onChange={handleInputChange}
-                name="fatturatoPartner"
+                name="fatturato"
               />
             </div>           
   
-            <button onClick={savePartner} className="btn btn-success">
+            <button onClick={saveMacroservizio} className="btn btn-success">
               Conferma
             </button>
           </div>
@@ -114,11 +114,11 @@ const AddPartner = () => {
     return(
       <div>
         <br />
-          <p>Effettua il login per vedere i partners...</p>
+          <p>Effettua il login per vedere i macroservizios...</p>
       </div>
     );
   }
   
 };
 
-export default AddPartner;
+export default AddMacroservizio;
