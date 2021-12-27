@@ -51,3 +51,11 @@ label {
 body.react-confirm-alert-body-element {
   overflow: auto!important;
 }
+
+.col-md-6{
+  padding-bottom: 6%;
+}
+
+.pad-top-6{
+  padding-top: 6%;
+}

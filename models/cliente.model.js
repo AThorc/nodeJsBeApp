@@ -18,7 +18,13 @@ module.exports = mongoose => {
         tipo: String,
         dimensione: String,
         attIstatAteco2007: String,
-        settore: String
+        settore: String,
+        partners: [
+          {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Partner"
+          }
+        ],
       },
       { timestamps: true }
     );

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ClienteDataService from "../services/ClienteService";
+import ServizioDataService from "../services/ServizioService";
 import { Link, useHistory } from "react-router-dom";
 
 import AuthService from "../services/auth.service";
@@ -9,6 +10,10 @@ const ClientesList = () => {
   const [currentCliente, setCurrentCliente] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchRagioneSociale, setSearchRagioneSociale] = useState("");
+
+  const [servizios, setServizios] = useState([]);
+  const [currentServizio, setCurrentServizio] = useState(null);
+  const [currentServizioIndex, setCurrentServizioIndex] = useState(-1);
 
   const user = AuthService.getCurrentUser();
   const history = useHistory();
@@ -50,15 +55,35 @@ const ClientesList = () => {
     setCurrentCliente(null);
     setCurrentIndex(-1);
   };
+  
 
   const setActiveCliente = (cliente, index) => {
     setCurrentCliente(cliente);
     setCurrentIndex(index);
   };
 
+  const setActiveServizio = (servizio, index) => {
+    setCurrentServizio(servizio);
+    setCurrentServizioIndex(index);
+  };
+
   const removeAllClientes = () => {
     if(user){
       ClienteDataService.removeAll()
+      .then(response => {
+        console.log(response.data);
+        refreshList();
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }    
+  };
+
+
+  const removeAllServizios = () => {
+    if(user){
+      ServizioDataService.removeAll()
       .then(response => {
         console.log(response.data);
         refreshList();
@@ -85,6 +110,11 @@ const ClientesList = () => {
   
   function handleAggiungiClienteClick() {
     history.push("/addCliente");
+  }
+
+
+  function handleAggiungiMacroservizioClick() {
+    history.push("/addMacroservizio");
   }
 
 
@@ -180,7 +210,98 @@ const ClientesList = () => {
             </div>
           )}
         </div>
+        
+
+        
+        <div className="col-md-8">
+          <div className="input-group mb-3">              
+            <div className="input-group-append">               
+              <button
+              className="btn btn-success float-right"
+              type="button"
+              onClick={handleAggiungiMacroservizioClick}
+              >
+               Aggiungi macro servizio
+              </button>
+            </div>
+          </div>
+        </div>
+       
+        <div className="col-md-6">
+          <h4>Lista macro servizi</h4>
+  
+          <ul className="list-group">
+            {servizios &&
+              servizios.map((servizio, index) => (
+                <li
+                  className={
+                    "list-group-item " + (index === currentServizioIndex ? "active" : "")
+                  }
+                  onClick={() => setActiveServizio(servizio, index)}
+                  key={index}
+                >
+                  {servizio.servizi}
+                </li>
+              ))}
+          </ul>
+          
+          <button
+            className="m-3 btn btn-sm btn-danger d-none"
+            onClick={removeAllServizios}
+          >
+            Remove All
+          </button>          
+        </div>
+        <div className="col-md-6">
+          {currentServizio ? (
+            <div>
+              <h4>Macro servizio</h4>
+              <div>
+                <label>
+                  <strong>Servizi:</strong>
+                </label>{" "}
+                <Link
+                  to={"/clientes/" + currentCliente.id}
+                  className="badge badge-warning"
+                >
+                  {currentServizio.servizi}
+                </Link>                
+              </div>          
+              <div>
+                <label>
+                  <strong>Tip. servizi:</strong>
+                </label>{" "}
+                {currentServizio.tipo}
+              </div>
+              <div>
+                <label>
+                  <strong>Data inizio:</strong>
+                </label>{" "}
+                {currentServizio.dataInizio}
+              </div>
+              <div>
+                <label>
+                  <strong>Fatturato:</strong>
+                </label>{" "}
+                {currentServizio.fatturato}
+              </div>             
+  
+              
+            </div>
+          ) : (
+            <div>
+              <br />
+              <p>Please click on a macro servizio...</p>
+            </div>
+          )}
+        </div>
+
+
+
+
       </div>
+      
+      
     );
   }else{
     return(
