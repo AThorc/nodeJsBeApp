@@ -3,6 +3,8 @@ import PartnerDataService from "../services/PartnerService";
 import ClienteDataService from "../services/ClienteService";
 import { Link, useHistory } from "react-router-dom";
 
+import moment from 'moment'
+
 import AuthService from "../services/auth.service";
 
 const PartnersList = () => {
@@ -202,23 +204,18 @@ const PartnersList = () => {
                 </Link>                
               </div>
 
-            <ul className="list-group">
-              <h4 className="pad-top-6">Clienti</h4>
-                {clientes &&
-                  clientes.map((cliente, index) => (
-                    <li>
-                      <label>
-                        <strong>Ragione sociale:</strong>
-                      </label>{" "}
-                      <Link
-                        to={"/clientes/" + cliente.id}
-                        className="badge badge-warning"
-                      >
-                        {cliente.ragioneSociale}
-                      </Link>   
-                    </li>
-                  ))}
-            </ul>
+              <div>
+                <label>
+                  <strong>Data inizio:</strong>
+                </label>{" "}
+                {moment(currentPartner.dataInizio).format('YYYY-MM-DD')}
+              </div>
+              <div>
+                <label>
+                  <strong>Fatturato partner:</strong>
+                </label>{" "}
+                {currentPartner.fatturatoPartner}
+              </div>                    
 
             </div>
           ) : (
