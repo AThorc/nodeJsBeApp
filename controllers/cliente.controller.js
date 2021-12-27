@@ -1,5 +1,7 @@
 const db = require("../models");
 const Cliente = db.clientes;
+const mongoose = require('mongoose');
+
 
 // Create and Save a new Cliente
 exports.create = (req, res) => {
@@ -49,7 +51,11 @@ exports.create = (req, res) => {
 // Retrieve all Clientes from the database.
 exports.findAll = (req, res) => {
     const ragioneSociale = req.query.ragioneSociale;
+    const partners = new mongoose.Types.ObjectId(req.query.partners);
+    //const partners = new mongoose.ObjectId(req.query.partners);    
     var condition = ragioneSociale ? { ragioneSociale: { $regex: new RegExp(ragioneSociale), $options: "i" } } : {};
+    condition = !ragioneSociale && partners ? { partners: partners } : {};
+
     Cliente.find(condition)
       .then(data => {
         res.send(data);

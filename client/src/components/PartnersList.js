@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from "react";
 import PartnerDataService from "../services/PartnerService";
+import ClienteDataService from "../services/ClienteService";
 import { Link, useHistory } from "react-router-dom";
 
 import AuthService from "../services/auth.service";
 
 const PartnersList = () => {
   const [partners, setPartners] = useState([]);
+  const [clientes, setClientes] = useState([]);
   const [currentPartner, setCurrentPartner] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchDenominazione, setSearchDenominazione] = useState("");
+
+  //var ragioneSociale = [];
+
 
   const user = AuthService.getCurrentUser();
   const history = useHistory();
@@ -42,7 +47,6 @@ const PartnersList = () => {
 
   const refreshList = () => {
     retrievePartners();
-    retrievePartners();
     refreshSearchedList();
   };
 
@@ -54,6 +58,15 @@ const PartnersList = () => {
   const setActivePartner = (partner, index) => {
     setCurrentPartner(partner);
     setCurrentIndex(index);
+   
+    //Sbianco i clienti dal partner
+    //setClientes([]);
+
+    //Riempio i clienti
+    findClientesByPartnerId(partner.id);
+    /*for(const id in partner.clientes){
+      findRsById(partner.clientes[id]);
+    }*/
   };
 
   const removeAllPartners = () => {
@@ -82,6 +95,36 @@ const PartnersList = () => {
       });
     }    
   };
+
+  const findClientesByPartnerId = (partnerId) => {
+    if(user){
+      ClienteDataService.findByPartners(partnerId)
+      .then(response => {        
+        setClientes(response.data);
+        console.log('**');
+        console.log(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }    
+  };
+
+  /*
+  function setRagioneSociale(id, ragioneSociale){
+    if(!ragioneSocialeById.hasOwnProperty(id)){
+      ragioneSociale[id] = ragioneSociale;
+    } 
+  }
+  */
+
+  /*
+  function setRsById(id, ragioneSociale){
+    if(!rsById.hasOwnProperty(id)){
+      rsById[id] = ragioneSociale;
+    }    
+  }*/
+
   
   function handleAggiungiPartnerClick() {
     history.push("/addPartner");
@@ -157,9 +200,26 @@ const PartnersList = () => {
                 >
                   {currentPartner.denominazione}
                 </Link>                
-              </div>                   
-  
-              
+              </div>
+
+            <ul className="list-group">
+              <h4 className="pad-top-6">Clienti</h4>
+                {clientes &&
+                  clientes.map((cliente, index) => (
+                    <li>
+                      <label>
+                        <strong>Ragione sociale:</strong>
+                      </label>{" "}
+                      <Link
+                        to={"/clientes/" + cliente.id}
+                        className="badge badge-warning"
+                      >
+                        {cliente.ragioneSociale}
+                      </Link>   
+                    </li>
+                  ))}
+            </ul>
+
             </div>
           ) : (
             <div>

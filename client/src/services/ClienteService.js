@@ -28,6 +28,10 @@ const findByRs = (ragioneSociale) => {
   return http.get(`/clientes?ragioneSociale=${ragioneSociale}`);
 };
 
+const findByPartners = (partners) => {
+  return http.get(`/clientes?partners=${partners}`);
+};
+
 export default {
   getAll,
   get,
@@ -35,5 +39,6 @@ export default {
   update,
   remove,
   removeAll,
-  findByRs
+  findByRs,
+  findByPartners
 };
