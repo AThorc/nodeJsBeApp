@@ -1,42 +1,44 @@
 import React, { useState, useEffect } from "react";
+import MacroservizioDataService from "../services/MacroservizioService";
 import ClienteDataService from "../services/ClienteService";
-import ServizioDataService from "../services/ServizioService";
 import { Link, useHistory } from "react-router-dom";
+
+import moment from 'moment'
 
 import AuthService from "../services/auth.service";
 
-const ClientesList = () => {
+const MacroserviziList = () => {
+  const [macroservizi, setMacroservizi] = useState([]);
   const [clientes, setClientes] = useState([]);
-  const [currentCliente, setCurrentCliente] = useState(null);
+  const [currentMacroservizio, setCurrentMacroservizio] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
-  const [searchRagioneSociale, setSearchRagioneSociale] = useState("");
+  const [searchDenominazione, setSearchDenominazione] = useState("");
 
-  const [servizios, setServizios] = useState([]);
-  const [currentServizio, setCurrentServizio] = useState(null);
-  const [currentServizioIndex, setCurrentServizioIndex] = useState(-1);
+  //var ragioneSociale = [];
+
 
   const user = AuthService.getCurrentUser();
   const history = useHistory();
 
   useEffect(() => {
     if(user){
-      retrieveClientes();
+      retrieveMacroservizi();
     }    
   }, []);
 
 
-  const onChangeSearchRagioneSociale = e => {
+  const onChangeSearchDenominazione = e => {
     if(user){
-      const searchRagioneSociale = e.target.value;
-      setSearchRagioneSociale(searchRagioneSociale);
+      const searchDenominazione = e.target.value;
+      setSearchDenominazione(searchDenominazione);
     }
   };
 
-  const retrieveClientes = () => {
+  const retrieveMacroservizi = () => {
     if(user){
-      ClienteDataService.getAll()
+      MacroservizioDataService.getAll()
       .then(response => {
-        setClientes(response.data);
+        setMacroservizi(response.data);
         console.log(response.data);
       })
       .catch(e => {
@@ -46,30 +48,32 @@ const ClientesList = () => {
   };
 
   const refreshList = () => {
-    retrieveClientes();
-    retrieveClientes();
+    retrieveMacroservizi();
     refreshSearchedList();
   };
 
   const refreshSearchedList = () => {    
-    setCurrentCliente(null);
+    setCurrentMacroservizio(null);
     setCurrentIndex(-1);
   };
-  
 
-  const setActiveCliente = (cliente, index) => {
-    setCurrentCliente(cliente);
+  const setActiveMacroservizio = (macroservizio, index) => {
+    setCurrentMacroservizio(macroservizio);
     setCurrentIndex(index);
+   
+    //Sbianco i clienti dal macroservizio
+    //setClientes([]);
+
+    //Riempio i clienti
+    //findClientesByMacroservizioId(macroservizio.id);
+    /*for(const id in macroservizio.clientes){
+      findRsById(macroservizio.clientes[id]);
+    }*/
   };
 
-  const setActiveServizio = (servizio, index) => {
-    setCurrentServizio(servizio);
-    setCurrentServizioIndex(index);
-  };
-
-  const removeAllClientes = () => {
+  const removeAllMacroservizi = () => {
     if(user){
-      ClienteDataService.removeAll()
+      MacroservizioDataService.removeAll()
       .then(response => {
         console.log(response.data);
         refreshList();
@@ -80,25 +84,11 @@ const ClientesList = () => {
     }    
   };
 
-
-  const removeAllServizios = () => {
+  const findByDen = () => {
     if(user){
-      ServizioDataService.removeAll()
+      MacroservizioDataService.findByDen(searchDenominazione)
       .then(response => {
-        console.log(response.data);
-        refreshList();
-      })
-      .catch(e => {
-        console.log(e);
-      });
-    }    
-  };
-
-  const findByRs = () => {
-    if(user){
-      ClienteDataService.findByRs(searchRagioneSociale)
-      .then(response => {
-        setClientes(response.data);
+        setMacroservizi(response.data);
         console.log(response.data);
         refreshSearchedList();
       })
@@ -107,12 +97,40 @@ const ClientesList = () => {
       });
     }    
   };
-  
-  function handleAggiungiClienteClick() {
-    history.push("/addCliente");
+
+
+  /*
+  const findClientesByMacroservizioId = (macroservizioId) => {
+    if(user){
+      ClienteDataService.findByMacroservizi(macroservizioId)
+      .then(response => {        
+        setClientes(response.data);
+        console.log('**');
+        console.log(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }    
+  };
+  */
+
+  /*
+  function setRagioneSociale(id, ragioneSociale){
+    if(!ragioneSocialeById.hasOwnProperty(id)){
+      ragioneSociale[id] = ragioneSociale;
+    } 
   }
+  */
 
+  /*
+  function setRsById(id, ragioneSociale){
+    if(!rsById.hasOwnProperty(id)){
+      rsById[id] = ragioneSociale;
+    }    
+  }*/
 
+  
   function handleAggiungiMacroservizioClick() {
     history.push("/addMacroservizio");
   }
@@ -126,104 +144,101 @@ const ClientesList = () => {
             <input
               type="text"
               className="form-control"
-              placeholder="Cerca per ragione sociale"
-              value={searchRagioneSociale}
-              onChange={onChangeSearchRagioneSociale}
+              placeholder="Cerca per denominazione"
+              value={searchDenominazione}
+              onChange={onChangeSearchDenominazione}
             />
             <div className="input-group-append">
               <button
                 className="btn btn-outline-secondary"
                 type="button"
-                onClick={findByRs}
+                onClick={findByDen}
               >
                 Search
               </button>
               <button
               className="btn btn-success float-right"
               type="button"
-              onClick={handleAggiungiClienteClick}
+              onClick={handleAggiungiMacroservizioClick}
             >
-              Aggiungi cliente
+              Aggiungi macroservizio
             </button>
             </div>
           </div>
         </div>
         <div className="col-md-6">
-          <h4>Lista clienti</h4>
+          <h4>Lista macroservizi</h4>
   
           <ul className="list-group">
-            {clientes &&
-              clientes.map((cliente, index) => (
+            {macroservizi &&
+              macroservizi.map((macroservizio, index) => (
                 <li
                   className={
                     "list-group-item " + (index === currentIndex ? "active" : "")
                   }
-                  onClick={() => setActiveCliente(cliente, index)}
+                  onClick={() => setActiveMacroservizio(macroservizio, index)}
                   key={index}
                 >
-                  {cliente.codiceFiscale}
+                  {macroservizio.servizi}
                 </li>
               ))}
           </ul>
           
           <button
             className="m-3 btn btn-sm btn-danger d-none"
-            onClick={removeAllClientes}
+            onClick={removeAllMacroservizi}
           >
             Remove All
           </button>          
         </div>
         <div className="col-md-6">
-          {currentCliente ? (
+          {currentMacroservizio ? (
             <div>
-              <h4>Cliente</h4>
+              <h4>Macroservizio</h4>
               <div>
                 <label>
-                  <strong>Ragione sociale:</strong>
+                  <strong>Servizi:</strong>
                 </label>{" "}
                 <Link
-                  to={"/clientes/" + currentCliente.id}
+                  to={"/macroservizios/" + currentMacroservizio.id}
                   className="badge badge-warning"
                 >
-                  {currentCliente.ragioneSociale}
+                  {currentMacroservizio.servizi}
                 </Link>                
-              </div>          
+              </div>
+
               <div>
                 <label>
-                  <strong>Codice fiscale:</strong>
+                  <strong>Data inizio:</strong>
                 </label>{" "}
-                {currentCliente.codiceFiscale}
+                {moment(currentMacroservizio.dataInizio).format('YYYY-MM-DD')}
               </div>
               <div>
                 <label>
-                  <strong>Partita IVA:</strong>
+                  <strong>Fatturato macroservizio:</strong>
                 </label>{" "}
-                {currentCliente.partitaIVA}
-              </div>           
-  
-              
+                {currentMacroservizio.fatturato}
+              </div>                    
+
             </div>
           ) : (
             <div>
               <br />
-              <p>Please click on a Cliente...</p>
+              <p>Please click on a Macroservizio...</p>
             </div>
           )}
         </div>
-        
       </div>
-      
-      
     );
   }else{
     return(
       <div>
         <br />
-          <p>Effettua il login per vedere i clienti...</p>
+          <p>Effettua il login per vedere i macroservizi...</p>
       </div>
     );
   }
   
 };
 
-export default ClientesList;
+export default MacroserviziList;

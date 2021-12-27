@@ -30,6 +30,11 @@ import AddPartner from "./components/AddPartner";
 import Partner from "./components/Partner";
 
 
+import MacroserviziList from "./components/MacroserviziList";
+import AddMacroservizio from "./components/AddMacroservizio";
+import Macroservizio from "./components/Macroservizio";
+
+
 import AddVisita from "./components/AddVisita";
 import Visita from "./components/Visita";
 
@@ -111,6 +116,15 @@ class App extends Component {
               </li>
             )}
 
+            {currentUser && (
+              <li className="nav-item">
+                <Link to={"/listaMacroservizi"} className="nav-link">
+                  Macroservizi
+                </Link>
+              </li>
+            )}
+
+
           </div>
 
           {currentUser ? (
@@ -159,6 +173,9 @@ class App extends Component {
             <Route path="/listaPartner" component={PartnerList} />
             <Route exact path="/addPartner" component={AddPartner} />
             <Route path="/partners/:id" component={Partner} />
+            <Route path="/listaMacroservizi" component={MacroserviziList} />
+            <Route exact path="/addMacroservizio" component={AddMacroservizio} />
+            <Route path="/macroservizios/:id" component={Macroservizio} />
 
           </Switch>
         </div>
