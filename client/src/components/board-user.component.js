@@ -52,7 +52,7 @@ export default class BoardUser extends Component {
   render(){
     return (
       <div>
-      <nav className="navbar navbar-expand navbar-dark bg-dark">
+      <nav className="navbar navbar-expand navbar-dark bg-dark nav-fit-content">
         <div className="navbar-nav mr-auto">
           <li className="nav-item">
             <Link to={"/visitas"} className="nav-link">
