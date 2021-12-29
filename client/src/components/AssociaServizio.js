@@ -238,7 +238,7 @@ const AssociaServizio = props => {
 
             <div className="form-group box">
               <label htmlFor="title">Cliente</label>
-              <select value={cliente.value} defaultValue={'DEFAULT'} onClick={_handleClienteChange}>
+              <select value={cliente.value} defaultValue={'DEFAULT'} onClick={_handleClienteChange} onChange={_handleClienteChange}>
                 <option value="" disabled value="DEFAULT">Seleziona un cliente</option>    
                 {clienti &&
                   clienti.map((cliente, index) => (                  
@@ -250,7 +250,7 @@ const AssociaServizio = props => {
 
             <div className="form-group box">
               <label htmlFor="title">Partner</label>
-              <select value={partner.value} defaultValue={'DEFAULT'} onClick={_handlePartnerChange}>
+              <select value={partner.value} defaultValue={'DEFAULT'} onClick={_handlePartnerChange} onChange={_handlePartnerChange}>
                 <option value="" disabled value="DEFAULT">Seleziona un partner</option>    
                 {partners &&
                   partners.map((partner, index) => (                  
