@@ -260,7 +260,7 @@ const AssociaServizio = props => {
                 </select>
             </div>
   
-            <button onClick={saveLegame} className="btn btn-warning">
+            <button onClick={saveLegame} className="btn btn-warning btn-associa">
               Associa
             </button>
           </div>

@@ -85,3 +85,8 @@ body.react-confirm-alert-body-element {
 .box select option {
   padding: 30px;
 }
+
+.btn-associa{
+  z-index: 99;
+  cursor: pointer;
+}
