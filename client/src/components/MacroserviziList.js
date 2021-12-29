@@ -72,7 +72,6 @@ const MacroserviziList = () => {
 
   const addClienteLegame = (newClienteLegame) => setClientesLegame(state => [...state, newClienteLegame]);
   const addPartnerLegame = (newPartnerLegame) => setPartnersLegame(state => [...state, newPartnerLegame]);
-  //const addClienteExecuted = (newClienteExecuted) => setClientesExecuted(state => [...state, newClienteExecuted]);
 
   const getCliente = id => {
     console.log('exec');
