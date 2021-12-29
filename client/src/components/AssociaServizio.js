@@ -4,7 +4,6 @@ import LegameDataService from "../services/LegameService";
 import ClienteDataService from "../services/ClienteService";
 import PartnerDataService from "../services/PartnerService";
 
-import Select from 'react-select'
 
 import AuthService from "../services/auth.service";
 
@@ -214,12 +213,12 @@ const AssociaServizio = props => {
 
             <div className="form-group">
               <label htmlFor="title">Cliente</label>
-              <Select required options={clienti} value={cliente} onChange={cliente => setCliente(cliente)}/>
+              <select required options={clienti} value={cliente} onChange={cliente => setCliente(cliente)}/>
             </div>
 
             <div className="form-group">
               <label htmlFor="title">Partner</label>
-              <Select required options={partners} value={partner} onChange={partner => setPartner(partner)}/>
+              <select required options={partners} value={partner} onChange={partner => setPartner(partner)}/>
             </div>        
   
             <button onClick={saveLegame} className="btn btn-warning">
