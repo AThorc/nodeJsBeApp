@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import MacroservizioDataService from "../services/MacroservizioService";
 import ClienteDataService from "../services/ClienteService";
 import LegameDataService from "../services/LegameService";
+import PartnerDataService from "../services/PartnerService";
+
 import { Link, useHistory } from "react-router-dom";
 
 import moment from 'moment'
@@ -15,6 +17,7 @@ const MacroserviziList = () => {
   const [currentListaLegameMacroservizio, setCurrentListaLegameMacroservizio] = useState(null);
 
   const [clientesLegame, setClientesLegame] = useState([]);
+  const [partnersLegame, setPartnersLegame] = useState([]);
 
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchDenominazione, setSearchDenominazione] = useState("");
@@ -24,6 +27,10 @@ const MacroserviziList = () => {
 
   const user = AuthService.getCurrentUser();
   const history = useHistory();
+
+
+  var clientesExecuted = [];
+  var partnersExecuted = [];
 
   useEffect(() => {
     if(user){
@@ -63,24 +70,33 @@ const MacroserviziList = () => {
     setCurrentListaLegameMacroservizio(null);
   };
 
-  const addClienteLegame = (newClienteLegame) => setClientesLegame(state => [...state, newClienteLegame])
+  const addClienteLegame = (newClienteLegame) => setClientesLegame(state => [...state, newClienteLegame]);
+  const addPartnerLegame = (newPartnerLegame) => setPartnersLegame(state => [...state, newPartnerLegame]);
+  //const addClienteExecuted = (newClienteExecuted) => setClientesExecuted(state => [...state, newClienteExecuted]);
 
   const getCliente = id => {
-    if(user){
+    console.log('exec');
+    console.log(clientesExecuted);
+    if(user && !clientesExecuted.includes(id)){
+      clientesExecuted.push(id);
       ClienteDataService.get(id)
       .then(response => {
-        console.log('Inside getCliente');
-        console.log(response.data); 
-        //setClientesLegame([...clientesLegame, clientesLegame.push(response.data.id + '-' + response.data.ragioneSociale)]);
-        //setClientesLegame([...clientesLegame, response.data.id]);
-
-        //addClienteLegame(response.data.id);
         addClienteLegame(response.data.id + '-' + response.data.ragioneSociale);
-        //addClienteLegame({id: response.data.id, ragioneSociale: response.data.ragioneSociale});
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }
+    
+  };
 
-        //clientesLegame.push(response.data);
-        //setState(setClientesLegame.concat(response.data)); 
-        console.log(clientesLegame);  
+  const getPartner = id => {
+    if(user && !partnersExecuted.includes(id)){
+      partnersExecuted.push(id);
+      PartnerDataService.get(id)
+      .then(response => {
+        if(!partnersLegame.includes(response.data.id + '-' + response.data.denominazione))
+          addPartnerLegame(response.data.id + '-' + response.data.denominazione);       
       })
       .catch(e => {
         console.log(e);
@@ -99,6 +115,7 @@ const MacroserviziList = () => {
         for(const i in response.data){
           var legame = response.data[i];
           getCliente(legame.clienteid);
+          getPartner(legame.partnerid);
         }            
       })
       .catch(e => {
@@ -323,6 +340,12 @@ const MacroserviziList = () => {
                             <strong>Cliente:</strong>
                           </label>{" "}
                           {clientesLegame.filter(cliente => cliente.includes(legame.clienteid)).toString().substring(clientesLegame.filter(cliente => cliente.includes(legame.clienteid)).toString().indexOf('-')+1)}             
+                      </div>
+                      <div>
+                          <label className="inline-block">
+                            <strong>Partner:</strong>
+                          </label>{" "}
+                          {partnersLegame.filter(partner => partner.includes(legame.partnerid)).toString().substring(partnersLegame.filter(partner => partner.includes(legame.partnerid)).toString().indexOf('-')+1)}             
                       </div>
                     </li>                   
                   ))}
