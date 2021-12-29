@@ -17,13 +17,20 @@ const AssociaServizio = props => {
     fatturato: ""
 
   };
+
+  const initialLegameState = {
+    id: null,
+    tipo: ""
+
+  };
+
   const [macroservizio, setMacroservizio] = useState(initialMacroservizioState);
   const [clienti, setClienti] = useState([]);
   const [cliente, setCliente] = useState({});
   const [partner, setPartner] = useState({});
   const [partners, setPartners] = useState([]);
   const [segnalatore, setSegnalatore] = useState({});
-  const [legame, setLegame] = useState({});
+  const [legame, setLegame] = useState(initialLegameState);
 
   const [submitted, setSubmitted] = useState(false);
 
@@ -230,8 +237,8 @@ const AssociaServizio = props => {
 
             <div className="form-group box">
               <label htmlFor="title">Cliente</label>
-              <select value={cliente.value} onClick={_handleClienteChange}>
-                <option value="" disabled selected>Seleziona un cliente</option>    
+              <select value={cliente.value} defaultValue={'DEFAULT'} onClick={_handleClienteChange}>
+                <option value="" disabled value="DEFAULT">Seleziona un cliente</option>    
                 {clienti &&
                   clienti.map((cliente, index) => (                  
                     
@@ -242,8 +249,8 @@ const AssociaServizio = props => {
 
             <div className="form-group box">
               <label htmlFor="title">Partner</label>
-              <select value={partner.value} onClick={_handlePartnerChange}>
-                <option value="" disabled selected>Seleziona un partner</option>    
+              <select value={partner.value} defaultValue={'DEFAULT'} onClick={_handlePartnerChange}>
+                <option value="" disabled value="DEFAULT">Seleziona un partner</option>    
                 {partners &&
                   partners.map((partner, index) => (                  
                     
