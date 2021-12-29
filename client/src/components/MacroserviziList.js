@@ -94,7 +94,6 @@ const MacroserviziList = () => {
       partnersExecuted.push(id);
       PartnerDataService.get(id)
       .then(response => {
-        if(!partnersLegame.includes(response.data.id + '-' + response.data.denominazione))
           addPartnerLegame(response.data.id + '-' + response.data.denominazione);       
       })
       .catch(e => {
@@ -107,6 +106,8 @@ const MacroserviziList = () => {
 
   const retrieveLegami = servizioid => {
     if(user){
+      setClientesLegame([]);
+      setPartnersLegame([]);
       LegameDataService.findByServizioId(servizioid)
       .then(response => {
         setCurrentListaLegameMacroservizio(response.data);
