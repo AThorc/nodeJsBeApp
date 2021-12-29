@@ -37,6 +37,7 @@ import Macroservizio from "./components/Macroservizio";
 
 import AddVisita from "./components/AddVisita";
 import Visita from "./components/Visita";
+import AssociaServizio from "./components/AssociaServizio";
 
 require('dotenv').config();
 
@@ -176,6 +177,7 @@ class App extends Component {
             <Route path="/listaMacroservizi" component={MacroserviziList} />
             <Route exact path="/addMacroservizio" component={AddMacroservizio} />
             <Route path="/macroservizios/:id" component={Macroservizio} />
+            <Route exact path="/associaServizio/:id" component={AssociaServizio} />
 
           </Switch>
         </div>

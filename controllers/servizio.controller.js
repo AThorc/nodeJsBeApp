@@ -10,12 +10,8 @@ exports.create = (req, res) => {
     }
   
     // Create a Servizio
-    const servizio = new Servizio({
-      clienteid: req.body.clienteid,
-      servizi: req.body.servizi,
-      partnerid: req.body.partnerid,
-      segnalatoreid: req.body.segnalatoreid,
-      tipo: req.body.tipo,
+    const servizio = new Servizio({      
+      servizi: req.body.servizi,     
       dataInizio: req.body.dataInizio,
       fatturato: req.body.fatturato
     });
@@ -53,10 +49,10 @@ exports.findAll = (req, res) => {
 };
 */
 
-// Retrieve all Servizios from the database even by clientId.
+// Retrieve all Servizios from the database even by servizi.
 exports.findAll = (req, res) => {
-  const clientId = req.query.clientId;      
-  var condition = clientId ? { clientId: { $regex: new RegExp(clientId), $options: "i" } } : {};
+  const servizi = req.query.servizi;      
+  var condition = servizi ? { servizi: { $regex: new RegExp(servizi), $options: "i" } } : {};
 
   Servizio.find(condition)
     .then(data => {
