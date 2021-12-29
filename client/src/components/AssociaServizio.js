@@ -43,8 +43,8 @@ const AssociaServizio = props => {
     if(user){
       var data = {
         servizioid: macroservizio.id,
-        clienteid: cliente.value,
-        partnerid: partner.value,
+        clienteid: cliente,
+        partnerid: partner,
         segnalatoreid: segnalatore.value,  
         tipo: legame.tipo
       };
@@ -93,6 +93,23 @@ const AssociaServizio = props => {
     setMacroservizio(initialMacroservizioState);
     setSubmitted(false);
   };
+
+
+
+  const _handleClienteChange = event => {
+    const { value} = event.target;
+    console.log(value);
+    //console.log(id);
+    setCliente(value);
+  };
+
+  const _handlePartnerChange = event => {
+    const { value,} = event.target;
+    console.log(value);
+    //console.log(id);
+    setPartner(value);
+  };
+
 
   const retrieveClientes = () => {
     if(user){
@@ -209,17 +226,31 @@ const AssociaServizio = props => {
                 onChange={handleInputLegameChange}
                 name="tipo"                           
               />
-            </div>
+            </div>      
 
-            <div className="form-group">
+            <div className="form-group box">
               <label htmlFor="title">Cliente</label>
-              <select required options={clienti} value={cliente} onChange={cliente => setCliente(cliente)}/>
+              <select value={cliente.value} onClick={_handleClienteChange}>
+                <option value="" disabled selected>Seleziona un cliente</option>    
+                {clienti &&
+                  clienti.map((cliente, index) => (                  
+                    
+                      <option  value={cliente.value} key={index}>{cliente.label}</option>                    
+                  ))}
+                </select>
             </div>
 
-            <div className="form-group">
+            <div className="form-group box">
               <label htmlFor="title">Partner</label>
-              <select required options={partners} value={partner} onChange={partner => setPartner(partner)}/>
-            </div>        
+              <select value={partner.value} onClick={_handlePartnerChange}>
+                <option value="" disabled selected>Seleziona un partner</option>    
+                {partners &&
+                  partners.map((partner, index) => (                  
+                    
+                      <option value={partner.value} key={index} >{partner.label}</option>                    
+                  ))}
+                </select>
+            </div>
   
             <button onClick={saveLegame} className="btn btn-warning">
               Associa
