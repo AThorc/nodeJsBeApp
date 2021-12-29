@@ -61,7 +61,7 @@ const Macroservizio = props => {
       MacroservizioDataService.remove(currentMacroservizio.id)
       .then(response => {
         console.log(response.data);
-        props.history.push("/macroservizios");
+        props.history.push("/listaMacroservizi");
       })
       .catch(e => {
         console.log(e);

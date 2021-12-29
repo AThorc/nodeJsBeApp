@@ -1,21 +1,7 @@
 module.exports = mongoose => {
     var schema = mongoose.Schema(
-      {
-        clienteid:
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Cliente"
-        },
-        servizi: String,
-        partnerid: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Partner"
-        },
-        segnalatoreid: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Segnalatore"
-        },
-        tipo: String,
+      {    
+        servizi: String,       
         dataInizio: Date,
         fatturato: Number       
       },

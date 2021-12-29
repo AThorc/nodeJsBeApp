@@ -59,3 +59,11 @@ body.react-confirm-alert-body-element {
 .pad-top-6{
   padding-top: 6%;
 }
+
+.macroservizio-label{
+  width: 145%;
+}
+
+.inline-block{
+  display: inline-block;
+}

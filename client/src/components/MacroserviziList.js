@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import MacroservizioDataService from "../services/MacroservizioService";
 import ClienteDataService from "../services/ClienteService";
+import LegameDataService from "../services/LegameService";
 import { Link, useHistory } from "react-router-dom";
 
 import moment from 'moment'
@@ -11,6 +12,10 @@ const MacroserviziList = () => {
   const [macroservizi, setMacroservizi] = useState([]);
   const [clientes, setClientes] = useState([]);
   const [currentMacroservizio, setCurrentMacroservizio] = useState(null);
+  const [currentListaLegameMacroservizio, setCurrentListaLegameMacroservizio] = useState(null);
+
+  const [clientesLegame, setClientesLegame] = useState([]);
+
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchDenominazione, setSearchDenominazione] = useState("");
 
@@ -55,20 +60,58 @@ const MacroserviziList = () => {
   const refreshSearchedList = () => {    
     setCurrentMacroservizio(null);
     setCurrentIndex(-1);
+    setCurrentListaLegameMacroservizio(null);
+  };
+
+  const addClienteLegame = (newClienteLegame) => setClientesLegame(state => [...state, newClienteLegame])
+
+  const getCliente = id => {
+    if(user){
+      ClienteDataService.get(id)
+      .then(response => {
+        console.log('Inside getCliente');
+        console.log(response.data); 
+        //setClientesLegame([...clientesLegame, clientesLegame.push(response.data.id + '-' + response.data.ragioneSociale)]);
+        //setClientesLegame([...clientesLegame, response.data.id]);
+
+        //addClienteLegame(response.data.id);
+        addClienteLegame(response.data.id + '-' + response.data.ragioneSociale);
+        //addClienteLegame({id: response.data.id, ragioneSociale: response.data.ragioneSociale});
+
+        //clientesLegame.push(response.data);
+        //setState(setClientesLegame.concat(response.data)); 
+        console.log(clientesLegame);  
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }
+    
+  };
+
+
+  const retrieveLegami = servizioid => {
+    if(user){
+      LegameDataService.findByServizioId(servizioid)
+      .then(response => {
+        setCurrentListaLegameMacroservizio(response.data);
+        console.log(response.data);
+        for(const i in response.data){
+          var legame = response.data[i];
+          getCliente(legame.clienteid);
+        }            
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }    
   };
 
   const setActiveMacroservizio = (macroservizio, index) => {
     setCurrentMacroservizio(macroservizio);
     setCurrentIndex(index);
-   
-    //Sbianco i clienti dal macroservizio
-    //setClientes([]);
-
-    //Riempio i clienti
-    //findClientesByMacroservizioId(macroservizio.id);
-    /*for(const id in macroservizio.clientes){
-      findRsById(macroservizio.clientes[id]);
-    }*/
+    
+    setCurrentListaLegameMacroservizio(null);
   };
 
   const removeAllMacroservizi = () => {
@@ -97,6 +140,16 @@ const MacroserviziList = () => {
       });
     }    
   };
+
+  /*
+  function rsReturned(input){
+    console.log(input);
+    var index = input.indexOf('-');
+    console.log(index);
+    return input.substr(index);
+  }
+  */
+  
 
 
   /*
@@ -133,6 +186,10 @@ const MacroserviziList = () => {
   
   function handleAggiungiMacroservizioClick() {
     history.push("/addMacroservizio");
+  }
+
+  function handleAssociaServizioClick(macroservizio) {
+    history.push("/associaServizio/"+macroservizio.id);
   }
 
 
@@ -194,7 +251,24 @@ const MacroserviziList = () => {
         <div className="col-md-6">
           {currentMacroservizio ? (
             <div>
-              <h4>Macroservizio</h4>
+              <div>
+                <h4 className="macroservizio-label">Macroservizio 
+                  <button
+                  className="btn btn-success float-right"
+                  type="button"
+                  onClick={() => handleAssociaServizioClick(currentMacroservizio)}
+                  >
+                  Associa servizio
+                  </button>
+                  <button
+                  className="btn btn-warning float-right"
+                  type="button"
+                  onClick={() => retrieveLegami(currentMacroservizio.id)}
+                  >
+                  Lista legami servizi
+                  </button>
+                </h4>                
+              </div>
               <div>
                 <label>
                   <strong>Servizi:</strong>
@@ -228,6 +302,44 @@ const MacroserviziList = () => {
             </div>
           )}
         </div>
+
+        {currentListaLegameMacroservizio ? (
+          <div className="input-group mb-3">
+            <div className="col-md-12">
+              <h4>Lista legami servizi</h4>
+      
+              <ul className="list-group">
+                {currentListaLegameMacroservizio &&
+                  currentListaLegameMacroservizio.map((legame, index) => (
+                    <li key={index}>
+                      <div>
+                        <label className="inline-block">
+                          <strong>Tipologia servizio:</strong>
+                        </label>{" "}
+                        {legame.tipo}
+                      </div>
+                      <div>
+                          <label className="inline-block">
+                            <strong>Cliente:</strong>
+                          </label>{" "}
+                          {clientesLegame.filter(cliente => cliente.includes(legame.clienteid)).toString().substring(clientesLegame.filter(cliente => cliente.includes(legame.clienteid)).toString().indexOf('-')+1)}             
+                      </div>
+                    </li>                   
+                  ))}
+              </ul>
+
+              <button
+                className="m-3 btn btn-sm btn-danger d-none"
+                onClick={removeAllMacroservizi}
+              >
+                Remove All
+              </button>          
+            </div>
+          </div>
+          ):(<div>
+        </div>
+        )}
+
       </div>
     );
   }else{
