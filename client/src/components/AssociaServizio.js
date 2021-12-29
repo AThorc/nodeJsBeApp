@@ -4,7 +4,7 @@ import LegameDataService from "../services/LegameService";
 import ClienteDataService from "../services/ClienteService";
 import PartnerDataService from "../services/PartnerService";
 
-import Select from 'react-select'
+import ConfirmDialog from "./confirmDialog.component";
 
 import AuthService from "../services/auth.service";
 
@@ -170,6 +170,20 @@ const AssociaServizio = props => {
   };
 
 
+  const deleteLegame = () => {
+    if(user){
+      LegameDataService.remove(legame.id)
+      .then(response => {
+        console.log(response.data);
+        props.history.push("/listaMacroservizi");
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }
+    
+  };
+
 
   if(user){
     return (
@@ -260,9 +274,14 @@ const AssociaServizio = props => {
                 </select>
             </div>
   
-            <button onClick={saveLegame} className="btn btn-warning btn-associa">
-              Associa
-            </button>
+
+            <ConfirmDialog 
+              title= 'Associa'
+              message= 'Sei sicuro di voler associare il legame?'
+              onClickYes= {saveLegame}
+              className="btn btn-warning btn-associa"
+            />         
+              
           </div>
         )}
       </div>
