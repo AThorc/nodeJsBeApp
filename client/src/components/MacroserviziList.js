@@ -269,23 +269,38 @@ const MacroserviziList = () => {
           {currentMacroservizio ? (
             <div>
               <div>
-                <h4 className="macroservizio-label">Macroservizio 
-                  <button
-                  className="btn btn-success float-right"
-                  type="button"
-                  onClick={() => handleAssociaServizioClick(currentMacroservizio)}
-                  >
-                  Associa servizio
+                <h4 className="macroservizio-label">Macroservizio
+
+                  <button className="btn btn-primary float-right" type="button" id="dropDownButton"
+                    data-toggle="dropdown"
+                    aria-expanded="false">
+                    Azioni
                   </button>
-                  <button
-                  className="btn btn-warning float-right"
-                  type="button"
-                  onClick={() => retrieveLegami(currentMacroservizio.id)}
-                  >
-                  Lista legami servizi
-                  </button>
-                </h4>                
+                  <ul class="dropdown-menu" aria-labelledby="dropDownButton">
+                    <li>
+                      <button
+                      className="btn btn-success float-right tot-width"
+                      type="button"
+                      onClick={() => handleAssociaServizioClick(currentMacroservizio)}
+                      >
+                        Associa servizio
+                      </button>
+                    </li>
+
+                    <li>
+                      <button
+                        className="btn btn-warning float-right tot-width"
+                        type="button"
+                        onClick={() => retrieveLegami(currentMacroservizio.id)}
+                        >
+                        Lista legami servizi
+                      </button>
+                    </li>
+                  </ul>                
+                 
+                </h4>              
               </div>
+
               <div>
                 <label>
                   <strong>Servizi:</strong>

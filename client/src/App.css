@@ -61,7 +61,6 @@ body.react-confirm-alert-body-element {
 }
 
 .macroservizio-label{
-  width: 145%;
 }
 
 .inline-block{
@@ -89,4 +88,12 @@ body.react-confirm-alert-body-element {
 .btn-associa{
   z-index: 99;
   cursor: pointer;
+}
+
+.nav-fit-content{
+  width: fit-content;
+}
+
+.tot-width{
+  width: 100%;
 }
