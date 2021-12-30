@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 
 import UserService from "../services/user.service";
+import logo from "../images/multifinance-logo.jpeg"
+
 
 export default class Home extends Component {
   constructor(props) {
@@ -32,9 +34,7 @@ export default class Home extends Component {
   render() {
     return (
       <div className="container">
-        <header className="jumbotron">
-          <h3>{this.state.content}</h3>
-        </header>
+        <img src={logo} class="img-fluid" alt="Logo" />
       </div>
     );
   }
