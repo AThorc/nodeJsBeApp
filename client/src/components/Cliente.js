@@ -364,7 +364,9 @@ const Cliente = props => {
                   </tbody>
                 </table>
               </div>
-            </form>          
+            </form>    
+
+            <br></br>      
   
             <ConfirmDialog 
               title= 'Cancella'
@@ -386,7 +388,8 @@ const Cliente = props => {
             </button>
             <p>{message}</p>
 
-            <div className="col-md-3">
+            <br></br>
+            <div>
               <h4>Lista macroservizi</h4>
       
               <ul className="list-group">
@@ -406,7 +409,8 @@ const Cliente = props => {
 
             </div>
 
-            <div className="col-md-6">
+            <br></br>
+            <div>
                 {currentListaLegameMacroservizio ? (
                     <div>
                       <h4>Lista legami servizi</h4>
