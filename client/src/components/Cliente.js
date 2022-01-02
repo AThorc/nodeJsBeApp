@@ -88,219 +88,215 @@ const Cliente = props => {
     return (
       <div>
         {currentCliente ? (
-          <div className="edit-form">
+          <div className="edit-anagrafica-form">
             <h4>Cliente</h4>
             <form>
-              <div className="form-group">
-                <label htmlFor="title">Ragione sociale</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="ragioneSociale"
-                  required
-                  value={currentCliente.ragioneSociale}
-                  onChange={handleInputChange}
-                  name="ragioneSociale"
-                />
-              </div>
-  
-              <div className="form-group">
-                <label htmlFor="title">Codice fiscale</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="codiceFiscale"
-                  required
-                  value={currentCliente.codiceFiscale}
-                  onChange={handleInputChange}
-                  name="codiceFiscale"
-                />
-              </div>
-  
-              <div className="form-group">
-                <label htmlFor="title">Partita IVA</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="partitaIVA"
-                  required
-                  value={currentCliente.partitaIVA}
-                  onChange={handleInputChange}
-                  name="partitaIVA"
-                />
-              </div>
-  
-              <div className="form-group">
-                <label htmlFor="title">Legale Rappresentate</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="legaleRappresentate"                
-                  value={currentCliente.legaleRappresentate}
-                  onChange={handleInputChange}
-                  name="legaleRappresentate"
-                />
-              </div>
-  
-              <div className="form-group">
-                <label htmlFor="title">Telefono</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="telefono"                
-                  value={currentCliente.telefono}
-                  onChange={handleInputChange}
-                  name="telefono"
-                />
-              </div>
-  
-              <div className="form-group">
-                <label htmlFor="title">Cellulare</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="cellulare"                
-                  value={currentCliente.cellulare}
-                  onChange={handleInputChange}
-                  name="cellulare"
-                />
-              </div>
-  
-              <div className="form-group">
-                <label htmlFor="title">Mail</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="mail"                
-                  value={currentCliente.mail}
-                  onChange={handleInputChange}
-                  name="mail"
-                />
-              </div>
-  
-              <div className="form-group">
-                <label htmlFor="title">Pec</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="pec"                
-                  value={currentCliente.pec}
-                  onChange={handleInputChange}
-                  name="pec"
-                />
-              </div>
-  
-              <div className="form-group">
-                <label htmlFor="title">Sede</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="sede"                
-                  value={currentCliente.sede}
-                  onChange={handleInputChange}
-                  name="sede"
-                />
-              </div>
-  
-              <div className="form-group">
-                <label htmlFor="title">Localita</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="localita"                
-                  value={currentCliente.localita}
-                  onChange={handleInputChange}
-                  name="localita"
-                />
-              </div>
-  
-              <div className="form-group">
-                <label htmlFor="title">Cap</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="cap"                
-                  value={currentCliente.cap}
-                  onChange={handleInputChange}
-                  name="cap"
-                />
-              </div>            
-  
-  
-              <div className="form-group">
-                <label htmlFor="description">Data costituzione</label>
-                <input
-                  type="date"
-                  className="form-control"
-                  id="dataCostituzione"                
-                  value={moment(currentCliente.dataCostituzione).format('YYYY-MM-DD')}                
-                  onChange={handleInputChange}
-                  name="dataCostituzione"
-                />
-              </div>
-  
-              <div className="form-group">
-                <label htmlFor="title">Inizio Attivita</label>
-                <input
-                  type="date"
-                  className="form-control"
-                  id="inizioAttivita"                
-                  value={moment(currentCliente.inizioAttivita).format('YYYY-MM-DD')}                
-                  onChange={handleInputChange}
-                  name="inizioAttivita"
-                />
-              </div>
-              
-              <div className="form-group">
-                <label htmlFor="title">Tipo</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="tipo"
-                  required
-                  value={currentCliente.tipo}
-                  onChange={handleInputChange}
-                  name="tipo"
-                />
-              </div>
-  
-              <div className="form-group">
-                <label htmlFor="title">Dimensione</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="dimensione"
-                  required
-                  value={currentCliente.dimensione}
-                  onChange={handleInputChange}
-                  name="dimensione"
-                />
-              </div>
-  
-              <div className="form-group">
-                <label htmlFor="title">Att. Istat Ateco 2007</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="attIstatAteco2007"
-                  required
-                  value={currentCliente.attIstatAteco2007}
-                  onChange={handleInputChange}
-                  name="attIstatAteco2007"
-                />
-              </div>
-  
-              <div className="form-group">
-                <label htmlFor="title">Settore</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="settore"
-                  required
-                  value={currentCliente.settore}
-                  onChange={handleInputChange}
-                  name="settore"
-                />
+              <div className="table-responsive text-nowrap">
+                <table className="table w-auto">
+                  <thead>
+                    <tr>
+                      <th scope="col">Ragione sociale</th>
+                      <th scope="col">Codice fiscale</th>
+                      <th scope="col">Partita IVA</th>
+                      <th scope="col">Legale Rappresentate</th>
+                      <th scope="col">Telefono</th>
+                      <th scope="col">Cellulare</th>
+                      <th scope="col">Mail</th>
+                      <th scope="col">Pec</th>
+                      <th scope="col">Sede</th>
+                      <th scope="col">Località</th>
+                      <th scope="col">Cap</th>
+                      <th scope="col">Data costituzione</th>
+                      <th scope="col">Inizio Attività</th>
+                      <th scope="col">Tipo</th>
+                      <th scope="col">Dimensione</th>
+                      <th scope="col">Att. Istat Ateco 2007</th>
+                      <th scope="col">Settore</th>					  
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>                    
+                      <td> 
+                        <input
+                          type="text"
+                          className="form-control fit-content"
+                          id="ragioneSociale"
+                          required
+                          value={currentCliente.ragioneSociale}
+                          onChange={handleInputChange}
+                          name="ragioneSociale"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          className="form-control fit-content"
+                          id="codiceFiscale"
+                          required
+                          value={currentCliente.codiceFiscale}
+                          onChange={handleInputChange}
+                          name="codiceFiscale"
+                          maxLength="27" size="27"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          className="form-control fit-content"
+                          id="partitaIVA"
+                          required
+                          value={currentCliente.partitaIVA}
+                          onChange={handleInputChange}
+                          name="partitaIVA"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          className="form-control fit-content"
+                          id="legaleRappresentate"                
+                          value={currentCliente.legaleRappresentate}
+                          onChange={handleInputChange}
+                          name="legaleRappresentate"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          className="form-control fit-content"
+                          id="telefono"                
+                          value={currentCliente.telefono}
+                          onChange={handleInputChange}
+                          name="telefono"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          className="form-control fit-content"
+                          id="cellulare"                
+                          value={currentCliente.cellulare}
+                          onChange={handleInputChange}
+                          name="cellulare"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          className="form-control fit-content"
+                          id="mail"                
+                          value={currentCliente.mail}
+                          onChange={handleInputChange}
+                          name="mail"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          className="form-control fit-content"
+                          id="pec"                
+                          value={currentCliente.pec}
+                          onChange={handleInputChange}
+                          name="pec"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          className="form-control fit-content"
+                          id="sede"                
+                          value={currentCliente.sede}
+                          onChange={handleInputChange}
+                          name="sede"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          className="form-control fit-content"
+                          id="localita"                
+                          value={currentCliente.localita}
+                          onChange={handleInputChange}
+                          name="localita"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          className="form-control fit-content"
+                          id="cap"                
+                          value={currentCliente.cap}
+                          onChange={handleInputChange}
+                          name="cap"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="date"
+                          className="form-control fit-content"
+                          id="dataCostituzione"                
+                          value={moment(currentCliente.dataCostituzione).format('YYYY-MM-DD')}                
+                          onChange={handleInputChange}
+                          name="dataCostituzione"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="date"
+                          className="form-control fit-content"
+                          id="inizioAttivita"                
+                          value={moment(currentCliente.inizioAttivita).format('YYYY-MM-DD')}                
+                          onChange={handleInputChange}
+                          name="inizioAttivita"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          className="form-control fit-content"
+                          id="tipo"
+                          required
+                          value={currentCliente.tipo}
+                          onChange={handleInputChange}
+                          name="tipo"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          className="form-control fit-content"
+                          id="dimensione"
+                          required
+                          value={currentCliente.dimensione}
+                          onChange={handleInputChange}
+                          name="dimensione"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          className="form-control fit-content"
+                          id="attIstatAteco2007"
+                          required
+                          value={currentCliente.attIstatAteco2007}
+                          onChange={handleInputChange}
+                          name="attIstatAteco2007"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          className="form-control fit-content"
+                          id="settore"
+                          required
+                          value={currentCliente.settore}
+                          onChange={handleInputChange}
+                          name="settore"
+                        />
+                      </td>
+                    </tr>                   
+                  </tbody>
+                </table>
               </div>
             </form>          
   
