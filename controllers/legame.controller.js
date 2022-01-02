@@ -55,8 +55,10 @@ exports.findAll = (req, res) => {
 
 // Retrieve all Legames from the database even by servizioid.
 exports.findAll = (req, res) => {
-  const servizioid = new mongoose.Types.ObjectId(req.query.servizioid);    
-  var condition = servizioid ? { servizioid: servizioid } : {};
+  const servizioid = new mongoose.Types.ObjectId(req.query.servizioid);
+  const clienteid = new mongoose.Types.ObjectId(req.query.clienteid);
+  var condition = servizioid ? { servizioid: servizioid} : {};
+  condition = servizioid && clienteid ? { servizioid: servizioid, clienteid: clienteid } :condition;
 
   Legame.find(condition)
     .then(data => {

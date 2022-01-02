@@ -5,6 +5,10 @@ import AuthService from "../services/auth.service";
 
 import ConfirmDialog from "./confirmDialog.component";
 
+import MacroservizioDataService from "../services/MacroservizioService";
+import LegameDataService from "../services/LegameService";
+import PartnerDataService from "../services/PartnerService";
+
 import moment from 'moment'
 
 const Cliente = props => {
@@ -33,6 +37,34 @@ const Cliente = props => {
 
   const user = AuthService.getCurrentUser();
 
+  const [macroservizi, setMacroservizi] = useState([]);
+  const [currentMacroservizio, setCurrentMacroservizio] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(-1);
+  const [partnersLegame, setPartnersLegame] = useState([]);
+  const [currentListaLegameMacroservizio, setCurrentListaLegameMacroservizio] = useState(null);
+
+  var partnersExecuted = [];
+
+
+  const retrieveMacroservizi = () => {
+    if(user){
+      MacroservizioDataService.getAll()
+      .then(response => {
+        setMacroservizi(response.data);
+        console.log(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }    
+  };
+
+  const setActiveMacroservizio = (macroservizio, index) => {
+    setCurrentMacroservizio(macroservizio);
+    setCurrentIndex(index);
+    retrieveLegami(macroservizio.id, currentCliente.id);
+  };
+
   const getCliente = id => {
     if(user){
       ClienteDataService.get(id)
@@ -44,11 +76,45 @@ const Cliente = props => {
         console.log(e);
       });
     }
+  };
+
+  const getPartner = id => {
+    if(user && !partnersExecuted.includes(id)){
+      partnersExecuted.push(id);
+      PartnerDataService.get(id)
+      .then(response => {
+          addPartnerLegame(response.data.id + '-' + response.data.denominazione);       
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }
     
+  };
+
+  const addPartnerLegame = (newPartnerLegame) => setPartnersLegame(state => [...state, newPartnerLegame]);
+  
+  const retrieveLegami = (servizioid, clienteid) => {
+    if(user){
+      setPartnersLegame([]);
+      LegameDataService.findByServizioIdClienteId(servizioid, clienteid)
+      .then(response => {
+        setCurrentListaLegameMacroservizio(response.data);
+        console.log(response.data);
+        for(const i in response.data){
+          var legame = response.data[i];
+          getPartner(legame.partnerid);
+        }            
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }    
   };
 
   useEffect(() => {
     getCliente(props.match.params.id);
+    retrieveMacroservizi();
   }, [props.match.params.id]);
 
   const handleInputChange = event => {
@@ -319,6 +385,64 @@ const Cliente = props => {
               Aggiorna
             </button>
             <p>{message}</p>
+
+            <div className="col-md-3">
+              <h4>Lista macroservizi</h4>
+      
+              <ul className="list-group">
+                {macroservizi &&
+                  macroservizi.map((macroservizio, index) => (
+                    <li
+                      className={
+                        "list-group-item " + (index === currentIndex ? "active" : "")
+                      }
+                      onClick={() => setActiveMacroservizio(macroservizio, index)}
+                      key={index}
+                    >
+                      {macroservizio.servizi}
+                    </li>
+                  ))}
+              </ul>      
+
+            </div>
+
+            <div className="col-md-6">
+                {currentListaLegameMacroservizio ? (
+                    <div>
+                      <h4>Lista legami servizi</h4>
+              
+                      <ul className="list-group">
+                        {currentListaLegameMacroservizio &&
+                          currentListaLegameMacroservizio.map((legame, index) => (
+                            <li key={index}>
+                              <div>
+                                <label className="inline-block">
+                                  <strong>Tipologia servizio:</strong>
+                                </label>{" "}
+                                {legame.tipo}
+                              </div>
+                              <div>
+                                  <label className="inline-block">
+                                    <strong>Cliente:</strong>
+                                  </label>{" "}
+                                  {currentCliente.ragioneSociale}             
+                              </div>
+                              <div>
+                                  <label className="inline-block">
+                                    <strong>Partner:</strong>
+                                  </label>{" "}
+                                  {partnersLegame.filter(partner => partner.includes(legame.partnerid)).toString().substring(partnersLegame.filter(partner => partner.includes(legame.partnerid)).toString().indexOf('-')+1)}             
+                              </div>
+                            </li>                   
+                          ))}
+                      </ul>
+                            
+                    </div>
+                  ):(<div>
+                </div>
+                )}
+              </div> 
+
           </div>
         ) : (
           <div>

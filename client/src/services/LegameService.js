@@ -27,6 +27,9 @@ const removeAll = () => {
 const findByServizioId = (servizioId) => {
   return http.get(`/legames?servizioid=${servizioId}`);
 };
+const findByServizioIdClienteId = (servizioId,clientId) => {
+  return http.get(`/legames?servizioid=${servizioId}&clienteid=${clientId}`);
+};
 
 export default {
   getAll,
@@ -35,5 +38,6 @@ export default {
   update,
   remove,
   removeAll,
-  findByServizioId
+  findByServizioId,
+  findByServizioIdClienteId
 };
