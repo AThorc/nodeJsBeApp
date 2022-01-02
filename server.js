@@ -10,6 +10,16 @@ var corsOptions = {
   origin: [process.env.REACT_APP_HEROKU_URL, process.env.REACT_APP_HEROKU_HTTP_URL,"http://localhost:8081"]
 };
 
+
+
+//force redirect to https in case of http
+app.use((req, res, next) => {
+  if (req.header('x-forwarded-proto') !== 'https')
+    res.redirect(`https://${req.header('host')}${req.url}`)
+  else
+    next()
+})
+
 app.use(cors(corsOptions));
 
 // parse requests of content-type - application/json
