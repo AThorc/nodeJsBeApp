@@ -151,7 +151,7 @@ const PartnersList = () => {
                 type="button"
                 onClick={findByDen}
               >
-                Search
+                Cerca
               </button>
               <button
               className="btn btn-success float-right"
@@ -221,7 +221,7 @@ const PartnersList = () => {
           ) : (
             <div>
               <br />
-              <p>Please click on a Partner...</p>
+              <p>Seleziona un Partner...</p>
             </div>
           )}
         </div>

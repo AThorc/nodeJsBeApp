@@ -301,14 +301,14 @@ const Cliente = props => {
             </form>          
   
             <ConfirmDialog 
-              title= 'Delete'
+              title= 'Cancella'
               message= 'Sei sicuro di voler cancellare il cliente?'
               onClickYes= {deleteCliente}
               className="btn btn-danger"
             />
 
             <button className="badge badge-danger mr-2 d-none" onClick={deleteCliente}>
-              Delete
+              Cancella
             </button>
   
             <button
@@ -316,14 +316,14 @@ const Cliente = props => {
               className="btn btn-primary"
               onClick={updateCliente}
             >
-              Update
+              Aggiorna
             </button>
             <p>{message}</p>
           </div>
         ) : (
           <div>
             <br />
-            <p>Please click on a Cliente...</p>
+            <p>Seleziona un cliente...</p>
           </div>
         )}
       </div>

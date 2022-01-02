@@ -117,14 +117,14 @@ const Segnalatore = props => {
             </form>          
   
             <ConfirmDialog 
-              title= 'Delete'
+              title= 'Cancella'
               message= 'Sei sicuro di voler cancellare il segnalatore?'
               onClickYes= {deleteSegnalatore}
               className="btn btn-danger"
             />
 
             <button className="badge badge-danger mr-2 d-none" onClick={deleteSegnalatore}>
-              Delete
+              Cancella
             </button>
   
             <button
@@ -132,14 +132,14 @@ const Segnalatore = props => {
               className="btn btn-primary"
               onClick={updateSegnalatore}
             >
-              Update
+              Aggiorna
             </button>
             <p>{message}</p>
           </div>
         ) : (
           <div>
             <br />
-            <p>Please click on a Segnalatore...</p>
+            <p>Seleziona un Segnalatore...</p>
           </div>
         )}
       </div>

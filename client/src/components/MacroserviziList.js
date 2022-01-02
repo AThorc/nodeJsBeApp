@@ -228,7 +228,7 @@ const MacroserviziList = () => {
                 type="button"
                 onClick={findByDen}
               >
-                Search
+                Cerca
               </button>
               <button
               className="btn btn-success float-right"
@@ -330,7 +330,7 @@ const MacroserviziList = () => {
           ) : (
             <div>
               <br />
-              <p>Please click on a Macroservizio...</p>
+              <p>Seleziona un Macroservizio...</p>
             </div>
           )}
         </div>

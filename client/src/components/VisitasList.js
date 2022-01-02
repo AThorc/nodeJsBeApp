@@ -176,7 +176,7 @@ const VisitasList = () => {
         ) : (
           <div>
             <br />
-            <p>Please click on a Visita...</p>
+            <p>Seleziona un Visita...</p>
           </div>
         )}
       </div>

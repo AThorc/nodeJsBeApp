@@ -125,7 +125,7 @@ const Tutorial = props => {
           )}
 
           <button className="badge badge-danger mr-2" onClick={deleteTutorial}>
-            Delete
+            Cancella
           </button>
 
           <button
@@ -133,14 +133,14 @@ const Tutorial = props => {
             className="badge badge-success"
             onClick={updateTutorial}
           >
-            Update
+            Aggiorna
           </button>
           <p>{message}</p>
         </div>
       ) : (
         <div>
           <br />
-          <p>Please click on a Tutorial...</p>
+          <p>Seleziona un Tutorial...</p>
         </div>
       )}
     </div>

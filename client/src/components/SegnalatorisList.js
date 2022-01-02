@@ -106,7 +106,7 @@ const SegnalatoresList = () => {
                 type="button"
                 onClick={findByDen}
               >
-                Search
+                Cerca
               </button>
               <button
               className="btn btn-success float-right"
@@ -164,7 +164,7 @@ const SegnalatoresList = () => {
           ) : (
             <div>
               <br />
-              <p>Please click on a Segnalatore...</p>
+              <p>Seleziona un Segnalatore...</p>
             </div>
           )}
         </div>
