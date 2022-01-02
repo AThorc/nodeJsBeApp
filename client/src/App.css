@@ -109,3 +109,16 @@ body.react-confirm-alert-body-element {
 .fit-content{
   width: fit-content!important;
 }
+
+.percent-max-content{
+  width: max-content;
+}
+
+.half1 {
+  float: left;
+  width: 50%;
+}
+.half2 {
+  float: right;
+  width: 50%;
+}

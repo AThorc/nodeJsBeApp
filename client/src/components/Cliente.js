@@ -390,62 +390,61 @@ const Cliente = props => {
 
             <br></br>
             <div>
-              <h4>Lista macroservizi</h4>
-      
-              <ul className="list-group">
-                {macroservizi &&
-                  macroservizi.map((macroservizio, index) => (
-                    <li
-                      className={
-                        "list-group-item " + (index === currentIndex ? "active" : "")
-                      }
-                      onClick={() => setActiveMacroservizio(macroservizio, index)}
-                      key={index}
-                    >
-                      {macroservizio.servizi}
-                    </li>
-                  ))}
-              </ul>      
+              <div className="half1">
+                <h4>Lista macroservizi</h4>
+        
+                <ul className="list-group percent-max-content">
+                  {macroservizi &&
+                    macroservizi.map((macroservizio, index) => (
+                      <li
+                        className={
+                          "list-group-item " + (index === currentIndex ? "active" : "")
+                        }
+                        onClick={() => setActiveMacroservizio(macroservizio, index)}
+                        key={index}
+                      >
+                        {macroservizio.servizi}
+                      </li>
+                    ))}
+                </ul>
+              </div>   
+
+              {currentListaLegameMacroservizio && currentListaLegameMacroservizio.length > 0 ? (
+                  <div className="half2">            
+                    <ul className="list-group">
+                      {currentListaLegameMacroservizio &&
+                        currentListaLegameMacroservizio.map((legame, index) => (
+                          <li key={index}>
+                            <div>
+                              <label className="inline-block">
+                                <strong>Tipologia servizio:</strong>
+                              </label>{" "}
+                              {legame.tipo}
+                            </div>
+                            <div>
+                                <label className="inline-block">
+                                  <strong>Cliente:</strong>
+                                </label>{" "}
+                                {currentCliente.ragioneSociale}             
+                            </div>
+                            <div>
+                                <label className="inline-block">
+                                  <strong>Partner:</strong>
+                                </label>{" "}
+                                {partnersLegame.filter(partner => partner.includes(legame.partnerid)).toString().substring(partnersLegame.filter(partner => partner.includes(legame.partnerid)).toString().indexOf('-')+1)}             
+                            </div>
+                          </li>                   
+                        ))}
+                    </ul>
+                          
+                  </div>
+                ):(<div>
+              </div>
+            )}
+
 
             </div>
-
-            <br></br>
-            <div>
-                {currentListaLegameMacroservizio ? (
-                    <div>
-                      <h4>Lista legami servizi</h4>
-              
-                      <ul className="list-group">
-                        {currentListaLegameMacroservizio &&
-                          currentListaLegameMacroservizio.map((legame, index) => (
-                            <li key={index}>
-                              <div>
-                                <label className="inline-block">
-                                  <strong>Tipologia servizio:</strong>
-                                </label>{" "}
-                                {legame.tipo}
-                              </div>
-                              <div>
-                                  <label className="inline-block">
-                                    <strong>Cliente:</strong>
-                                  </label>{" "}
-                                  {currentCliente.ragioneSociale}             
-                              </div>
-                              <div>
-                                  <label className="inline-block">
-                                    <strong>Partner:</strong>
-                                  </label>{" "}
-                                  {partnersLegame.filter(partner => partner.includes(legame.partnerid)).toString().substring(partnersLegame.filter(partner => partner.includes(legame.partnerid)).toString().indexOf('-')+1)}             
-                              </div>
-                            </li>                   
-                          ))}
-                      </ul>
-                            
-                    </div>
-                  ):(<div>
-                </div>
-                )}
-              </div> 
+            
 
           </div>
         ) : (
