@@ -150,6 +150,29 @@ const Cliente = props => {
     
   };
 
+  const renderTableHeader = () => {
+    var header = Object.keys(currentListaLegameMacroservizio[0])
+    return header.map((key, index) => {
+      console.log('ASDASDASD');
+      console.log(key);
+       if(['clienteid', 'partnerid', 'tipo'].includes(key))
+        return <th key={index}>{key.toUpperCase()}</th>
+    })
+ };
+
+  const renderTableData = () => {
+    return currentListaLegameMacroservizio.map((legame, index) => {
+      const { clienteid, createdAt, id, partnerid, servizioid, tipo, updatedAt } = legame //destructuring
+      return (
+          <tr key={id}>
+            <td>{clienteid}</td>         
+            <td>{partnerid}</td>
+            <td>{tipo}</td>
+          </tr>
+      )
+    })
+  };
+
   if(user){
     return (
       <div>
@@ -406,42 +429,19 @@ const Cliente = props => {
                         {macroservizio.servizi}
                       </li>
                     ))}
-                </ul>
-              </div>   
-
+                </ul>                                                         
+              </div>               
               {currentListaLegameMacroservizio && currentListaLegameMacroservizio.length > 0 ? (
-                  <div className="half2">            
-                    <ul className="list-group">
-                      {currentListaLegameMacroservizio &&
-                        currentListaLegameMacroservizio.map((legame, index) => (
-                          <li key={index}>
-                            <div>
-                              <label className="inline-block">
-                                <strong>Tipologia servizio:</strong>
-                              </label>{" "}
-                              {legame.tipo}
-                            </div>
-                            <div>
-                                <label className="inline-block">
-                                  <strong>Cliente:</strong>
-                                </label>{" "}
-                                {currentCliente.ragioneSociale}             
-                            </div>
-                            <div>
-                                <label className="inline-block">
-                                  <strong>Partner:</strong>
-                                </label>{" "}
-                                {partnersLegame.filter(partner => partner.includes(legame.partnerid)).toString().substring(partnersLegame.filter(partner => partner.includes(legame.partnerid)).toString().indexOf('-')+1)}             
-                            </div>
-                          </li>                   
-                        ))}
-                    </ul>
-                          
-                  </div>
-                ):(<div>
-              </div>
-            )}
-
+                <div className="half2">
+                  <table id='students'>
+                    <tbody>
+                        <tr>{renderTableHeader()}</tr>
+                        {renderTableData()}
+                    </tbody>
+                  </table>
+                </div> ):(<div>
+                </div>
+              )}
 
             </div>
             
