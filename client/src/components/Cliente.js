@@ -11,6 +11,8 @@ import PartnerDataService from "../services/PartnerService";
 
 import {BsPlusLg} from "react-icons/bs"
 
+import { Link, useHistory } from "react-router-dom";
+
 import moment from 'moment';
 
 const Cliente = props => {
@@ -47,6 +49,7 @@ const Cliente = props => {
 
   const [partnersFatturatoLegame, setPartnersFatturatoLegame] = useState([]);
 
+  const history = useHistory();
 
   var partnersExecuted = [];
 
@@ -162,6 +165,11 @@ const Cliente = props => {
 
   const initCap = (text) => {
     return text.toLowerCase().charAt(0).toUpperCase()+(text.slice(1).toLowerCase());
+  }
+
+  function handleInserisciServizioClick(macroservizio,cliente, index) {
+    setActiveMacroservizio(macroservizio, index);
+    history.push("/inserisciServizio/"+macroservizio.id+"/"+cliente.id);
   }
 
 
@@ -447,7 +455,10 @@ const Cliente = props => {
                         key={index}
                       >
                         {macroservizio.servizi}
-                        <button className="margin-left-px btn btn-primary">
+                        <button 
+                          className="margin-left-px btn btn-primary"
+                          onClick={() => handleInserisciServizioClick(macroservizio, currentCliente, index)}
+                        >
                           <BsPlusLg />
                         </button>                       
                       </li>

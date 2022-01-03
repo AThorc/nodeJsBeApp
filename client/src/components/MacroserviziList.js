@@ -276,7 +276,7 @@ const MacroserviziList = () => {
                     aria-expanded="false">
                     Azioni
                   </button>
-                  <ul class="dropdown-menu" aria-labelledby="dropDownButton">
+                  <ul className="dropdown-menu" aria-labelledby="dropDownButton">
                     <li>
                       <button
                       className="btn btn-success float-right tot-width"

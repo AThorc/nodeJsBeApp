@@ -10,7 +10,7 @@ import AuthService from "../services/auth.service";
 
 import moment from 'moment'
 
-const AssociaServizio = props => {
+const InserisciServizio = props => {
   const initialMacroservizioState = {
     id: null,
     servizi: "",
@@ -25,7 +25,30 @@ const AssociaServizio = props => {
 
   };
 
+  const initialClienteState = {
+    id: null,
+    codiceFiscale: "",
+    partitaIVA: "",
+    legaleRappresentate: "",
+    telefono: "",
+    cellulare: "",
+    mail: "",
+    pec: "",
+    sede: "",
+    localita: "",
+    cap: "",
+    ragioneSociale: "",
+    dataCostituzione: "",
+    inizioAttivita: "",
+    tipo: "",
+    dimensione: "",
+    attIstatAteco2007: "",
+    settore: ""
+  };
+
   const [macroservizio, setMacroservizio] = useState(initialMacroservizioState);
+  const [currentCliente, setCurrentCliente] = useState(initialClienteState);
+
   const [clienti, setClienti] = useState([]);
   const [cliente, setCliente] = useState({});
   const [partner, setPartner] = useState({});
@@ -51,7 +74,7 @@ const AssociaServizio = props => {
     if(user){
       var data = {
         servizioid: macroservizio.id,
-        clienteid: cliente,
+        clienteid: currentCliente.id,
         partnerid: partner,
         segnalatoreid: segnalatore.value,  
         tipo: legame.tipo
@@ -90,11 +113,25 @@ const AssociaServizio = props => {
     
   };
 
+  const getCliente = id => {
+    if(user){
+      ClienteDataService.get(id)
+      .then(response => {
+        setCurrentCliente(response.data);
+        console.log(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }
+  };
+
   useEffect(() => {
     getMacroservizio(props.match.params.id);
-    retrieveClientes();
+    //retrieveClientes();
+    getCliente(props.match.params.clienteid);
     retrievePartners();
-  }, [props.match.params.id]);
+  }, [props.match.params.id, props.match.params.clienteid]);
 
 
   const newMacroservizio = () => {
@@ -197,7 +234,7 @@ const AssociaServizio = props => {
           </div>
         ) : (
           <div>
-            <h4>Associa il servizio</h4>
+            <h4>Inserisci il servizio</h4>
             <div className="form-group">
               <label htmlFor="title">Servizi</label>
               <input
@@ -252,14 +289,16 @@ const AssociaServizio = props => {
 
             <div className="form-group box">
               <label htmlFor="title">Cliente</label>
-              <select value={cliente.value} defaultValue={'DEFAULT'} onClick={_handleClienteChange} onChange={_handleClienteChange}>
-                <option value="" disabled value="DEFAULT">Seleziona un cliente</option>    
-                {clienti &&
-                  clienti.map((cliente, index) => (                  
-                    
-                      <option  value={cliente.value} key={index}>{cliente.label}</option>                    
-                  ))}
-                </select>
+              <input
+                type="text"
+                className="form-control"
+                id="cliente"  
+                required                
+                value={currentCliente.ragioneSociale}
+                onChange={handleInputLegameChange}
+                name="cliente"
+                readOnly="readonly"                        
+              />
             </div>
 
             <div className="form-group box">
@@ -276,8 +315,8 @@ const AssociaServizio = props => {
   
 
             <ConfirmDialog 
-              title= 'Associa'
-              message= 'Sei sicuro di voler associare il legame?'
+              title= 'Inserisci'
+              message= 'Sei sicuro di voler inserire il servizio?'
               onClickYes= {saveLegame}
               className="btn btn-warning btn-associa"
             />         
@@ -297,4 +336,4 @@ const AssociaServizio = props => {
   
 };
 
-export default AssociaServizio;
+export default InserisciServizio;

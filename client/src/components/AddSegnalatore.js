@@ -57,7 +57,7 @@ const AddSegnalatore = () => {
       <div className="submit-form">
         {submitted ? (
           <div>
-            <h4>You submitted successfully!</h4>
+            <h4>Segnalatore inserito correttamente!</h4>
             <button className="btn btn-success" onClick={newSegnalatore}>
               Add
             </button>
