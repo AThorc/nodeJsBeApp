@@ -18,6 +18,7 @@ exports.create = (req, res) => {
       segnalatoreid: req.body.segnalatoreid,
       tipo: req.body.tipo,
       servizioid: req.body.servizioid,
+      fatturatoPartner: req.body.fatturatoPartner,
       fatturatoSocieta: req.body.fatturatoSocieta
     });
   

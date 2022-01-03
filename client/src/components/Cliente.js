@@ -187,15 +187,15 @@ const Cliente = props => {
 
   const renderTableData = () => {
     return currentListaLegameMacroservizio.map((legame, index) => {
-      const { clienteid, createdAt, id, partnerid, servizioid, tipo, updatedAt } = legame //destructuring
+      const { clienteid, createdAt, id, partnerid, servizioid, tipo, updatedAt, fatturatoPartner, fatturatoSocieta } = legame //destructuring
       return (
           <tr key={id}>
             <td>{currentCliente.ragioneSociale}</td>         
             <td>{partnersLegame.filter(partner => partner.includes(legame.partnerid)).toString().substring(partnersLegame.filter(partner => partner.includes(legame.partnerid)).toString().indexOf('-')+1)}</td>
             <td>{tipo}</td>
             <td>{moment(currentMacroservizio.dataInizio).format('YYYY-MM-DD')}</td>            
-            <td>{partnersFatturatoLegame.filter(partnerFatturato => partnerFatturato.includes(legame.partnerid)).toString().substring(partnersFatturatoLegame.filter(partner => partner.includes(legame.partnerid)).toString().indexOf('-')+1)}</td>
-            <td>Fatturato Società</td>
+            <td>{fatturatoPartner}</td>
+            <td>{fatturatoSocieta}</td>
           </tr>
       )
     })
