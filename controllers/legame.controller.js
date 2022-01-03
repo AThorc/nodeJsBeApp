@@ -59,8 +59,10 @@ exports.findAll = (req, res) => {
 exports.findAll = (req, res) => {
   const servizioid = new mongoose.Types.ObjectId(req.query.servizioid);
   const clienteid = new mongoose.Types.ObjectId(req.query.clienteid);
-  var condition = servizioid ? { servizioid: servizioid} : {};
-  condition = servizioid && clienteid ? { servizioid: servizioid, clienteid: clienteid } :condition;
+  const partnerid = new mongoose.Types.ObjectId(req.query.partnerid);
+  var condition = req.query.servizioid ? { servizioid: servizioid} : {};
+  condition = req.query.servizioid && req.query.clienteid ? { servizioid: servizioid, clienteid: clienteid } :condition;
+  condition = !req.query.servizioid && req.query.partnerid ? { partnerid: partnerid } :condition;
 
   Legame.find(condition)
     .then(data => {

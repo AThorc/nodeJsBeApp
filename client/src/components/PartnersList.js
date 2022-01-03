@@ -3,6 +3,8 @@ import PartnerDataService from "../services/PartnerService";
 import ClienteDataService from "../services/ClienteService";
 import { Link, useHistory } from "react-router-dom";
 
+import LegameDataService from "../services/LegameService";
+
 import moment from 'moment'
 
 import AuthService from "../services/auth.service";
@@ -13,6 +15,10 @@ const PartnersList = () => {
   const [currentPartner, setCurrentPartner] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchDenominazione, setSearchDenominazione] = useState("");
+
+  //const [clientiIdByLegame, setClientiIdByLegame] = useState([]);
+
+  const [clientiById, setClientiById] = useState([]);
 
   //var ragioneSociale = [];
 
@@ -47,6 +53,47 @@ const PartnersList = () => {
     }    
   };
 
+  function geClientiByLegame(legami){
+    for(const i in legami){
+      var legame = legami[i];
+      getCliente(legame.clienteid);
+          
+    }
+  };
+
+
+  const getCliente = id => {
+    if(user){
+      ClienteDataService.get(id)
+      .then(response => {
+        addClienteById(response.data);
+        console.log(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }
+  };
+
+  const addClienteById = (newClienteById) => setClientiById(state => [...state, newClienteById]);
+
+  const initCap = (text) => {
+    return text.toLowerCase().charAt(0).toUpperCase()+(text.slice(1).toLowerCase());
+  }
+
+  const retrieveLegamiByPartner = (partnerid) => {
+    if(user){
+      setClientiById([]);
+      LegameDataService.findByPartnerId(partnerid)
+      .then(response => {
+        geClientiByLegame(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }    
+  };
+
   const refreshList = () => {
     retrievePartners();
     refreshSearchedList();
@@ -69,6 +116,8 @@ const PartnersList = () => {
     /*for(const id in partner.clientes){
       findRsById(partner.clientes[id]);
     }*/
+
+    retrieveLegamiByPartner(partner.id);
   };
 
   const removeAllPartners = () => {
@@ -111,6 +160,36 @@ const PartnersList = () => {
       });
     }    
   };
+
+  const renderTableHeader = () => {
+    var header = Object.keys(clientiById[0])
+    header =  header.map((key, index) => {
+      if(['ragioneSociale', 'codiceFiscale', 'partitaIVA'].includes(key))
+        return <th key={index}>{initCap(key)}</th>
+    })
+    return header;
+ };
+
+
+ const renderTableData = () => {
+  return clientiById.map((cliente, index) => {    
+    return (
+        <tr key={index}>
+          <td>
+            <Link
+              to={"/clientes/" + cliente.id}
+              className="badge badge-warning"
+            >
+              {cliente.ragioneSociale}
+            </Link>                
+          </td>         
+          <td>{cliente.codiceFiscale}</td>         
+          <td>{cliente.partitaIVA}</td>         
+        </tr>
+    )
+  })
+};
+
 
   /*
   function setRagioneSociale(id, ragioneSociale){
@@ -219,6 +298,30 @@ const PartnersList = () => {
             </div>
           )}
         </div>
+        
+        <div className="col-md-6">
+          {currentPartner ? (
+            <div>
+              <h4>Lista clienti di {currentPartner.denominazione}</h4>
+              {clientiById && clientiById.length > 0 ? (
+                <div>
+                  <table id='clientiById' className="table w-auto">
+                    <tbody>
+                        <tr>{renderTableHeader()}</tr>
+                        {renderTableData()}
+                    </tbody>
+                  </table>
+                </div> ):(<div>
+                </div>
+              )}                   
+
+            </div>
+          ) : (
+            <div>
+            </div>
+          )}
+        </div>
+
       </div>
     );
   }else{
