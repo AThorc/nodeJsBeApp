@@ -21,7 +21,9 @@ const InserisciServizio = props => {
 
   const initialLegameState = {
     id: null,
-    tipo: ""
+    tipo: "",
+    fatturatoPartner: undefined,
+    fatturatoSocieta: undefined
 
   };
 
@@ -72,12 +74,16 @@ const InserisciServizio = props => {
 
   const saveLegame = () => {
     if(user){
+      console.log('LEGAME');
+      console.log(legame);
       var data = {
         servizioid: macroservizio.id,
         clienteid: currentCliente.id,
         partnerid: partner,
         segnalatoreid: segnalatore.value,  
-        tipo: legame.tipo
+        tipo: legame.tipo,
+        fatturatoPartner: legame.fatturatoPartner,
+        fatturatoSocieta: legame.fatturatoSocieta,
       };
 
       LegameDataService.create(data)
@@ -87,7 +93,9 @@ const InserisciServizio = props => {
           servizioid: response.data.servizioid,
           clienteid: response.data.clienteid,
           partnerid: response.data.partnerid,
-          tipo: response.data.tipo
+          tipo: response.data.tipo,
+          fatturatoPartner: response.data.fatturatoPartner,
+          fatturatoSocieta: response.data.fatturatoSocieta
         });
         setSubmitted(true);
         console.log(response.data);
@@ -312,6 +320,32 @@ const InserisciServizio = props => {
                   ))}
                 </select>
             </div>
+
+            <div className="form-group">
+                <label htmlFor="title">Fatturato partner</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  id="fatturatoPartner"
+                  required
+                  value={legame.fatturatoPartner}
+                  onChange={handleInputLegameChange}
+                  name="fatturatoPartner"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="title">Fatturato società</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  id="fatturatoSocieta"
+                  required
+                  value={legame.fatturatoSocieta}
+                  onChange={handleInputLegameChange}
+                  name="fatturatoSocieta"
+                />
+              </div>              
   
 
             <ConfirmDialog 

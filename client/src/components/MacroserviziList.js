@@ -269,36 +269,7 @@ const MacroserviziList = () => {
           {currentMacroservizio ? (
             <div>
               <div>
-                <h4 className="macroservizio-label">Macroservizio
-
-                  <button className="btn btn-primary float-right" type="button" id="dropDownButton"
-                    data-toggle="dropdown"
-                    aria-expanded="false">
-                    Azioni
-                  </button>
-                  <ul className="dropdown-menu" aria-labelledby="dropDownButton">
-                    <li>
-                      <button
-                      className="btn btn-success float-right tot-width"
-                      type="button"
-                      onClick={() => handleAssociaServizioClick(currentMacroservizio)}
-                      >
-                        Associa servizio
-                      </button>
-                    </li>
-
-                    <li>
-                      <button
-                        className="btn btn-warning float-right tot-width"
-                        type="button"
-                        onClick={() => retrieveLegami(currentMacroservizio.id)}
-                        >
-                        Lista legami servizi
-                      </button>
-                    </li>
-                  </ul>                
-                 
-                </h4>              
+                <h4 className="macroservizio-label">Macroservizio</h4>              
               </div>
 
               <div>

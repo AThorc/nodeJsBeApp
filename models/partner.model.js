@@ -13,8 +13,7 @@ module.exports = mongoose => {
           }
         ],
         denominazione: String,
-        dataInizio: Date,
-        fatturatoPartner: Number
+        dataInizio: Date,        
       },
       { timestamps: true }
     );

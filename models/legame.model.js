@@ -19,6 +19,7 @@ module.exports = mongoose => {
           type: mongoose.Schema.Types.ObjectId,
           ref: "Servizio"
         },
+        fatturatoPartner: Number,
         fatturatoSocieta: Number
       },
       { timestamps: true }

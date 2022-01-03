@@ -209,13 +209,7 @@ const PartnersList = () => {
                   <strong>Data inizio:</strong>
                 </label>{" "}
                 {moment(currentPartner.dataInizio).format('YYYY-MM-DD')}
-              </div>
-              <div>
-                <label>
-                  <strong>Fatturato partner:</strong>
-                </label>{" "}
-                {currentPartner.fatturatoPartner}
-              </div>                    
+              </div>                   
 
             </div>
           ) : (

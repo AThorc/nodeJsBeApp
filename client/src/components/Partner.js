@@ -11,8 +11,7 @@ const Partner = props => {
   const initialPartnerState = {
     id: null,
     denominazione: "",
-    dataInizio: "",
-    fatturatoPartner: ""    
+    dataInizio: ""  
   };
   const [currentPartner, setCurrentPartner] = useState(initialPartnerState);
   const [message, setMessage] = useState("");
@@ -102,19 +101,7 @@ const Partner = props => {
                   name="dataInizio"
                 />
               </div>
-  
-              <div className="form-group">
-                <label htmlFor="title">Fatturato partner</label>
-                <input
-                  type="number"
-                  className="form-control"
-                  id="fatturatoPartner"
-                  required
-                  value={currentPartner.fatturatoPartner}
-                  onChange={handleInputChange}
-                  name="fatturatoPartner"
-                />
-              </div>               
+           
             </form>          
   
             <ConfirmDialog 
