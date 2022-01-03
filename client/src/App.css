@@ -127,3 +127,7 @@ body.react-confirm-alert-body-element {
 .inline { 
   float:left; 
 }
+
+.margin-left-px{
+  margin-left: 10px;
+}

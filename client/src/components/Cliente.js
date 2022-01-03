@@ -9,7 +9,9 @@ import MacroservizioDataService from "../services/MacroservizioService";
 import LegameDataService from "../services/LegameService";
 import PartnerDataService from "../services/PartnerService";
 
-import moment from 'moment'
+import {BsPlusLg} from "react-icons/bs"
+
+import moment from 'moment';
 
 const Cliente = props => {
   const initialClienteState = {
@@ -445,10 +447,15 @@ const Cliente = props => {
                         key={index}
                       >
                         {macroservizio.servizi}
+                        <button className="margin-left-px btn btn-primary">
+                          <BsPlusLg />
+                        </button>                       
                       </li>
+                      
                     ))}
-                </ul>                                                         
-              </div>               
+                </ul>                                                        
+              </div>              
+
               {currentListaLegameMacroservizio && currentListaLegameMacroservizio.length > 0 ? (
                 <div className="half2 table-responsive text-nowrap">
                   <table id='servizi' className="table w-auto">
