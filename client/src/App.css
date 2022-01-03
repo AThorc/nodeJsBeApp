@@ -116,11 +116,11 @@ body.react-confirm-alert-body-element {
 
 .half1 {
   float: left;
-  width: 55%;
+  width: 25%;
 }
 .half2 {
   float: left;
-  width: 45%!important;
+  width: 75%!important;
 }
 
 
