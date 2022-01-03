@@ -22,6 +22,7 @@ const PartnersList = () => {
 
   //var ragioneSociale = [];
 
+  var clientesExecuted = [];
 
   const user = AuthService.getCurrentUser();
   const history = useHistory();
@@ -63,7 +64,8 @@ const PartnersList = () => {
 
 
   const getCliente = id => {
-    if(user){
+    if(user && !clientesExecuted.includes(id)){
+      clientesExecuted.push(id);
       ClienteDataService.get(id)
       .then(response => {
         addClienteById(response.data);
