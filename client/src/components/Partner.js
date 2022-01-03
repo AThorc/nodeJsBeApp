@@ -118,14 +118,14 @@ const Partner = props => {
             </form>          
   
             <ConfirmDialog 
-              title= 'Delete'
+              title= 'Cancella'
               message= 'Sei sicuro di voler cancellare il partner?'
               onClickYes= {deletePartner}
               className="btn btn-danger"
             />
 
             <button className="badge badge-danger mr-2 d-none" onClick={deletePartner}>
-              Delete
+              Cancella
             </button>
   
             <button
@@ -133,14 +133,14 @@ const Partner = props => {
               className="btn btn-primary"
               onClick={updatePartner}
             >
-              Update
+              Aggiorna
             </button>
             <p>{message}</p>
           </div>
         ) : (
           <div>
             <br />
-            <p>Please click on a Partner...</p>
+            <p>Seleziona un Partner...</p>
           </div>
         )}
       </div>

@@ -47,9 +47,9 @@ const AddTutorial = () => {
     <div className="submit-form">
       {submitted ? (
         <div>
-          <h4>You submitted successfully!</h4>
+          <h4>Tutorial inserito correttamente!</h4>
           <button className="btn btn-success" onClick={newTutorial}>
-            Add
+            Aggiungi
           </button>
         </div>
       ) : (

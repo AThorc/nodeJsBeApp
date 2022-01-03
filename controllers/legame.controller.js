@@ -17,7 +17,8 @@ exports.create = (req, res) => {
       partnerid: req.body.partnerid,
       segnalatoreid: req.body.segnalatoreid,
       tipo: req.body.tipo,
-      servizioid: req.body.servizioid
+      servizioid: req.body.servizioid,
+      fatturatoSocieta: req.body.fatturatoSocieta
     });
   
     // Save Legame in the database
@@ -55,8 +56,10 @@ exports.findAll = (req, res) => {
 
 // Retrieve all Legames from the database even by servizioid.
 exports.findAll = (req, res) => {
-  const servizioid = new mongoose.Types.ObjectId(req.query.servizioid);    
-  var condition = servizioid ? { servizioid: servizioid } : {};
+  const servizioid = new mongoose.Types.ObjectId(req.query.servizioid);
+  const clienteid = new mongoose.Types.ObjectId(req.query.clienteid);
+  var condition = servizioid ? { servizioid: servizioid} : {};
+  condition = servizioid && clienteid ? { servizioid: servizioid, clienteid: clienteid } :condition;
 
   Legame.find(condition)
     .then(data => {

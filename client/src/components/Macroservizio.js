@@ -118,14 +118,14 @@ const Macroservizio = props => {
             </form>          
   
             <ConfirmDialog 
-              title= 'Delete'
+              title= 'Cancella'
               message= 'Sei sicuro di voler cancellare il macroservizio?'
               onClickYes= {deleteMacroservizio}
               className="btn btn-danger"
             />
 
             <button className="badge badge-danger mr-2 d-none" onClick={deleteMacroservizio}>
-              Delete
+              Cancella
             </button>
   
             <button
@@ -133,14 +133,14 @@ const Macroservizio = props => {
               className="btn btn-primary"
               onClick={updateMacroservizio}
             >
-              Update
+              Aggiorna
             </button>
             <p>{message}</p>
           </div>
         ) : (
           <div>
             <br />
-            <p>Please click on a Macroservizio...</p>
+            <p>Seleziona un Macroservizio...</p>
           </div>
         )}
       </div>

@@ -18,7 +18,8 @@ module.exports = mongoose => {
         servizioid: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "Servizio"
-        },          
+        },
+        fatturatoSocieta: Number
       },
       { timestamps: true }
     );

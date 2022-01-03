@@ -72,7 +72,6 @@ const MacroserviziList = () => {
 
   const addClienteLegame = (newClienteLegame) => setClientesLegame(state => [...state, newClienteLegame]);
   const addPartnerLegame = (newPartnerLegame) => setPartnersLegame(state => [...state, newPartnerLegame]);
-  //const addClienteExecuted = (newClienteExecuted) => setClientesExecuted(state => [...state, newClienteExecuted]);
 
   const getCliente = id => {
     console.log('exec');
@@ -229,7 +228,7 @@ const MacroserviziList = () => {
                 type="button"
                 onClick={findByDen}
               >
-                Search
+                Cerca
               </button>
               <button
               className="btn btn-success float-right"
@@ -277,7 +276,7 @@ const MacroserviziList = () => {
                     aria-expanded="false">
                     Azioni
                   </button>
-                  <ul class="dropdown-menu" aria-labelledby="dropDownButton">
+                  <ul className="dropdown-menu" aria-labelledby="dropDownButton">
                     <li>
                       <button
                       className="btn btn-success float-right tot-width"
@@ -331,7 +330,7 @@ const MacroserviziList = () => {
           ) : (
             <div>
               <br />
-              <p>Please click on a Macroservizio...</p>
+              <p>Seleziona un Macroservizio...</p>
             </div>
           )}
         </div>

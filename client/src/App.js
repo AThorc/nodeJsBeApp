@@ -41,6 +41,8 @@ import AddVisita from "./components/AddVisita";
 import Visita from "./components/Visita";
 import AssociaServizio from "./components/AssociaServizio";
 
+import InserisciServizio from "./components/InserisciServizio";
+
 require('dotenv').config();
 
 class App extends Component {
@@ -78,7 +80,7 @@ class App extends Component {
       <div>
         <nav className="navbar navbar-expand-md navbar-dark orange">
           <Link to={"/"} className="navbar-brand">
-          <img src={svg} class="img-fluid" alt="Metodo Multifinance"/>
+          <img src={svg} className="img-fluid" alt="Metodo Multifinance"/>
           </Link>
 
          
@@ -86,8 +88,8 @@ class App extends Component {
             <span className="navbar-toggler-icon"></span>
           </button>
 
-          <div class="collapse navbar-collapse" id="navCollaps">
-            <ul class="navbar-nav">
+          <div className="collapse navbar-collapse" id="navCollaps">
+            <ul className="navbar-nav">
               <li className="nav-item">
                 <Link to={"/home"} className="nav-link">
                   Home
@@ -187,6 +189,7 @@ class App extends Component {
             <Route exact path="/addMacroservizio" component={AddMacroservizio} />
             <Route path="/macroservizios/:id" component={Macroservizio} />
             <Route exact path="/associaServizio/:id" component={AssociaServizio} />
+            <Route exact path="/inserisciServizio/:id/:clienteid" component={InserisciServizio} />
 
           </Switch>
         </div>

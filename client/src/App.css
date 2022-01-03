@@ -14,6 +14,10 @@
   margin: auto;
 }
 
+.edit-anagrafica-form {
+  margin: auto;
+}
+
 
 label {
   display: block;
@@ -100,4 +104,30 @@ body.react-confirm-alert-body-element {
 
 .orange{
   background-color: orange!important;
+}
+
+.fit-content{
+  width: fit-content!important;
+}
+
+.percent-max-content{
+  width: max-content;
+}
+
+.half1 {
+  float: left;
+  width: 25%;
+}
+.half2 {
+  float: left;
+  width: 75%!important;
+}
+
+
+.inline { 
+  float:left; 
+}
+
+.margin-left-px{
+  margin-left: 10px;
 }

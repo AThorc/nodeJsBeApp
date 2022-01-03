@@ -161,7 +161,7 @@ const Visita = props => {
           )}
 
           <button className="badge badge-danger mr-2" onClick={false}>
-            Delete
+            Cancella
           </button>
 
           <button
@@ -169,14 +169,14 @@ const Visita = props => {
             className="badge badge-success"
             onClick={updateVisita}
           >
-            Update
+            Aggiorna
           </button>
           <p>{message}</p>
         </div>
       ) : (
         <div>
           <br />
-          <p>Please click on a Visita...</p>
+          <p>Seleziona un Visita...</p>
         </div>
       )}
     </div>

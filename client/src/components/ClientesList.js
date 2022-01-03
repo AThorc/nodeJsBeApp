@@ -136,7 +136,7 @@ const ClientesList = () => {
                 type="button"
                 onClick={findByRs}
               >
-                Search
+                Cerca
               </button>
               <button
               className="btn btn-success float-right"
@@ -206,7 +206,7 @@ const ClientesList = () => {
           ) : (
             <div>
               <br />
-              <p>Please click on a Cliente...</p>
+              <p>Seleziona un Cliente...</p>
             </div>
           )}
         </div>
