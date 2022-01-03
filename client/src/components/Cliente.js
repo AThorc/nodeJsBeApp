@@ -43,6 +43,9 @@ const Cliente = props => {
   const [partnersLegame, setPartnersLegame] = useState([]);
   const [currentListaLegameMacroservizio, setCurrentListaLegameMacroservizio] = useState(null);
 
+  const [partnersFatturatoLegame, setPartnersFatturatoLegame] = useState([]);
+
+
   var partnersExecuted = [];
 
 
@@ -83,7 +86,10 @@ const Cliente = props => {
       partnersExecuted.push(id);
       PartnerDataService.get(id)
       .then(response => {
-          addPartnerLegame(response.data.id + '-' + response.data.denominazione);       
+          addPartnerLegame(response.data.id + '-' + response.data.denominazione);
+          console.log('FATTURATO PARTNET');
+          console.log(response.data.id + '-' + response.data.fatturatoPartner);
+          addPartnerFatturatoLegame(response.data.id + '-' + response.data.fatturatoPartner);   
       })
       .catch(e => {
         console.log(e);
@@ -93,10 +99,12 @@ const Cliente = props => {
   };
 
   const addPartnerLegame = (newPartnerLegame) => setPartnersLegame(state => [...state, newPartnerLegame]);
+  const addPartnerFatturatoLegame = (newPartnerFatturatoLegame) => setPartnersFatturatoLegame(state => [...state, newPartnerFatturatoLegame]);
   
   const retrieveLegami = (servizioid, clienteid) => {
     if(user){
       setPartnersLegame([]);
+      setPartnersFatturatoLegame([]);
       LegameDataService.findByServizioIdClienteId(servizioid, clienteid)
       .then(response => {
         setCurrentListaLegameMacroservizio(response.data);
@@ -150,14 +158,21 @@ const Cliente = props => {
     
   };
 
+  const initCap = (text) => {
+    return text.toLowerCase().charAt(0).toUpperCase()+(text.slice(1).toLowerCase());
+  }
+
+
   const renderTableHeader = () => {
     var header = Object.keys(currentListaLegameMacroservizio[0])
-    return header.map((key, index) => {
-      console.log('ASDASDASD');
-      console.log(key);
+    header =  header.map((key, index) => {
        if(['clienteid', 'partnerid', 'tipo'].includes(key))
-        return <th key={index}>{key.toUpperCase()}</th>
+        return <th key={index}>{initCap(key).replace('id','')}</th>
     })
+    header.push(<th key={4}>Data inizio</th>);
+    header.push(<th key={5}>Fatturato Partner</th>);
+    header.push(<th key={6}>Fatturato Società</th>);
+    return header;
  };
 
   const renderTableData = () => {
@@ -165,9 +180,12 @@ const Cliente = props => {
       const { clienteid, createdAt, id, partnerid, servizioid, tipo, updatedAt } = legame //destructuring
       return (
           <tr key={id}>
-            <td>{clienteid}</td>         
-            <td>{partnerid}</td>
+            <td>{currentCliente.ragioneSociale}</td>         
+            <td>{partnersLegame.filter(partner => partner.includes(legame.partnerid)).toString().substring(partnersLegame.filter(partner => partner.includes(legame.partnerid)).toString().indexOf('-')+1)}</td>
             <td>{tipo}</td>
+            <td>{moment(currentMacroservizio.dataInizio).format('YYYY-MM-DD')}</td>            
+            <td>{partnersFatturatoLegame.filter(partnerFatturato => partnerFatturato.includes(legame.partnerid)).toString().substring(partnersFatturatoLegame.filter(partner => partner.includes(legame.partnerid)).toString().indexOf('-')+1)}</td>
+            <td>Fatturato Società</td>
           </tr>
       )
     })
@@ -432,8 +450,8 @@ const Cliente = props => {
                 </ul>                                                         
               </div>               
               {currentListaLegameMacroservizio && currentListaLegameMacroservizio.length > 0 ? (
-                <div className="half2">
-                  <table id='students'>
+                <div className="half2 table-responsive text-nowrap">
+                  <table id='servizi' className="table w-auto">
                     <tbody>
                         <tr>{renderTableHeader()}</tr>
                         {renderTableData()}
