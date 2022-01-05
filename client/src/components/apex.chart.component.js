@@ -6,20 +6,37 @@ class ApexChart extends Component {
     super(props);
 
     this.state = {
-      options: {
-        chart: {
-          id: "basic-bar"
-        },
-        xaxis: {
-          categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998]
+        options: {
+            chart: {
+              type: 'bar'
+            },
+            plotOptions: {
+              bar: {
+                horizontal: true
+              }
+            },
+            series: [{
+              data: [{
+                x: 'category A',
+                y: 10,      
+              }, {
+                x: 'category B',
+                y: 18,
+              }, {
+                x: 'category C',
+                y: 13,
+              }]
+            },
+            ],
+            colors: [  function ({ value, seriesIndex, dataPointIndex, w }) {
+                if (dataPointIndex == 1) {
+                  return "#7E36AF";
+                } else {
+                  return "#D9534F";
+                }
+              }
+        ],
         }
-      },
-      series: [
-        {
-          name: "series-1",
-          data: [30, 40, 45, 50, 49, 60, 70, 91]
-        }
-      ]
     };
   }
 
@@ -30,9 +47,10 @@ class ApexChart extends Component {
           <div className="mixed-chart">
             <Chart
               options={this.state.options}
-              series={this.state.series}
+              series={this.state.options.series}
               type="bar"
               width="500"
+              colors={this.state.colors}
             />
           </div>
         </div>
