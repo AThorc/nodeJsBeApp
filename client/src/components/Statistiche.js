@@ -26,11 +26,16 @@ const Statistiche = () => {
 
 
   const [series, setSeries] = useState([]);
+  const [dataSoc, setDataSoc] = useState([]);
+  const [dataPartner, setDataPartner] = useState([]);
+
   //var ragioneSociale = [];
 
 
   const user = AuthService.getCurrentUser();
   const history = useHistory();
+
+  var resultDef = undefined;
 
 
   var clientesExecuted = [];
@@ -51,7 +56,7 @@ const Statistiche = () => {
       series: [{
         data: [{
           x: 'category A',
-          y: 10,      
+          y: 10,
         }, {
           x: 'category B',
           y: 18,
@@ -62,34 +67,36 @@ const Statistiche = () => {
       },
       ],
       colors: [  function ({ value, seriesIndex, dataPointIndex, w }) {
-          if (dataPointIndex == 0) {
+          if (seriesIndex == 0) {
             return "#F3B415";
-          }else if (dataPointIndex == 1){
+          }else if (seriesIndex == 1){
               return "#F27036";
-          }else if (dataPointIndex == 2){
+          }else if (seriesIndex == 2){
               return "#663F59";
-          }else if (dataPointIndex == 3){
+          }else if (seriesIndex == 3){
               return "#6A6E94";
-          }else if (dataPointIndex == 4){
+          }else if (seriesIndex == 4){
               return "#4E88B4";
-          }else if (dataPointIndex == 5){
+          }else if (seriesIndex == 5){
               return "#00A7C6";
-          }else if (dataPointIndex == 6){
+          }else if (seriesIndex == 6){
               return "#18D8D8";
-          }else if (dataPointIndex == 7){
+          }else if (seriesIndex == 7){
               return "#A9D794";
-          }else if (dataPointIndex == 8){
+          }else if (seriesIndex == 8){
               return "#46AF78";
-          }else if (dataPointIndex == 9){
+          }else if (seriesIndex == 9){
               return "#A93F55";
-          }else if (dataPointIndex == 10){
+          }else if (seriesIndex == 10){
               return "#8C5E58";
           }else {
               //RANDOM COLOR
               return '#'+Math.floor(Math.random()*16777215).toString(16);
-          } 
-          
+          }
+
       }],
+
+      
       // xaxis: {
       //   categories: [
       //     ["Consulenza", "finanziaria"],
@@ -98,26 +105,26 @@ const Statistiche = () => {
       //   ]
       // }
     },
-    series: [{
-      data: [{
-        x: 'Consulenza aziendale',
-        y: 10,      
-      }, {
-        x: 'Consulenza del lavoro',
-        y: 18,
-      }, {
-        x: 'Consulenza finanziaria',
-        y: 13,
-      }]
-    },
-    ],
-      
+    // series: [{
+    //   data: [{
+    //     x: 'Consulenza aziendale',
+    //     y: 10,
+    //   }, {
+    //     x: 'Consulenza del lavoro',
+    //     y: 18,
+    //   }, {
+    //     x: 'Consulenza finanziaria',
+    //     y: 13,
+    //   }]
+    // },
+    // ],
+
   };
 
   useEffect(() => {
     if(user){
       retrieveMacroservizi();
-    }    
+    }
   }, []);
 
 
@@ -129,7 +136,7 @@ const Statistiche = () => {
   };
 
   const splitLabels = label =>{
-    var category = [];      
+    var category = [];
 
     var index = label.indexOf(" ");
     var part1 = label.substr(0,index);
@@ -140,26 +147,131 @@ const Statistiche = () => {
     return category;
   }
 
+  // const addDataInSerie = macroservizi =>{
+  //   var series = [];
+  //   var data = [];
+  //   var categories = [];
+  //   var xaxis = {};
+  //   for(var i in macroservizi){
+  //     var macroservizio = macroservizi[i];
+  //     var category = splitLabels(macroservizio.servizi);
+
+  //     //PRENDO LA SOMMA DEI FATTURATI SOC E PARTNER DI OGNI MACROSERVIZI
+  //     retrieveLegami(macroservizio.id);
+
+  //     var element = {x: category, y: macroservizio.fatturato};
+
+  //     categories.push(category);
+  //     data.push(element);
+  //   }
+
+  //   var serie = {data: data}
+  //   series.push(serie);
+  //   setSeries(series);
+  // }
+
+
   const addDataInSerie = macroservizi =>{
     var series = [];
     var data = [];
-    var categories = [];    
-    var xaxis = {};
+    var defs = [];
     for(var i in macroservizi){
       var macroservizio = macroservizi[i];
-      var category = splitLabels(macroservizio.servizi);      
-     
-      
-      var element = {x: category, y: macroservizio.fatturato};
+      //var category = splitLabels(macroservizio.servizi);
 
-      categories.push(category);
-      data.push(element);
+      //PRENDO LA SOMMA DEI FATTURATI SOC E PARTNER DI OGNI MACROSERVIZI
+      defs = retrieveLegami(macroservizio, defs);
+
+      // var element = {x: category, y: macroservizio.fatturato};
+
+      // data.push(element);
     }
 
-    var serie = {data: data}
-    series.push(serie);
-    setSeries(series);
+
+    console.log('DEFS');
+    console.log(defs);
+    Promise.all(defs).then(() => {
+      console.log('INSIDE RESOLVE');
+      console.log(defs);
+      var serieSoc = {data: dataSoc};
+      console.log('Data soc');
+      console.log(dataSoc);
+      var seriePartner = {data: dataPartner};
+      console.log('Data partner');
+      console.log(dataPartner);
+      //series.push(serie);
+
+
+      var defsTmp = [];
+
+      for(var i in defs){
+        var def = defs[i];
+        var dataSoc = [];
+        var dataPartner = [];
+
+        defsTmp.push(
+        def.then(function(result){
+          dataSoc.push(result.elementSoc);
+          dataPartner.push(result.elementPartner);
+        })
+        );
+      }
+
+      Promise.all(defsTmp).then(() => {
+        var serieSoc = {name:'Fatturato società', data: dataSoc};
+        var seriePartner = {name:'Fatturato partner', data: dataPartner};
+  
+        addSerie(serieSoc);
+        addSerie(seriePartner);
+      });
+     
+    });
+
+
+
+    //setSeries(series);
   }
+
+  const addDataSoc = (newDataSoc) => setDataSoc(state => [...state, newDataSoc]);
+  const addDataPartner = (newDataPartner) => setDataPartner(state => [...state, newDataPartner]);
+  const addSerie = (newSerie) => setSeries(state => [...state, newSerie]);
+
+  const retrieveLegami = (macroservizio, defs) => {
+    if(user){
+      var servizioid = macroservizio.id;
+      var fatturatoSoc = 0;
+      var fatturatoPartner = 0;
+
+      var def =
+      LegameDataService.findByServizioId(servizioid)
+      .then(response => {
+        for(const i in response.data){
+          var legame = response.data[i];
+          fatturatoSoc += (legame.fatturatoSocieta || 0);
+          fatturatoPartner += (legame.fatturatoPartner || 0);
+        }
+        var category = splitLabels(macroservizio.servizi);
+        var elementSoc = {x: category, y: fatturatoSoc};
+        var elementPartner = {x: category, y: fatturatoPartner};
+
+        // addDataSoc(elementSoc);
+        // addDataPartner(elementPartner);
+
+        console.log('Retrieve legami');
+        console.log(fatturatoSoc);
+        console.log(fatturatoPartner);
+        return {elementSoc: elementSoc, elementPartner: elementPartner};
+        //console.log(def);
+        //def.resolve('Success on findByServizioId');
+      })
+      .catch(e => {
+        console.log(e);
+        //def.reject('Error on findByServizioId');
+      });
+      defs.push(def);
+      return defs;
+    }
+  };
 
   const retrieveMacroservizi = () => {
     if(user){
@@ -174,7 +286,7 @@ const Statistiche = () => {
       .catch(e => {
         console.log(e);
       });
-    }    
+    }
   };
 
   const refreshList = () => {
@@ -182,7 +294,7 @@ const Statistiche = () => {
     refreshSearchedList();
   };
 
-  const refreshSearchedList = () => {    
+  const refreshSearchedList = () => {
     setCurrentMacroservizio(null);
     setCurrentIndex(-1);
     setCurrentListaLegameMacroservizio(null);
@@ -204,7 +316,7 @@ const Statistiche = () => {
         console.log(e);
       });
     }
-    
+
   };
 
   const getPartner = id => {
@@ -212,40 +324,19 @@ const Statistiche = () => {
       partnersExecuted.push(id);
       PartnerDataService.get(id)
       .then(response => {
-          addPartnerLegame(response.data.id + '-' + response.data.denominazione);       
+          addPartnerLegame(response.data.id + '-' + response.data.denominazione);
       })
       .catch(e => {
         console.log(e);
       });
     }
-    
-  };
 
-
-  const retrieveLegami = servizioid => {
-    if(user){
-      setClientesLegame([]);
-      setPartnersLegame([]);
-      LegameDataService.findByServizioId(servizioid)
-      .then(response => {
-        setCurrentListaLegameMacroservizio(response.data);
-        console.log(response.data);
-        for(const i in response.data){
-          var legame = response.data[i];
-          getCliente(legame.clienteid);
-          getPartner(legame.partnerid);
-        }            
-      })
-      .catch(e => {
-        console.log(e);
-      });
-    }    
   };
 
   const setActiveMacroservizio = (macroservizio, index) => {
     setCurrentMacroservizio(macroservizio);
     setCurrentIndex(index);
-    
+
     setCurrentListaLegameMacroservizio(null);
   };
 
@@ -259,7 +350,7 @@ const Statistiche = () => {
       .catch(e => {
         console.log(e);
       });
-    }    
+    }
   };
 
   const findByDen = () => {
@@ -273,9 +364,9 @@ const Statistiche = () => {
       .catch(e => {
         console.log(e);
       });
-    }    
+    }
   };
-  
+
   function handleAggiungiMacroservizioClick() {
     history.push("/addMacroservizio");
   }
@@ -287,8 +378,8 @@ const Statistiche = () => {
 
   if(user){
     return (
-      <div className="list row"> 
-       
+      <div className="list row">
+
        <div className="app">
           <div className="row">
             <div className="mixed-chart">
@@ -299,7 +390,7 @@ const Statistiche = () => {
                 type="bar"
                 width="600"
                 height="300"
-                colors={barChart.colors}
+                //colors={barChart.colors}
               />
             </div>
           </div>
@@ -334,7 +425,7 @@ const Statistiche = () => {
         </div>
         <div className="col-md-6">
           <h4>Lista macroservizi</h4>
-  
+
           <ul className="list-group">
             {macroservizi &&
               macroservizi.map((macroservizio, index) => (
@@ -349,19 +440,19 @@ const Statistiche = () => {
                 </li>
               ))}
           </ul>
-          
+
           <button
             className="m-3 btn btn-sm btn-danger d-none"
             onClick={removeAllMacroservizi}
           >
             Remove All
-          </button>          
+          </button>
         </div>
         <div className="col-md-6">
           {currentMacroservizio ? (
             <div>
               <div>
-                <h4 className="macroservizio-label">Macroservizio</h4>              
+                <h4 className="macroservizio-label">Macroservizio</h4>
               </div>
 
               <div>
@@ -373,7 +464,7 @@ const Statistiche = () => {
                   className="badge badge-warning"
                 >
                   {currentMacroservizio.servizi}
-                </Link>                
+                </Link>
               </div>
 
               <div>
@@ -387,7 +478,7 @@ const Statistiche = () => {
                   <strong>Fatturato macroservizio:</strong>
                 </label>{" "}
                 {currentMacroservizio.fatturato}
-              </div>                    
+              </div>
 
             </div>
           ) : (
@@ -402,7 +493,7 @@ const Statistiche = () => {
           <div className="input-group mb-3">
             <div className="col-md-12">
               <h4>Lista legami servizi</h4>
-      
+
               <ul className="list-group">
                 {currentListaLegameMacroservizio &&
                   currentListaLegameMacroservizio.map((legame, index) => (
@@ -417,15 +508,15 @@ const Statistiche = () => {
                           <label className="inline-block">
                             <strong>Cliente:</strong>
                           </label>{" "}
-                          {clientesLegame.filter(cliente => cliente.includes(legame.clienteid)).toString().substring(clientesLegame.filter(cliente => cliente.includes(legame.clienteid)).toString().indexOf('-')+1)}             
+                          {clientesLegame.filter(cliente => cliente.includes(legame.clienteid)).toString().substring(clientesLegame.filter(cliente => cliente.includes(legame.clienteid)).toString().indexOf('-')+1)}
                       </div>
                       <div>
                           <label className="inline-block">
                             <strong>Partner:</strong>
                           </label>{" "}
-                          {partnersLegame.filter(partner => partner.includes(legame.partnerid)).toString().substring(partnersLegame.filter(partner => partner.includes(legame.partnerid)).toString().indexOf('-')+1)}             
+                          {partnersLegame.filter(partner => partner.includes(legame.partnerid)).toString().substring(partnersLegame.filter(partner => partner.includes(legame.partnerid)).toString().indexOf('-')+1)}
                       </div>
-                    </li>                   
+                    </li>
                   ))}
               </ul>
 
@@ -434,7 +525,7 @@ const Statistiche = () => {
                 onClick={removeAllMacroservizi}
               >
                 Remove All
-              </button>          
+              </button>
             </div>
           </div>
           ):(<div>
@@ -451,7 +542,7 @@ const Statistiche = () => {
       </div>
     );
   }
-  
+
 };
 
 export default Statistiche;
