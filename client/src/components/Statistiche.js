@@ -209,10 +209,10 @@ const Statistiche = () => {
     return (
       <div className="list row">        
        <div className="app">
-          <div className="row">
-
-            {macroServiziFormatted && macroServiziFormatted.length > 0 ? (
-              <div className="half1 table-responsive text-nowrap">
+          <div className="row">            
+            {macroServiziFormatted && macroServiziFormatted.length > 0 ? (              
+              <div className="half1-statistiche table-responsive text-nowrap">
+                <h4>Performance servizi</h4>
                 <table id='servizi' className="table w-auto">
                   <tbody>
                       <tr>{renderTableHeader()}</tr>
@@ -223,7 +223,7 @@ const Statistiche = () => {
               </div>
             )}           
 
-            <div className="mixed-chart">
+            <div className="half2-statistiche mixed-chart">
               <Chart
                 options={barChart.options}
                 series={series}
