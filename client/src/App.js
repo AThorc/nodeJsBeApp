@@ -43,7 +43,7 @@ import AssociaServizio from "./components/AssociaServizio";
 
 import InserisciServizio from "./components/InserisciServizio";
 
-import ApexChart from "./components/apex.chart.component";
+import ApexChart from "./components/Statistiche";
 
 require('dotenv').config();
 
@@ -141,7 +141,7 @@ class App extends Component {
 
             {currentUser && (
                 <li className="nav-item ">
-                  <Link to={"/apexChart"} className="nav-link">
+                  <Link to={"/statistiche"} className="nav-link">
                     Statistiche
                   </Link>
                 </li>
@@ -201,7 +201,7 @@ class App extends Component {
             <Route path="/macroservizios/:id" component={Macroservizio} />
             <Route exact path="/associaServizio/:id" component={AssociaServizio} />
             <Route exact path="/inserisciServizio/:id/:clienteid" component={InserisciServizio} />
-            <Route exact path="/apexChart" component={ApexChart} />
+            <Route exact path="/statistiche" component={ApexChart} />
 
           </Switch>
         </div>
