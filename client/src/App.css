@@ -1,6 +1,6 @@
 .list {
   text-align: left;
-  max-width: 750px;
+  max-width: 830px;
   margin: auto;
 }
 
@@ -130,4 +130,14 @@ body.react-confirm-alert-body-element {
 
 .margin-left-px{
   margin-left: 10px;
+}
+
+
+.half1-statistiche {
+  float: left;
+  width: 63%!important;
+}
+.half2-statistiche {
+  float: left;
+  width: 37%!important;
 }
