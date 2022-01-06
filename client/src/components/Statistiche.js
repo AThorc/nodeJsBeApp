@@ -90,23 +90,23 @@ const Statistiche = () => {
           } 
           
       }],
-      xaxis: {
-        categories: [
-          ["Consulenza", "finanziaria"],
-          ["Consulenza", "del lavoro"],
-          ["Consulenza", "aziendale"]
-        ]
-      }
+      // xaxis: {
+      //   categories: [
+      //     ["Consulenza", "finanziaria"],
+      //     ["Consulenza", "del lavoro"],
+      //     ["Consulenza", "aziendale"]
+      //   ]
+      // }
     },
     series: [{
       data: [{
-        x: 'Consulenza finanziaria',
+        x: 'Consulenza aziendale',
         y: 10,      
       }, {
         x: 'Consulenza del lavoro',
         y: 18,
       }, {
-        x: 'Consulenza aziendale',
+        x: 'Consulenza finanziaria',
         y: 13,
       }]
     },
@@ -128,14 +128,34 @@ const Statistiche = () => {
     }
   };
 
+  const splitLabels = label =>{
+    var category = [];      
+
+    var index = label.indexOf(" ");
+    var part1 = label.substr(0,index);
+    var part2 = label.substr(index);
+    category.push(part1);
+    category.push(part2);
+
+    return category;
+  }
+
   const addDataInSerie = macroservizi =>{
     var series = [];
     var data = [];
+    var categories = [];    
+    var xaxis = {};
     for(var i in macroservizi){
-      var macroservizio = macroservizi[i];        
-      var element = {x: macroservizio.servizi, y: macroservizio.fatturato};
+      var macroservizio = macroservizi[i];
+      var category = splitLabels(macroservizio.servizi);      
+     
+      
+      var element = {x: category, y: macroservizio.fatturato};
+
+      categories.push(category);
       data.push(element);
     }
+
     var serie = {data: data}
     series.push(serie);
     setSeries(series);
@@ -147,7 +167,7 @@ const Statistiche = () => {
       .then(response => {
         setMacroservizi(response.data);
 
-        //addDataInSerie(response.data);
+        addDataInSerie(response.data);
 
         console.log(response.data);
       })
@@ -274,8 +294,8 @@ const Statistiche = () => {
             <div className="mixed-chart">
               <Chart
                 options={barChart.options}
-                //series={series}
-                series={barChart.series}
+                series={series}
+                //series={barChart.series}
                 type="bar"
                 width="600"
                 height="300"
