@@ -211,7 +211,7 @@ const Statistiche = () => {
        <div className="app">
           <div className="row">
 
-            {series && series.length > 0 ? (
+            {macroServiziFormatted && macroServiziFormatted.length > 0 ? (
               <div className="half1 table-responsive text-nowrap">
                 <table id='servizi' className="table w-auto">
                   <tbody>
