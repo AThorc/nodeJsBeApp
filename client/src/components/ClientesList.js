@@ -202,43 +202,48 @@ const ClientesList = () => {
                     <strong>Partita IVA:</strong>
                   </label>{" "}
                   {currentCliente.partitaIVA}
-                </div>                
+                </div> 
+                <div className="attribute-anagrafica-cliente">
+                    <label>
+                      <strong>Legale rappresentante:</strong>
+                    </label>{" "}
+                    {currentCliente.legaleRappresentate}
+                  </div>  
+
               </div>
 
               <div className="anagrafica-cliente-container">
-              <div className="attribute-anagrafica-cliente">
-                  <label>
-                    <strong>Legale rappresentante:</strong>
-                  </label>{" "}
-                  {currentCliente.legaleRappresentate}
-                </div>                
-                <div className="attribute-anagrafica-cliente">
-                  <label>
-                    <strong>Telefono:</strong>
-                  </label>{" "}
-                    {currentCliente.telefono}
-                </div>          
-                <div className="attribute-anagrafica-cliente">
-                  <label>
-                    <strong>Cellulare:</strong>
-                  </label>{" "}
-                  {currentCliente.cellulare}
+                              
+                  <div className="attribute-anagrafica-cliente">
+                    <label>
+                      <strong>Telefono:</strong>
+                    </label>{" "}
+                      {currentCliente.telefono}
+                  </div>          
+                  <div className="attribute-anagrafica-cliente">
+                    <label>
+                      <strong>Cellulare:</strong>
+                    </label>{" "}
+                    {currentCliente.cellulare}
+                  </div>
+                  <div className="attribute-anagrafica-cliente">
+                    <label>
+                      <strong>Mail:</strong>
+                    </label>{" "}
+                    {currentCliente.mail}
+                  </div>   
+                  <div className="attribute-anagrafica-cliente">
+                    <label>
+                      <strong>Pec:</strong>
+                    </label>{" "}
+                    {currentCliente.pec}
+                  </div>      
+
+
                 </div>
-                <div className="attribute-anagrafica-cliente">
-                  <label>
-                    <strong>Mail:</strong>
-                  </label>{" "}
-                  {currentCliente.mail}
-                </div>               
-              </div>    
 
               <div className="anagrafica-cliente-container">
-              <div className="attribute-anagrafica-cliente">
-                  <label>
-                    <strong>Pec:</strong>
-                  </label>{" "}
-                  {currentCliente.pec}
-                </div>       
+                 
                 <div className="attribute-anagrafica-cliente">
                   <label>
                     <strong>Sede:</strong>
@@ -257,15 +262,17 @@ const ClientesList = () => {
                   </label>{" "}
                   {currentCliente.cap}
                 </div>
-              </div>      
-
-              <div className="anagrafica-cliente-container">
                 <div className="attribute-anagrafica-cliente">
                   <label>
                     <strong>Data costituzione:</strong>
                   </label>{" "}
                   {moment(currentCliente.dataCostituzione).format('YYYY-MM-DD')} 
-                </div>          
+                </div> 
+
+              </div>      
+
+              <div className="anagrafica-cliente-container">
+                         
                 <div className="attribute-anagrafica-cliente">
                   <label>
                     <strong>Inizio attività:</strong>
@@ -284,10 +291,7 @@ const ClientesList = () => {
                   </label>{" "}
                   {currentCliente.dimensione}
                 </div>
-              </div>   
 
-              
-              <div className="anagrafica-cliente-container">
                 <div className="attribute-anagrafica-cliente">
                   <label>
                     <strong>Att Istat Ateco 2007:</strong>
@@ -299,8 +303,11 @@ const ClientesList = () => {
                     <strong>Settore:</strong>
                   </label>{" "}                  
                   {currentCliente.settore} 
-                </div>               
-              </div>                      
+                </div>  
+
+
+              </div>   
+                     
 
             </div>            
 

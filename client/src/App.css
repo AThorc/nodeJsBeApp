@@ -143,12 +143,12 @@ body.react-confirm-alert-body-element {
 }
 
 .anagrafica-cliente-container{
-  width: 900px;
+  width: 1000px;
 }
 
 .attribute-anagrafica-cliente{
   display: inline-block;
   margin-top: 2%;
   text-align: -webkit-auto;
-  margin-right: 4%;
+  margin-right: 3.5%;
 }
