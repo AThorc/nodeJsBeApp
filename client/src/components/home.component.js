@@ -33,7 +33,7 @@ export default class Home extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="container-logo">
         <img src={logo} className="img-fluid" alt="Logo" />
       </div>
     );
