@@ -142,8 +142,8 @@ const InserisciServizio = props => {
   }, [props.match.params.id, props.match.params.clienteid]);
 
 
-  const newMacroservizio = () => {
-    setMacroservizio(initialMacroservizioState);
+  const newLegame = () => {
+    setLegame(initialLegameState);
     setSubmitted(false);
   };
 
@@ -236,7 +236,7 @@ const InserisciServizio = props => {
         {submitted ? (
           <div>
             <h4>Servizio inserito correttamente!</h4>
-            <button className="btn btn-success" onClick={newMacroservizio}>
+            <button className="btn btn-success" onClick={newLegame}>
               Aggiungi
             </button>
           </div>
