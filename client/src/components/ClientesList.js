@@ -5,6 +5,8 @@ import { Link, useHistory } from "react-router-dom";
 
 import AuthService from "../services/auth.service";
 
+import moment from 'moment';
+
 const ClientesList = () => {
   const [clientes, setClientes] = useState([]);
   const [currentCliente, setCurrentCliente] = useState(null);
@@ -175,34 +177,133 @@ const ClientesList = () => {
         </div>
         <div className="col-md-6">
           {currentCliente ? (
-            <div>
+            <div className="anagrafica-cliente-container">
               <h4>Cliente</h4>
-              <div>
-                <label>
-                  <strong>Ragione sociale:</strong>
-                </label>{" "}
-                <Link
-                  to={"/clientes/" + currentCliente.id}
-                  className="badge badge-warning"
-                >
-                  {currentCliente.ragioneSociale}
-                </Link>                
-              </div>          
-              <div>
-                <label>
-                  <strong>Codice fiscale:</strong>
-                </label>{" "}
-                {currentCliente.codiceFiscale}
+              <div className="anagrafica-cliente-container">
+                <div className="attribute-anagrafica-cliente">
+                  <label>
+                    <strong>Ragione sociale:</strong>
+                  </label>{" "}
+                  <Link
+                    to={"/clientes/" + currentCliente.id}
+                    className="badge badge-warning"
+                  >
+                    {currentCliente.ragioneSociale}
+                  </Link>                
+                </div>          
+                <div className="attribute-anagrafica-cliente">
+                  <label>
+                    <strong>Codice fiscale:</strong>
+                  </label>{" "}
+                  {currentCliente.codiceFiscale}
+                </div>
+                <div className="attribute-anagrafica-cliente">
+                  <label>
+                    <strong>Partita IVA:</strong>
+                  </label>{" "}
+                  {currentCliente.partitaIVA}
+                </div>                
               </div>
-              <div>
-                <label>
-                  <strong>Partita IVA:</strong>
-                </label>{" "}
-                {currentCliente.partitaIVA}
-              </div>           
-  
+
+              <div className="anagrafica-cliente-container">
+              <div className="attribute-anagrafica-cliente">
+                  <label>
+                    <strong>Legale rappresentante:</strong>
+                  </label>{" "}
+                  {currentCliente.legaleRappresentate}
+                </div>                
+                <div className="attribute-anagrafica-cliente">
+                  <label>
+                    <strong>Telefono:</strong>
+                  </label>{" "}
+                    {currentCliente.telefono}
+                </div>          
+                <div className="attribute-anagrafica-cliente">
+                  <label>
+                    <strong>Cellulare:</strong>
+                  </label>{" "}
+                  {currentCliente.cellulare}
+                </div>
+                <div className="attribute-anagrafica-cliente">
+                  <label>
+                    <strong>Mail:</strong>
+                  </label>{" "}
+                  {currentCliente.mail}
+                </div>               
+              </div>    
+
+              <div className="anagrafica-cliente-container">
+              <div className="attribute-anagrafica-cliente">
+                  <label>
+                    <strong>Pec:</strong>
+                  </label>{" "}
+                  {currentCliente.pec}
+                </div>       
+                <div className="attribute-anagrafica-cliente">
+                  <label>
+                    <strong>Sede:</strong>
+                  </label>{" "}
+                  {currentCliente.sede}
+                </div>
+                <div className="attribute-anagrafica-cliente">
+                  <label>
+                    <strong>Località:</strong>
+                  </label>{" "}
+                  {currentCliente.localita}
+                </div>
+                <div className="attribute-anagrafica-cliente">
+                  <label>
+                    <strong>Cap:</strong>
+                  </label>{" "}
+                  {currentCliente.cap}
+                </div>
+              </div>      
+
+              <div className="anagrafica-cliente-container">
+                <div className="attribute-anagrafica-cliente">
+                  <label>
+                    <strong>Data costituzione:</strong>
+                  </label>{" "}
+                  {moment(currentCliente.dataCostituzione).format('YYYY-MM-DD')} 
+                </div>          
+                <div className="attribute-anagrafica-cliente">
+                  <label>
+                    <strong>Inizio attività:</strong>
+                  </label>{" "}                  
+                  {moment(currentCliente.inizioAttivita).format('YYYY-MM-DD')} 
+                </div>
+                <div className="attribute-anagrafica-cliente">
+                  <label>
+                    <strong>Tipo:</strong>
+                  </label>{" "}
+                  {currentCliente.tipo}
+                </div>
+                <div className="attribute-anagrafica-cliente">
+                  <label>
+                    <strong>Dimensione:</strong>
+                  </label>{" "}
+                  {currentCliente.dimensione}
+                </div>
+              </div>   
+
               
-            </div>
+              <div className="anagrafica-cliente-container">
+                <div className="attribute-anagrafica-cliente">
+                  <label>
+                    <strong>Att Istat Ateco 2007:</strong>
+                  </label>{" "}
+                  {currentCliente.attIstatAteco2007} 
+                </div>          
+                <div className="attribute-anagrafica-cliente">
+                  <label>
+                    <strong>Settore:</strong>
+                  </label>{" "}                  
+                  {currentCliente.settore} 
+                </div>               
+              </div>                      
+
+            </div>            
+
           ) : (
             <div>
               <br />
