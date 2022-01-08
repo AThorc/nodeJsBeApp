@@ -116,11 +116,11 @@ body.react-confirm-alert-body-element {
 
 .half1 {
   float: left;
-  width: 25%;
+  width:30%;
 }
 .half2 {
   float: left;
-  width: 75%!important;
+  width: 70%!important;
 }
 
 
@@ -167,4 +167,8 @@ body.react-confirm-alert-body-element {
 
 .table-inserisci-anag{
   margin-left: -30%;
+}
+
+.margin-top-2{
+  margin-top: 2%;
 }
