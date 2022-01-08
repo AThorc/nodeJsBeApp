@@ -329,7 +329,7 @@ const ClientesList = () => {
                 <strong>Data costituzione:</strong>
               </label>{" "}
               <input
-                    type="text"
+                    type="date"
                     className="form-control fit-content"
                     id="dataCostituzione"
                     required
@@ -346,7 +346,7 @@ const ClientesList = () => {
                 <strong>Inizio attività:</strong>
               </label>{" "}
               <input
-                    type="text"
+                    type="date"
                     className="form-control fit-content"
                     id="inizioAttivita"
                     required

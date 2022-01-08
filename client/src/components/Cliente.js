@@ -254,7 +254,7 @@ const Cliente = props => {
     })
     header.push(<th key={4}>Data inizio</th>);
     header.push(<th key={5}>Fatturato Partner</th>);
-    header.push(<th key={6}>Fatturato Società</th>);
+    header.push(<th key={6}>Fatturato Multifinance</th>);
     header.push(<th key={7}>Azioni</th>);
     return header;
  };

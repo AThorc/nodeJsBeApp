@@ -325,7 +325,7 @@ const InserisciServizio = props => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="title">Fatturato società</label>
+                <label htmlFor="title">Fatturato Multifinance</label>
                 <input
                   type="number"
                   className="form-control"

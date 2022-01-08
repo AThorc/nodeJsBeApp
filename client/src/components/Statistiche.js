@@ -120,7 +120,7 @@ const Statistiche = () => {
       }
 
       Promise.all(defsTmp).then(() => {
-        var serieSoc = {name:'Fatturato società', data: dataSoc};
+        var serieSoc = {name:'Fatturato Multifinance', data: dataSoc};
         var seriePartner = {name:'Fatturato partner', data: dataPartner};        
         addSerie(serieSoc);
         addSerie(seriePartner);
@@ -184,7 +184,7 @@ const Statistiche = () => {
   const renderTableHeader = () => {
     var header = [];
     header.push(<th key={1}>Servizi</th>);    
-    header.push(<th key={3}>Fatturato Società</th>);
+    header.push(<th key={3}>Fatturato Multifinance</th>);
     header.push(<th key={2}>Fatturato Partner</th>);
     return header;
  };
