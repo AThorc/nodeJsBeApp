@@ -180,5 +180,10 @@ body.react-confirm-alert-body-element {
 
 
 .note-wrapper{
-  width: 100%;
+  width: 1400px;
+  margin-top: 23%;
+}
+
+.note-button-margin-top{
+  margin-top: 1%;
 }

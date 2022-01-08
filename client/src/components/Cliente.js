@@ -267,7 +267,7 @@ const Cliente = props => {
 
  const renderTableNoteData = () => {
   return (
-    <tr key={1} className="note-wrapper">
+    <tr key={1}>
       <td className="note-wrapper">
             <input
                     type="text"
@@ -385,9 +385,6 @@ const Cliente = props => {
     if(note != null && legame.note != note.value){
       note.value = "";
     }
-    console.log('NOTEID');
-    console.log(note);
-
 
     setCurrentLegameNote(legame);
 
@@ -508,8 +505,8 @@ const Cliente = props => {
         
         {visualizzaNote ? (
           <div className="note-wrapper">
-          <table id='noteTable' className="note-wrapper">
-            <tbody className="note-wrapper">
+          <table id='noteTable'>
+            <tbody >
                 <tr>{renderTableNoteHeader()}</tr>
                 {renderTableNoteData()}
             </tbody>
@@ -518,7 +515,7 @@ const Cliente = props => {
                 title= "Aggiorna note servizio"
                 message= 'Sei sicuro di voler aggiornare le note del servizio?'
                 onClickYes= {() => updateNoteLegame(currentLegameNote.id, {note: currentLegameNote.note})}
-                className="margin-left-px btn btn-primary"
+                className="note-button-margin-top btn btn-primary"
               /> 
           </div>  
           ) :(
