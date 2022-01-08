@@ -19,7 +19,9 @@ exports.create = (req, res) => {
       tipo: req.body.tipo,
       servizioid: req.body.servizioid,
       fatturatoPartner: req.body.fatturatoPartner,
-      fatturatoSocieta: req.body.fatturatoSocieta
+      fatturatoSocieta: req.body.fatturatoSocieta,
+      dataInizio: req.body.dataInizio,
+      note: req.body.note
     });
   
     // Save Legame in the database

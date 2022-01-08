@@ -10,6 +10,8 @@ import LegameDataService from "../services/LegameService";
 import PartnerDataService from "../services/PartnerService";
 
 import {BsPlusLg} from "react-icons/bs"
+import {BsFillPencilFill} from "react-icons/bs"
+import {BsXLg} from "react-icons/bs"
 
 import { Link, useHistory } from "react-router-dom";
 
@@ -36,7 +38,19 @@ const Cliente = props => {
     attIstatAteco2007: "",
     settore: ""
   };
+
+  const initialLegameState = {
+    id: null,
+    tipo: "",
+    fatturatoPartner: undefined,
+    fatturatoSocieta: undefined,
+    dataInizio: undefined,
+    note: undefined
+
+  };
   const [currentCliente, setCurrentCliente] = useState(initialClienteState);
+
+  const [currentLegame, setCurrentLegame] = useState(initialLegameState);
   const [message, setMessage] = useState("");
 
   const user = AuthService.getCurrentUser();
@@ -133,6 +147,17 @@ const Cliente = props => {
   const handleInputChange = event => {
     const { name, value } = event.target;
     setCurrentCliente({ ...currentCliente, [name]: value });
+  };
+
+  const handleInputLegameChange = (event, index) => {
+    const { name, value } = event.target;
+    console.log('handleInputLegameChange');
+    console.log(name);
+    console.log(value);
+    const newLegame = [ ...currentListaLegameMacroservizio];
+    newLegame[index][name] = value;
+    //setCurrentLegame({ ...currentLegame, [name]: value });
+    setCurrentListaLegameMacroservizio(newLegame);
   };  
 
   const updateCliente = () => {
@@ -182,23 +207,125 @@ const Cliente = props => {
     header.push(<th key={4}>Data inizio</th>);
     header.push(<th key={5}>Fatturato Partner</th>);
     header.push(<th key={6}>Fatturato Società</th>);
+    header.push(<th key={7}>Azioni</th>);
     return header;
+ };
+
+
+ const getDenominazionePartner = partnerId =>{
+   return partnersLegame.filter(partner => partner.includes(partnerId)).toString().substring(partnersLegame.filter(partner => partner.includes(partnerId)).toString().indexOf('-')+1)
  };
 
   const renderTableData = () => {
     return currentListaLegameMacroservizio.map((legame, index) => {
-      const { clienteid, createdAt, id, partnerid, servizioid, tipo, updatedAt, fatturatoPartner, fatturatoSocieta } = legame //destructuring
-      return (
-          <tr key={id}>
+      //const { clienteid, createdAt, id, partnerid, servizioid, tipo, updatedAt, fatturatoPartner, fatturatoSocieta } = legame //destructuring
+      return (          
+          <tr key={legame.id}>
             <td>{currentCliente.ragioneSociale}</td>         
-            <td>{partnersLegame.filter(partner => partner.includes(legame.partnerid)).toString().substring(partnersLegame.filter(partner => partner.includes(legame.partnerid)).toString().indexOf('-')+1)}</td>
-            <td>{tipo}</td>
-            <td>{moment(currentMacroservizio.dataInizio).format('YYYY-MM-DD')}</td>            
-            <td>{fatturatoPartner}</td>
-            <td>{fatturatoSocieta}</td>
+            <td>{getDenominazionePartner(legame.partnerid)}</td>
+            <td>
+            <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="tipo"
+                    required
+                    value={legame.tipo}
+                    key={index}
+                    onChange={(e) => handleInputLegameChange(e, index)}
+                    name="tipo"
+                />
+            </td>
+            <td>
+              <input
+                      type="date"
+                      className="form-control fit-content"
+                      id="dataInizio"
+                      required
+                      value={moment(legame.dataInizio).format('YYYY-MM-DD')} 
+                      key={index}
+                      onChange={(e) => handleInputLegameChange(e, index)}
+                      name="dataInizio"
+                  />
+            </td>            
+            <td>
+              <input
+                    type="number"
+                    className="form-control fit-content"
+                    id="fatturatoPartner"
+                    required
+                    value={legame.fatturatoPartner}
+                    key={index}
+                    onChange={(e) => handleInputLegameChange(e, index)}
+                    name="fatturatoPartner"
+                />
+            </td>
+            <td>
+              <input
+                      type="number"
+                      className="form-control fit-content"
+                      id="fatturatoSocieta"
+                      required
+                      value={legame.fatturatoSocieta}
+                      key={index}
+                      onChange={(e) => handleInputLegameChange(e, index)}
+                      name="fatturatoSocieta"
+                />
+            </td>
+            <td>
+              <ConfirmDialog 
+                title= {<BsXLg />}
+                message= 'Sei sicuro di voler cancellare il servizio?'
+                onClickYes= {()=> deleteLegame(legame.id)}
+                className="btn btn-danger"
+              /> 
+
+              <ConfirmDialog 
+                title= {<BsFillPencilFill />}
+                message= 'Sei sicuro di voler aggiornare il servizio?'
+                onClickYes= {() => updateLegame(legame.id, {partnerid: legame.partnerid, clientid: legame.clienteid, tipo: legame.tipo, dataInizio: legame.dataInizio, fatturatoPartner: legame.fatturatoPartner, fatturatoSocieta: legame.fatturatoSocieta})}
+                className="btn btn-primary"
+              />
+            </td>
           </tr>
       )
     })
+  };
+
+  const refreshList = () => {
+    retrieveLegami(currentMacroservizio.id, currentCliente.id);
+  };
+
+  const refreshSearchedList = () => {    
+    setCurrentCliente(null);
+    setCurrentIndex(-1);
+  };
+
+  const deleteLegame = legameid => {
+    if(user){
+      LegameDataService.remove(legameid)
+      .then(response => {
+        console.log(response.data);
+        refreshList();
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }
+    
+  };
+
+  const updateLegame = (legameid, data) => {
+    if(user){
+      LegameDataService.update(legameid, data)
+      .then(response => {
+        console.log(response.data);
+        refreshList();
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }
+    
   };
 
   if(user){
@@ -206,243 +333,9 @@ const Cliente = props => {
       <div>
         {currentCliente ? (
           <div className="edit-anagrafica-form">
-            <h4>Cliente</h4>
-            <form>
-              <div className="table-responsive text-nowrap">
-                <table className="table w-auto">
-                  <thead>
-                    <tr>
-                      <th scope="col">Ragione sociale</th>
-                      <th scope="col">Codice fiscale</th>
-                      <th scope="col">Partita IVA</th>
-                      <th scope="col">Legale Rappresentate</th>
-                      <th scope="col">Telefono</th>
-                      <th scope="col">Cellulare</th>
-                      <th scope="col">Mail</th>
-                      <th scope="col">Pec</th>
-                      <th scope="col">Sede</th>
-                      <th scope="col">Località</th>
-                      <th scope="col">Cap</th>
-                      <th scope="col">Data costituzione</th>
-                      <th scope="col">Inizio Attività</th>
-                      <th scope="col">Tipo</th>
-                      <th scope="col">Dimensione</th>
-                      <th scope="col">Att. Istat Ateco 2007</th>
-                      <th scope="col">Settore</th>					  
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>                    
-                      <td> 
-                        <input
-                          type="text"
-                          className="form-control fit-content"
-                          id="ragioneSociale"
-                          required
-                          value={currentCliente.ragioneSociale}
-                          onChange={handleInputChange}
-                          name="ragioneSociale"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          className="form-control fit-content"
-                          id="codiceFiscale"
-                          required
-                          value={currentCliente.codiceFiscale}
-                          onChange={handleInputChange}
-                          name="codiceFiscale"
-                          maxLength="27" size="27"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          className="form-control fit-content"
-                          id="partitaIVA"
-                          required
-                          value={currentCliente.partitaIVA}
-                          onChange={handleInputChange}
-                          name="partitaIVA"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          className="form-control fit-content"
-                          id="legaleRappresentate"                
-                          value={currentCliente.legaleRappresentate}
-                          onChange={handleInputChange}
-                          name="legaleRappresentate"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          className="form-control fit-content"
-                          id="telefono"                
-                          value={currentCliente.telefono}
-                          onChange={handleInputChange}
-                          name="telefono"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          className="form-control fit-content"
-                          id="cellulare"                
-                          value={currentCliente.cellulare}
-                          onChange={handleInputChange}
-                          name="cellulare"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          className="form-control fit-content"
-                          id="mail"                
-                          value={currentCliente.mail}
-                          onChange={handleInputChange}
-                          name="mail"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          className="form-control fit-content"
-                          id="pec"                
-                          value={currentCliente.pec}
-                          onChange={handleInputChange}
-                          name="pec"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          className="form-control fit-content"
-                          id="sede"                
-                          value={currentCliente.sede}
-                          onChange={handleInputChange}
-                          name="sede"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          className="form-control fit-content"
-                          id="localita"                
-                          value={currentCliente.localita}
-                          onChange={handleInputChange}
-                          name="localita"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          className="form-control fit-content"
-                          id="cap"                
-                          value={currentCliente.cap}
-                          onChange={handleInputChange}
-                          name="cap"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="date"
-                          className="form-control fit-content"
-                          id="dataCostituzione"                
-                          value={moment(currentCliente.dataCostituzione).format('YYYY-MM-DD')}                
-                          onChange={handleInputChange}
-                          name="dataCostituzione"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="date"
-                          className="form-control fit-content"
-                          id="inizioAttivita"                
-                          value={moment(currentCliente.inizioAttivita).format('YYYY-MM-DD')}                
-                          onChange={handleInputChange}
-                          name="inizioAttivita"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          className="form-control fit-content"
-                          id="tipo"
-                          required
-                          value={currentCliente.tipo}
-                          onChange={handleInputChange}
-                          name="tipo"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          className="form-control fit-content"
-                          id="dimensione"
-                          required
-                          value={currentCliente.dimensione}
-                          onChange={handleInputChange}
-                          name="dimensione"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          className="form-control fit-content"
-                          id="attIstatAteco2007"
-                          required
-                          value={currentCliente.attIstatAteco2007}
-                          onChange={handleInputChange}
-                          name="attIstatAteco2007"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          className="form-control fit-content"
-                          id="settore"
-                          required
-                          value={currentCliente.settore}
-                          onChange={handleInputChange}
-                          name="settore"
-                        />
-                      </td>
-                    </tr>                   
-                  </tbody>
-                </table>
-              </div>
-            </form>    
-
-            <br></br>      
-  
-            <ConfirmDialog 
-              title= 'Cancella'
-              message= 'Sei sicuro di voler cancellare il cliente?'
-              onClickYes= {deleteCliente}
-              className="btn btn-danger"
-            />
-
-            <button className="badge badge-danger mr-2 d-none" onClick={deleteCliente}>
-              Cancella
-            </button>
-  
-            <button
-              type="submit"
-              className="btn btn-primary"
-              onClick={updateCliente}
-            >
-              Aggiorna
-            </button>
-            <p>{message}</p>
-
-            <br></br>
-            <div>
+            <h4>Lista macroservizi {currentCliente.ragioneSociale}</h4>           
+            <div className="lista-macroservizi-wrapper">
               <div className="half1">
-                <h4>Lista macroservizi</h4>
         
                 <ul className="list-group percent-max-content">
                   {macroservizi &&
@@ -474,7 +367,8 @@ const Cliente = props => {
                         <tr>{renderTableHeader()}</tr>
                         {renderTableData()}
                     </tbody>
-                  </table>
+                  </table>                  
+
                 </div> ):(<div>
                 </div>
               )}

@@ -158,49 +158,6 @@ const MacroserviziList = () => {
     }    
   };
 
-  /*
-  function rsReturned(input){
-    console.log(input);
-    var index = input.indexOf('-');
-    console.log(index);
-    return input.substr(index);
-  }
-  */
-  
-
-
-  /*
-  const findClientesByMacroservizioId = (macroservizioId) => {
-    if(user){
-      ClienteDataService.findByMacroservizi(macroservizioId)
-      .then(response => {        
-        setClientes(response.data);
-        console.log('**');
-        console.log(response.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
-    }    
-  };
-  */
-
-  /*
-  function setRagioneSociale(id, ragioneSociale){
-    if(!ragioneSocialeById.hasOwnProperty(id)){
-      ragioneSociale[id] = ragioneSociale;
-    } 
-  }
-  */
-
-  /*
-  function setRsById(id, ragioneSociale){
-    if(!rsById.hasOwnProperty(id)){
-      rsById[id] = ragioneSociale;
-    }    
-  }*/
-
-  
   function handleAggiungiMacroservizioClick() {
     history.push("/addMacroservizio");
   }
@@ -283,20 +240,7 @@ const MacroserviziList = () => {
                   {currentMacroservizio.servizi}
                 </Link>                
               </div>
-
-              <div>
-                <label>
-                  <strong>Data inizio:</strong>
-                </label>{" "}
-                {moment(currentMacroservizio.dataInizio).format('YYYY-MM-DD')}
-              </div>
-              <div>
-                <label>
-                  <strong>Fatturato macroservizio:</strong>
-                </label>{" "}
-                {currentMacroservizio.fatturato}
-              </div>                    
-
+                           
             </div>
           ) : (
             <div>

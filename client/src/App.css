@@ -128,11 +128,11 @@ body.react-confirm-alert-body-element {
 
 .half1 {
   float: left;
-  width: 25%;
+  width:20%;
 }
 .half2 {
   float: left;
-  width: 75%!important;
+  width: 80%!important;
 }
 
 
@@ -163,4 +163,25 @@ body.react-confirm-alert-body-element {
   margin-top: 2%;
   text-align: -webkit-auto;
   margin-right: 5%;
+}
+
+.table-anagrafica{
+  width: 1000px!important;
+}
+
+.search-anag-clienti{
+  width: fit-content!important;
+}
+
+.wrapper-anagrafica{
+  margin-left: -32%;
+}
+
+.table-inserisci-anag{
+  margin-left: -30%;
+}
+
+.lista-macroservizi-wrapper{
+  margin-top: 3%;
+  width: 1400px;
 }
