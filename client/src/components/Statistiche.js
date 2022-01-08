@@ -419,7 +419,7 @@ const Statistiche = () => {
                 options={partnerBarChart.options}
                 series={partnersSeries}
                 type="bar"
-                width="600"
+                width="800"
                 height="300"
               />
             </div>
