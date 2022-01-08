@@ -63,6 +63,9 @@ const Cliente = props => {
 
   const [partnersFatturatoLegame, setPartnersFatturatoLegame] = useState([]);
 
+  const [partners, setPartners] = useState([]);
+  const [partner, setPartner] = useState({});
+
   const history = useHistory();
 
   var partnersExecuted = [];
@@ -74,6 +77,31 @@ const Cliente = props => {
       .then(response => {
         setMacroservizi(response.data);
         console.log(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }    
+  };
+
+  function getPartnersSelectBox(partners){
+    var partnersOptions = [];
+    for(const i in partners){
+      var partner = partners[i];
+      var partnerOption = { value: partner.id, label: partner.denominazione };
+      partnersOptions.push(partnerOption);
+    }
+    return partnersOptions;
+  };
+
+  const retrievePartners = () => {
+    if(user){
+      PartnerDataService.getAll()
+      .then(response => {
+        var partnersOptions = getPartnersSelectBox(response.data);
+        setPartners(partnersOptions);
+        console.log(response.data);
+        console.log(partnersOptions);
       })
       .catch(e => {
         console.log(e);
@@ -142,6 +170,7 @@ const Cliente = props => {
   useEffect(() => {
     getCliente(props.match.params.id);
     retrieveMacroservizi();
+    retrievePartners();
   }, [props.match.params.id]);
 
   const handleInputChange = event => {
@@ -155,10 +184,17 @@ const Cliente = props => {
     console.log(name);
     console.log(value);
     const newLegame = [ ...currentListaLegameMacroservizio];
-    newLegame[index][name] = value;
-    //setCurrentLegame({ ...currentLegame, [name]: value });
+    newLegame[index][name] = value;    
     setCurrentListaLegameMacroservizio(newLegame);
-  };  
+  };
+
+  const _handlePartnerChange = event => {
+    const { value,} = event.target;
+    console.log('PARTNER');
+    console.log(value);
+    //console.log(id);
+    setPartner(value);
+  }; 
 
   const updateCliente = () => {
     if(user){
@@ -222,7 +258,16 @@ const Cliente = props => {
       return (          
           <tr key={legame.id}>
             <td>{currentCliente.ragioneSociale}</td>         
-            <td>{getDenominazionePartner(legame.partnerid)}</td>
+            <td>
+                <select value={partner.value} defaultValue="DEFAULT" onClick={_handlePartnerChange} onChange={_handlePartnerChange}>
+                  <option value="" disabled value="DEFAULT">{getDenominazionePartner(legame.partnerid)}</option>    
+                    {partners &&
+                      partners.map((partner, index) => (                  
+                        
+                          <option value={partner.value} key={index} >{partner.label}</option>                    
+                      ))}
+                </select>
+            </td>
             <td>
             <input
                     type="text"
@@ -282,7 +327,7 @@ const Cliente = props => {
               <ConfirmDialog 
                 title= {<BsFillPencilFill />}
                 message= 'Sei sicuro di voler aggiornare il servizio?'
-                onClickYes= {() => updateLegame(legame.id, {partnerid: legame.partnerid, clientid: legame.clienteid, tipo: legame.tipo, dataInizio: legame.dataInizio, fatturatoPartner: legame.fatturatoPartner, fatturatoSocieta: legame.fatturatoSocieta})}
+                onClickYes= {() => updateLegame(legame.id, {clientid: legame.clienteid, tipo: legame.tipo, dataInizio: legame.dataInizio, fatturatoPartner: legame.fatturatoPartner, fatturatoSocieta: legame.fatturatoSocieta})}
                 className="btn btn-primary"
               />
             </td>
@@ -292,7 +337,8 @@ const Cliente = props => {
   };
 
   const refreshList = () => {
-    retrieveLegami(currentMacroservizio.id, currentCliente.id);
+    retrieveLegami(currentMacroservizio.id, currentCliente.id);    
+    setCurrentIndex(-1);
   };
 
   const refreshSearchedList = () => {    
@@ -315,6 +361,9 @@ const Cliente = props => {
   };
 
   const updateLegame = (legameid, data) => {
+    console.log('UPDATELEGAME');
+    console.log(partner);
+    data.partnerid= partner;
     if(user){
       LegameDataService.update(legameid, data)
       .then(response => {
