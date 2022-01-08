@@ -12,6 +12,8 @@ import PartnerDataService from "../services/PartnerService";
 import {BsPlusLg} from "react-icons/bs"
 import {BsFillPencilFill} from "react-icons/bs"
 import {BsXLg} from "react-icons/bs"
+import {BsChatLeftTextFill} from "react-icons/bs"
+
 
 import { Link, useHistory } from "react-router-dom";
 
@@ -45,12 +47,11 @@ const Cliente = props => {
     fatturatoPartner: undefined,
     fatturatoSocieta: undefined,
     dataInizio: undefined,
-    note: undefined
+    note: ""
 
   };
   const [currentCliente, setCurrentCliente] = useState(initialClienteState);
 
-  const [currentLegame, setCurrentLegame] = useState(initialLegameState);
   const [message, setMessage] = useState("");
 
   const user = AuthService.getCurrentUser();
@@ -69,6 +70,11 @@ const Cliente = props => {
   const history = useHistory();
 
   var partnersExecuted = [];
+
+  const [visualizzaNote, setVisualizzaNote] = useState(false);
+
+  const [currentLegameNote, setCurrentLegameNote] = useState(initialLegameState);
+  
 
 
   const retrieveMacroservizi = () => {
@@ -113,6 +119,7 @@ const Cliente = props => {
     setCurrentMacroservizio(macroservizio);
     setCurrentIndex(index);
     retrieveLegami(macroservizio.id, currentCliente.id);
+    setVisualizzaNote(false);
   };
 
   const getCliente = id => {
@@ -176,6 +183,11 @@ const Cliente = props => {
   const handleInputChange = event => {
     const { name, value } = event.target;
     setCurrentCliente({ ...currentCliente, [name]: value });
+  };
+
+  const handleInputLegameNoteChange = event => {
+    const { name, value } = event.target;
+    setCurrentLegameNote({ ...currentLegameNote, [name]: value });
   };
 
   const handleInputLegameChange = (event, index) => {
@@ -247,6 +259,30 @@ const Cliente = props => {
     return header;
  };
 
+ const renderTableNoteHeader = () => {
+   var header = [];
+   header.push(<th key={1}>Note</th>);
+   return header;
+ };
+
+ const renderTableNoteData = () => {
+  return (
+    <tr key={1} className="note-wrapper">
+      <td className="note-wrapper">
+            <input
+                    type="text"
+                    className="form-control"
+                    id="note"
+                    required
+                    value={currentLegameNote.note}
+                    onChange={handleInputLegameNoteChange}
+                    name="note"
+                />
+            </td>
+    </tr>
+  )
+ };
+
 
  const getDenominazionePartner = partnerId =>{
    return partnersLegame.filter(partner => partner.includes(partnerId)).toString().substring(partnersLegame.filter(partner => partner.includes(partnerId)).toString().indexOf('-')+1)
@@ -271,7 +307,7 @@ const Cliente = props => {
             <td>
             <input
                     type="text"
-                    className="form-control fit-content"
+                    className="form-control"
                     id="tipo"
                     required
                     value={legame.tipo}
@@ -283,7 +319,7 @@ const Cliente = props => {
             <td>
               <input
                       type="date"
-                      className="form-control fit-content"
+                      className="form-control"
                       id="dataInizio"
                       required
                       value={moment(legame.dataInizio).format('YYYY-MM-DD')} 
@@ -295,25 +331,27 @@ const Cliente = props => {
             <td>
               <input
                     type="number"
-                    className="form-control fit-content"
+                    className="form-control"
                     id="fatturatoPartner"
                     required
                     value={legame.fatturatoPartner}
                     key={index}
                     onChange={(e) => handleInputLegameChange(e, index)}
+                    maxLength="9"
                     name="fatturatoPartner"
                 />
             </td>
             <td>
               <input
                       type="number"
-                      className="form-control fit-content"
+                      className="form-control"
                       id="fatturatoSocieta"
                       required
                       value={legame.fatturatoSocieta}
                       key={index}
                       onChange={(e) => handleInputLegameChange(e, index)}
                       name="fatturatoSocieta"
+                      maxLength="9"
                 />
             </td>
             <td>
@@ -330,15 +368,37 @@ const Cliente = props => {
                 onClickYes= {() => updateLegame(legame.id, {clientid: legame.clienteid, tipo: legame.tipo, dataInizio: legame.dataInizio, fatturatoPartner: legame.fatturatoPartner, fatturatoSocieta: legame.fatturatoSocieta})}
                 className="btn btn-primary"
               />
+
+              <button onClick={() => renderNote(legame)}
+                        className="btn btn-warning"
+              >
+                  {<BsChatLeftTextFill />}
+              </button>	
             </td>
-          </tr>
+          </tr>         
       )
     })
+  };
+
+  const renderNote = (legame) => {   
+    var note= document.getElementById('note');
+    if(note != null && legame.note != note.value){
+      note.value = "";
+    }
+    console.log('NOTEID');
+    console.log(note);
+
+
+    setCurrentLegameNote(legame);
+
+    setVisualizzaNote(true);
+
   };
 
   const refreshList = () => {
     retrieveLegami(currentMacroservizio.id, currentCliente.id);    
     setCurrentIndex(-1);
+    setVisualizzaNote(false);
   };
 
   const refreshSearchedList = () => {    
@@ -361,9 +421,23 @@ const Cliente = props => {
   };
 
   const updateLegame = (legameid, data) => {
-    console.log('UPDATELEGAME');
-    console.log(partner);
+    // console.log('UPDATELEGAME');
+    // console.log(partner);
     data.partnerid= partner;
+    if(user){
+      LegameDataService.update(legameid, data)
+      .then(response => {
+        console.log(response.data);
+        refreshList();
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }
+    
+  };
+
+  const updateNoteLegame = (legameid, data) => {
     if(user){
       LegameDataService.update(legameid, data)
       .then(response => {
@@ -422,8 +496,7 @@ const Cliente = props => {
                 </div>
               )}
 
-            </div>
-            
+            </div>           
 
           </div>
         ) : (
@@ -432,6 +505,27 @@ const Cliente = props => {
             <p>Seleziona un cliente...</p>
           </div>
         )}
+        
+        {visualizzaNote ? (
+          <div className="note-wrapper">
+          <table id='noteTable' className="note-wrapper">
+            <tbody className="note-wrapper">
+                <tr>{renderTableNoteHeader()}</tr>
+                {renderTableNoteData()}
+            </tbody>
+          </table>          
+          <ConfirmDialog 
+                title= "Aggiorna note servizio"
+                message= 'Sei sicuro di voler aggiornare le note del servizio?'
+                onClickYes= {() => updateNoteLegame(currentLegameNote.id, {note: currentLegameNote.note})}
+                className="margin-left-px btn btn-primary"
+              /> 
+          </div>  
+          ) :(
+            <div></div>
+          )
+        }
+
       </div>
     );
   }else{
