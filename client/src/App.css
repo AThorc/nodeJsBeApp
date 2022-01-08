@@ -185,3 +185,17 @@ body.react-confirm-alert-body-element {
   margin-top: 3%;
   width: 1400px;
 }
+
+.container{
+  margin-left: 3%!important;
+}
+
+
+.note-wrapper{
+  width: 1400px;
+  margin-top: 23%;
+}
+
+.note-button-margin-top{
+  margin-top: 1%;
+}
