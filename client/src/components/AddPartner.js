@@ -8,7 +8,6 @@ const AddPartner = () => {
     id: null,
     denominazione: "",
     dataInizio: "",
-    fatturatoPartner: ""
 
   };
   const [partner, setPartner] = useState(initialPartnerState);
@@ -26,7 +25,6 @@ const AddPartner = () => {
       var data = {        
         denominazione: partner.denominazione,
         dataInizio: partner.dataInizio,
-        fatturatoPartner: partner.fatturatoPartner
       };
 
       PartnerDataService.create(data)
@@ -35,7 +33,6 @@ const AddPartner = () => {
           id: response.data.id,
           denominazione: response.data.denominazione,
           dataInizio: response.data.dataInizio,
-          fatturatoPartner: response.data.fatturatoPartner
         });
         setSubmitted(true);
         console.log(response.data);
@@ -88,20 +85,7 @@ const AddPartner = () => {
                 onChange={handleInputChange}
                 name="dataInizio"
               />
-            </div>
-  
-            <div className="form-group">
-              <label htmlFor="title">Fatturato partner</label>
-              <input
-                type="number"
-                className="form-control"
-                id="fatturatoPartner"
-                required
-                value={partner.fatturatoPartner}
-                onChange={handleInputChange}
-                name="fatturatoPartner"
-              />
-            </div>           
+            </div>                    
   
             <button onClick={savePartner} className="btn btn-success">
               Conferma
