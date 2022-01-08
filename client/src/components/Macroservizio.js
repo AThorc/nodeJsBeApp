@@ -10,9 +10,7 @@ import moment from 'moment'
 const Macroservizio = props => {
   const initialMacroservizioState = {
     id: null,
-    servizi: "",
-    dataInizio: "",
-    fatturato: ""    
+    servizi: "",  
   };
   const [currentMacroservizio, setCurrentMacroservizio] = useState(initialMacroservizioState);
   const [message, setMessage] = useState("");
@@ -89,32 +87,7 @@ const Macroservizio = props => {
                   name="servizi"
                 />
               </div>
-  
-              <div className="form-group">
-                <label htmlFor="title">Data inizio</label>
-                <input
-                  type="date"
-                  className="form-control"
-                  id="dataInizio"
-                  required
-                  value={moment(currentMacroservizio.dataInizio).format('YYYY-MM-DD')}        
-                  onChange={handleInputChange}
-                  name="dataInizio"
-                />
-              </div>
-  
-              <div className="form-group">
-                <label htmlFor="title">Fatturato macroservizio</label>
-                <input
-                  type="number"
-                  className="form-control"
-                  id="fatturato"
-                  required
-                  value={currentMacroservizio.fatturato}
-                  onChange={handleInputChange}
-                  name="fatturato"
-                />
-              </div>               
+              
             </form>          
   
             <ConfirmDialog 

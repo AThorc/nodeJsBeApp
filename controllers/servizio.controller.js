@@ -11,9 +11,7 @@ exports.create = (req, res) => {
   
     // Create a Servizio
     const servizio = new Servizio({      
-      servizi: req.body.servizi,     
-      dataInizio: req.body.dataInizio,
-      fatturato: req.body.fatturato
+      servizi: req.body.servizi
     });
   
     // Save Servizio in the database

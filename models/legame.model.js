@@ -20,7 +20,9 @@ module.exports = mongoose => {
           ref: "Servizio"
         },
         fatturatoPartner: Number,
-        fatturatoSocieta: Number
+        fatturatoSocieta: Number,
+        dataInizio: Date,
+        note: String
       },
       { timestamps: true }
     );

@@ -23,7 +23,9 @@ const InserisciServizio = props => {
     id: null,
     tipo: "",
     fatturatoPartner: undefined,
-    fatturatoSocieta: undefined
+    fatturatoSocieta: undefined,
+    dataInizio: undefined,
+    note: undefined
 
   };
 
@@ -82,6 +84,7 @@ const InserisciServizio = props => {
         partnerid: partner,
         segnalatoreid: segnalatore.value,  
         tipo: legame.tipo,
+        dataInizio: legame.dataInizio,
         fatturatoPartner: legame.fatturatoPartner,
         fatturatoSocieta: legame.fatturatoSocieta,
       };
@@ -94,6 +97,7 @@ const InserisciServizio = props => {
           clienteid: response.data.clienteid,
           partnerid: response.data.partnerid,
           tipo: response.data.tipo,
+          dataInizio: response.data.dataInizio,
           fatturatoPartner: response.data.fatturatoPartner,
           fatturatoSocieta: response.data.fatturatoSocieta
         });
@@ -262,25 +266,11 @@ const InserisciServizio = props => {
                 type="date"
                 className="form-control"
                 id="dataInizio"                
-                value={moment(macroservizio.dataInizio).format('YYYY-MM-DD')}  
+                value={legame.dataInizio}  
                 onChange={handleInputChange}
                 name="dataInizio"
-                readOnly="readonly"
               />
-            </div>
-  
-            <div className="form-group">
-              <label htmlFor="title">Fatturato macroservizio</label>
-              <input
-                type="number"
-                className="form-control"
-                id="fatturato"                
-                value={macroservizio.fatturato}
-                onChange={handleInputChange}
-                name="fatturato"
-                readOnly="readonly"
-              />
-            </div>   
+            </div>          
 
             <div className="form-group">
               <label htmlFor="title">Tip. servizi</label>

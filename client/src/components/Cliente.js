@@ -10,6 +10,8 @@ import LegameDataService from "../services/LegameService";
 import PartnerDataService from "../services/PartnerService";
 
 import {BsPlusLg} from "react-icons/bs"
+import {BsFillPencilFill} from "react-icons/bs"
+import {BsXLg} from "react-icons/bs"
 
 import { Link, useHistory } from "react-router-dom";
 
@@ -36,7 +38,19 @@ const Cliente = props => {
     attIstatAteco2007: "",
     settore: ""
   };
+
+  const initialLegameState = {
+    id: null,
+    tipo: "",
+    fatturatoPartner: undefined,
+    fatturatoSocieta: undefined,
+    dataInizio: undefined,
+    note: undefined
+
+  };
   const [currentCliente, setCurrentCliente] = useState(initialClienteState);
+
+  const [currentLegame, setCurrentLegame] = useState(initialLegameState);
   const [message, setMessage] = useState("");
 
   const user = AuthService.getCurrentUser();
@@ -133,6 +147,17 @@ const Cliente = props => {
   const handleInputChange = event => {
     const { name, value } = event.target;
     setCurrentCliente({ ...currentCliente, [name]: value });
+  };
+
+  const handleInputLegameChange = (event, index) => {
+    const { name, value } = event.target;
+    console.log('handleInputLegameChange');
+    console.log(name);
+    console.log(value);
+    const newLegame = [ ...currentListaLegameMacroservizio];
+    newLegame[index][name] = value;
+    //setCurrentLegame({ ...currentLegame, [name]: value });
+    setCurrentListaLegameMacroservizio(newLegame);
   };  
 
   const updateCliente = () => {
@@ -182,23 +207,125 @@ const Cliente = props => {
     header.push(<th key={4}>Data inizio</th>);
     header.push(<th key={5}>Fatturato Partner</th>);
     header.push(<th key={6}>Fatturato Società</th>);
+    header.push(<th key={7}>Azioni</th>);
     return header;
+ };
+
+
+ const getDenominazionePartner = partnerId =>{
+   return partnersLegame.filter(partner => partner.includes(partnerId)).toString().substring(partnersLegame.filter(partner => partner.includes(partnerId)).toString().indexOf('-')+1)
  };
 
   const renderTableData = () => {
     return currentListaLegameMacroservizio.map((legame, index) => {
-      const { clienteid, createdAt, id, partnerid, servizioid, tipo, updatedAt, fatturatoPartner, fatturatoSocieta } = legame //destructuring
-      return (
-          <tr key={id}>
+      //const { clienteid, createdAt, id, partnerid, servizioid, tipo, updatedAt, fatturatoPartner, fatturatoSocieta } = legame //destructuring
+      return (          
+          <tr key={legame.id}>
             <td>{currentCliente.ragioneSociale}</td>         
-            <td>{partnersLegame.filter(partner => partner.includes(legame.partnerid)).toString().substring(partnersLegame.filter(partner => partner.includes(legame.partnerid)).toString().indexOf('-')+1)}</td>
-            <td>{tipo}</td>
-            <td>{moment(currentMacroservizio.dataInizio).format('YYYY-MM-DD')}</td>            
-            <td>{fatturatoPartner}</td>
-            <td>{fatturatoSocieta}</td>
+            <td>{getDenominazionePartner(legame.partnerid)}</td>
+            <td>
+            <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="tipo"
+                    required
+                    value={legame.tipo}
+                    key={index}
+                    onChange={(e) => handleInputLegameChange(e, index)}
+                    name="tipo"
+                />
+            </td>
+            <td>
+              <input
+                      type="date"
+                      className="form-control fit-content"
+                      id="dataInizio"
+                      required
+                      value={moment(legame.dataInizio).format('YYYY-MM-DD')} 
+                      key={index}
+                      onChange={(e) => handleInputLegameChange(e, index)}
+                      name="dataInizio"
+                  />
+            </td>            
+            <td>
+              <input
+                    type="number"
+                    className="form-control fit-content"
+                    id="fatturatoPartner"
+                    required
+                    value={legame.fatturatoPartner}
+                    key={index}
+                    onChange={(e) => handleInputLegameChange(e, index)}
+                    name="fatturatoPartner"
+                />
+            </td>
+            <td>
+              <input
+                      type="number"
+                      className="form-control fit-content"
+                      id="fatturatoSocieta"
+                      required
+                      value={legame.fatturatoSocieta}
+                      key={index}
+                      onChange={(e) => handleInputLegameChange(e, index)}
+                      name="fatturatoSocieta"
+                />
+            </td>
+            <td>
+              <ConfirmDialog 
+                title= {<BsXLg />}
+                message= 'Sei sicuro di voler cancellare il servizio?'
+                onClickYes= {()=> deleteLegame(legame.id)}
+                className="btn btn-danger"
+              /> 
+
+              <ConfirmDialog 
+                title= {<BsFillPencilFill />}
+                message= 'Sei sicuro di voler aggiornare il servizio?'
+                onClickYes= {() => updateLegame(legame.id, {partnerid: legame.partnerid, clientid: legame.clienteid, tipo: legame.tipo, dataInizio: legame.dataInizio, fatturatoPartner: legame.fatturatoPartner, fatturatoSocieta: legame.fatturatoSocieta})}
+                className="btn btn-primary"
+              />
+            </td>
           </tr>
       )
     })
+  };
+
+  const refreshList = () => {
+    retrieveLegami(currentMacroservizio.id, currentCliente.id);
+  };
+
+  const refreshSearchedList = () => {    
+    setCurrentCliente(null);
+    setCurrentIndex(-1);
+  };
+
+  const deleteLegame = legameid => {
+    if(user){
+      LegameDataService.remove(legameid)
+      .then(response => {
+        console.log(response.data);
+        refreshList();
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }
+    
+  };
+
+  const updateLegame = (legameid, data) => {
+    if(user){
+      LegameDataService.update(legameid, data)
+      .then(response => {
+        console.log(response.data);
+        refreshList();
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }
+    
   };
 
   if(user){
@@ -207,7 +334,7 @@ const Cliente = props => {
         {currentCliente ? (
           <div className="edit-anagrafica-form">
             <h4>Lista macroservizi {currentCliente.ragioneSociale}</h4>           
-            <div className="margin-top-2">
+            <div className="lista-macroservizi-wrapper">
               <div className="half1">
         
                 <ul className="list-group percent-max-content">
@@ -240,7 +367,8 @@ const Cliente = props => {
                         <tr>{renderTableHeader()}</tr>
                         {renderTableData()}
                     </tbody>
-                  </table>
+                  </table>                  
+
                 </div> ):(<div>
                 </div>
               )}

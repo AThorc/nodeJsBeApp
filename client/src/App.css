@@ -116,11 +116,11 @@ body.react-confirm-alert-body-element {
 
 .half1 {
   float: left;
-  width:30%;
+  width:20%;
 }
 .half2 {
   float: left;
-  width: 70%!important;
+  width: 80%!important;
 }
 
 
@@ -169,6 +169,7 @@ body.react-confirm-alert-body-element {
   margin-left: -30%;
 }
 
-.margin-top-2{
-  margin-top: 2%;
+.lista-macroservizi-wrapper{
+  margin-top: 3%;
+  width: 1400px;
 }

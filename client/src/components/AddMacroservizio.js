@@ -6,9 +6,7 @@ import AuthService from "../services/auth.service";
 const AddMacroservizio = () => {
   const initialMacroservizioState = {
     id: null,
-    servizi: "",
-    dataInizio: "",
-    fatturato: ""
+    servizi: ""
 
   };
   const [macroservizio, setMacroservizio] = useState(initialMacroservizioState);
@@ -25,8 +23,6 @@ const AddMacroservizio = () => {
     if(user){
       var data = {        
         servizi: macroservizio.servizi,
-        dataInizio: macroservizio.dataInizio,
-        fatturato: macroservizio.fatturato
       };
 
       MacroservizioDataService.create(data)
@@ -34,8 +30,6 @@ const AddMacroservizio = () => {
         setMacroservizio({
           id: response.data.id,
           servizi: response.data.servizi,
-          dataInizio: response.data.dataInizio,
-          fatturato: response.data.fatturato
         });
         setSubmitted(true);
         console.log(response.data);
@@ -74,32 +68,6 @@ const AddMacroservizio = () => {
                 value={macroservizio.servizi}
                 onChange={handleInputChange}
                 name="servizi"
-              />
-            </div>
-  
-            <div className="form-group">
-              <label htmlFor="title">Data inizio</label>
-              <input
-                type="date"
-                className="form-control"
-                id="dataInizio"
-                required
-                value={macroservizio.dataInizio}
-                onChange={handleInputChange}
-                name="dataInizio"
-              />
-            </div>
-  
-            <div className="form-group">
-              <label htmlFor="title">Fatturato macroservizio</label>
-              <input
-                type="number"
-                className="form-control"
-                id="fatturato"
-                required
-                value={macroservizio.fatturato}
-                onChange={handleInputChange}
-                name="fatturato"
               />
             </div>           
   
