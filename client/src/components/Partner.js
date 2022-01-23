@@ -63,7 +63,8 @@ const Partner = props => {
       PartnerDataService.remove(currentPartner.id)
       .then(response => {
         console.log(response.data);
-        props.history.push("/partners");
+        props.history.push("/listaPartner");
+        window.location.reload();
       })
       .catch(e => {
         console.log(e);
