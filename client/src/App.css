@@ -122,6 +122,7 @@ body.react-confirm-alert-body-element {
   float: left;
   width: 85%!important;
   -webkit-transform: scale(.8);
+  transform-origin: top;
 }
 
 .min-text-form-control {
