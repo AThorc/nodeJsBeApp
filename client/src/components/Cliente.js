@@ -371,6 +371,7 @@ const Cliente = props => {
 
               <button onClick={() => renderNote(legame)}
                         className="btn btn-warning"
+                        className={` btn ${legame.note && legame.note.length > 0 ? "btn-success" : "btn-warning"}`}
               >
                   {<BsChatLeftTextFill />}
               </button>	
@@ -512,10 +513,11 @@ const Cliente = props => {
             </tbody>
           </table>          
           <ConfirmDialog 
-                title= "Aggiorna note servizio"
+                title= "Aggiorna note"
                 message= 'Sei sicuro di voler aggiornare le note del servizio?'
                 onClickYes= {() => updateNoteLegame(currentLegameNote.id, {note: currentLegameNote.note})}
                 className="note-button-margin-top btn btn-primary"
+                
               /> 
           </div>  
           ) :(
