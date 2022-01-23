@@ -60,7 +60,7 @@ class App extends Component {
       showModeratorBoard: false,
       showAdminBoard: false,
       currentUser: undefined,
-      modifiche: undefined,
+      modifiche: [],
     };
   }
 
@@ -227,7 +227,7 @@ class App extends Component {
           <Route exact path="/login" component={Login} />
         </div>
         <div className="right-corner">
-          {currentUser && modifiche && (
+          {currentUser && modifiche && modifiche.length > 0 && (
               <h6>Ultima modifica di: {modifiche[0].username}, in data: {moment(modifiche[0].data).format('YYYY-MM-DD HH:mm:ss')} </h6>
           )}
         </div>
