@@ -307,7 +307,7 @@ const Cliente = props => {
             <td>
             <input
                     type="text"
-                    className="form-control"
+                    className="form-control min-text-form-control"
                     id="tipo"
                     required
                     value={legame.tipo}
