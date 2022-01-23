@@ -5,6 +5,8 @@ import "./App.css";
 
 import svg from "./images/multifinance-svg.svg"
 
+import moment from 'moment'
+
 /*
 import AddTutorial from "./components/AddTutorial";
 import Tutorial from "./components/Tutorial";
@@ -226,7 +228,7 @@ class App extends Component {
         </div>
         <div className="right-corner">
           {currentUser && modifiche && (
-              <h4>Ultima modifica di: {modifiche[0].username}</h4>
+              <h6>Ultima modifica di: {modifiche[0].username}, in data: {moment(modifiche[0].data).format('YYYY-MM-DD HH:mm:ss')} </h6>
           )}
         </div>
 

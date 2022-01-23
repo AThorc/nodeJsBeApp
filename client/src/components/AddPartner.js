@@ -25,7 +25,8 @@ const AddPartner = () => {
       var data = {        
         denominazione: partner.denominazione,
         dataInizio: partner.dataInizio,
-        userid: user.id
+        userid: user.id,
+        username: user.username,
       };
 
       PartnerDataService.create(data)
