@@ -128,11 +128,16 @@ body.react-confirm-alert-body-element {
 
 .half1 {
   float: left;
-  width:20%;
+  width:11%;
 }
 .half2 {
   float: left;
-  width: 80%!important;
+  width: 85%!important;
+  -webkit-transform: scale(.8);
+}
+
+.min-text-form-control {
+  min-width: 114px;
 }
 
 
