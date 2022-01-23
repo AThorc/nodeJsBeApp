@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 import ClienteDataService from "../services/ClienteService";
 import ServizioDataService from "../services/ServizioService";
 import { Link, useHistory } from "react-router-dom";
@@ -24,10 +25,15 @@ const ClientesList = () => {
   const user = AuthService.getCurrentUser();
   const history = useHistory();
 
+
+
   useEffect(() => {
     if(user){
       retrieveClientes();
-    }    
+      if(history.location.cliente){
+        setCurrentCliente(history.location.cliente);
+      }
+    }     
   }, []);
 
 

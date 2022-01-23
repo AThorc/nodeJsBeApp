@@ -178,12 +178,21 @@ const PartnersList = () => {
     return (
         <tr key={index}>
           <td>
-            <Link
+            {/* <Link
               to={"/clientes/" + cliente.id}
               className="badge badge-warning"
             >
               {cliente.ragioneSociale}
-            </Link>                
+            </Link>                 */}
+            <Link
+              to={{
+                pathname: "/anagrafica/" + cliente.id,
+                cliente: cliente                
+              }}
+              className="badge badge-warning"
+            >
+              {cliente.ragioneSociale}
+            </Link>
           </td>         
           <td>{cliente.codiceFiscale}</td>         
           <td>{cliente.partitaIVA}</td>         

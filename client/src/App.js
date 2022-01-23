@@ -187,6 +187,7 @@ class App extends Component {
             <Route exact path="/register" component={Register} />
             <Route exact path="/profile" component={Profile} />
             <Route path="/anagrafica" component={BoardUser} />
+            <Route path="/anagrafica/:clienteid" component={BoardUser} />
             <Route path="/mod" component={BoardModerator} />
             <Route path="/admin" component={BoardAdmin} />
             <Route exact path="/addVisita" component={AddVisita} />
