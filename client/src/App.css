@@ -201,3 +201,7 @@ body.react-confirm-alert-body-element {
 .note-button-margin-top{
   margin-top: 1%;
 }
+
+.center-login{
+  display: contents;
+}
