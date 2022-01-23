@@ -43,6 +43,8 @@ const Partner = props => {
 
   const updatePartner = () => {
     if(user){
+      currentPartner.userid = user.id;
+      currentPartner.username = user.username;
       PartnerDataService.update(currentPartner.id, currentPartner)
       .then(response => {
         console.log(response.data);

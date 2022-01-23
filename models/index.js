@@ -21,5 +21,6 @@ db.partners = require("./partner.model.js")(mongoose);
 db.segnalatores = require("./segnalatore.model.js")(mongoose);
 db.contattos = require("./contatto.model.js")(mongoose);
 db.legames = require("./legame.model.js")(mongoose);
+db.modificas = require("./modifica.model.js")(mongoose);
 
 module.exports = db;

@@ -197,3 +197,9 @@ body.react-confirm-alert-body-element {
 .center-login{
   display: contents;
 }
+
+.right-corner{
+  position:absolute;
+  bottom:0;
+  right:0;
+}

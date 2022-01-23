@@ -45,6 +45,8 @@ import InserisciServizio from "./components/InserisciServizio";
 
 import ApexChart from "./components/Statistiche";
 
+import ModificaDataService from "./services/ModificaService";
+
 require('dotenv').config();
 
 class App extends Component {
@@ -56,11 +58,23 @@ class App extends Component {
       showModeratorBoard: false,
       showAdminBoard: false,
       currentUser: undefined,
+      modifiche: undefined,
     };
   }
 
   componentDidMount() {
     const user = AuthService.getCurrentUser();
+    ModificaDataService.getAll().then(response => {
+      this.setState({
+        modifiche: response.data.sort((a,b) => {
+            return new Date(a.data).getTime() - 
+                new Date(b.data).getTime()
+        }).reverse(),
+      });
+    })
+    .catch(e => {
+      console.log(e);
+    });
 
     if (user) {
       this.setState({
@@ -76,7 +90,9 @@ class App extends Component {
   }
 
   render() {
-    const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
+    const { currentUser, showModeratorBoard, showAdminBoard,  modifiche} = this.state;
+    console.log('modifiche');
+    console.log(modifiche);
 
     return (
       <div>
@@ -207,6 +223,11 @@ class App extends Component {
         </div>
         <div className="container mt-3 center-login">
           <Route exact path="/login" component={Login} />
+        </div>
+        <div className="right-corner">
+          {currentUser && modifiche && (
+              <h4>Ultima modifica di: {modifiche[0].username}</h4>
+          )}
         </div>
 
       </div>

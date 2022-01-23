@@ -52,6 +52,7 @@ require('./routes/partner.routes')(app);
 require('./routes/segnalatore.routes')(app);
 require('./routes/contatto.routes')(app);
 require('./routes/legame.routes')(app);
+require('./routes/modifica.routes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
