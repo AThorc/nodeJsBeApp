@@ -49,6 +49,7 @@ const Partner = props => {
       .then(response => {
         console.log(response.data);
         setMessage("The partner was updated successfully!");
+        window.location.reload();
       })
       .catch(e => {
         console.log(e);
