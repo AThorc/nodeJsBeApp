@@ -8,6 +8,9 @@ module.exports = app => {
   
     // Retrieve a single Modifica with id
     router.get("/:id", modificas.findOne);
+
+    // Create a new Modifica
+    router.post("/", modificas.create);
   
   
     app.use('/api/modificas', router);

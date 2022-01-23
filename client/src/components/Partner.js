@@ -7,6 +7,8 @@ import ConfirmDialog from "./confirmDialog.component";
 
 import moment from 'moment'
 
+import ModificaDataService from "../services/ModificaService";
+
 const Partner = props => {
   const initialPartnerState = {
     id: null,
@@ -61,10 +63,20 @@ const Partner = props => {
   const deletePartner = () => {
     if(user){
       PartnerDataService.remove(currentPartner.id)
-      .then(response => {
-        console.log(response.data);
-        props.history.push("/listaPartner");
-        window.location.reload();
+      .then(response => {        
+        var modifica = {        
+          data: new Date(),          
+          userid: user.id,
+          username: user.username,
+        };
+        ModificaDataService.create(modifica).then(response => {        
+          props.history.push("/listaPartner");
+          window.location.reload();
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
       })
       .catch(e => {
         console.log(e);

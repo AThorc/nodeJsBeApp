@@ -35,3 +35,28 @@ exports.findOne = (req, res) => {
           .send({ message: "Error retrieving Modifica with id=" + id });
       });
 };
+
+
+// Create and Save a new Modifica
+exports.create = (req, res) => {
+
+  // Create a Legame
+  const modifica = new Modifica({
+    data: req.body.data,
+    userid: req.body.userid,       
+    username: req.body.username,
+  });
+
+  // Save Legame in the database
+  modifica
+    .save(modifica)
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while creating the Modifica."
+      });
+    });
+};

@@ -17,6 +17,7 @@ exports.create = (req, res) => {
       dataInizio: req.body.dataInizio,
       fatturatoPartner: req.body.fatturatoPartner,
       userid: req.body.userid,
+      username: req.body.username,
     });
   
     // Save Partner in the database
@@ -27,7 +28,9 @@ exports.create = (req, res) => {
         //Creo il record di modifica
         const modifica = new Modifica({
           partnerid : partner.id,
-          data: new Date()
+          data: new Date(),
+          userid: partner.userid,
+          username: partner.username,
         });
         modifica.save(modifica);
       })
