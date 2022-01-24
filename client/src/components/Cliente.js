@@ -280,6 +280,7 @@ const Cliente = props => {
                     value={currentLegameNote.note}
                     onChange={handleInputLegameNoteChange}
                     name="note"
+                    disabled={!showAdminBoard}
                 />
             </td>
     </tr>

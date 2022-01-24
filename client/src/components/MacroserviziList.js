@@ -26,6 +26,7 @@ const MacroserviziList = () => {
 
 
   const user = AuthService.getCurrentUser();
+  const showAdminBoard = user.roles.includes("ROLE_ADMIN");
   const history = useHistory();
 
 
@@ -132,7 +133,7 @@ const MacroserviziList = () => {
   };
 
   const removeAllMacroservizi = () => {
-    if(user){
+    if(user && showAdminBoard){
       MacroservizioDataService.removeAll()
       .then(response => {
         console.log(response.data);
@@ -188,7 +189,7 @@ const MacroserviziList = () => {
                 Cerca
               </button>
               <button
-              className="btn btn-success float-right"
+              className={"btn btn-success float-right " + (!showAdminBoard ? "d-none" : "")}
               type="button"
               onClick={handleAggiungiMacroservizioClick}
             >
@@ -233,12 +234,17 @@ const MacroserviziList = () => {
                 <label>
                   <strong>Servizi:</strong>
                 </label>{" "}
-                <Link
-                  to={"/macroservizios/" + currentMacroservizio.id}
-                  className="badge badge-warning"
-                >
-                  {currentMacroservizio.servizi}
-                </Link>                
+                {showAdminBoard ? (
+                  <Link
+                    to={"/macroservizios/" + currentMacroservizio.id}
+                    className="badge badge-warning"
+                  >
+                    {currentMacroservizio.servizi}
+                  </Link> 
+                  ) : (
+                    currentMacroservizio.servizi
+                  )
+                }               
               </div>
                            
             </div>
