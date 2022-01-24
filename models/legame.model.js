@@ -22,7 +22,13 @@ module.exports = mongoose => {
         fatturatoPartner: Number,
         fatturatoSocieta: Number,
         dataInizio: Date,
-        note: String
+        note: String,
+        userid:
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        },
+        username: String,
       },
       { timestamps: true }
     );
