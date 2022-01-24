@@ -5,7 +5,9 @@ import AuthService from "../services/auth.service";
 
 import ConfirmDialog from "./confirmDialog.component";
 
-import moment from 'moment'
+import moment from 'moment';
+
+import ModificaDataService from "../services/ModificaService";
 
 const Macroservizio = props => {
   const initialMacroservizioState = {
@@ -42,10 +44,14 @@ const Macroservizio = props => {
 
   const updateMacroservizio = () => {
     if(user){
+      currentMacroservizio.userid = user.id;
+      currentMacroservizio.username = user.username;
+
       MacroservizioDataService.update(currentMacroservizio.id, currentMacroservizio)
       .then(response => {
         console.log(response.data);
         setMessage("The macroservizio was updated successfully!");
+        window.location.reload();
       })
       .catch(e => {
         console.log(e);
@@ -58,8 +64,25 @@ const Macroservizio = props => {
     if(user){
       MacroservizioDataService.remove(currentMacroservizio.id)
       .then(response => {
-        console.log(response.data);
-        props.history.push("/listaMacroservizi");
+        // console.log(response.data);
+        // props.history.push("/listaMacroservizi");
+
+        var modifica = {        
+          data: new Date(),          
+          userid: user.id,
+          username: user.username,
+        };
+        //Creo il record di modifica
+        ModificaDataService.create(modifica).then(response => {        
+          props.history.push("/listaMacroservizi");
+          window.location.reload();
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+
+
       })
       .catch(e => {
         console.log(e);

@@ -3,7 +3,7 @@ import MacroservizioDataService from "../services/MacroservizioService";
 
 import AuthService from "../services/auth.service";
 
-const AddMacroservizio = () => {
+const AddMacroservizio = props => {
   const initialMacroservizioState = {
     id: null,
     servizi: ""
@@ -23,6 +23,8 @@ const AddMacroservizio = () => {
     if(user){
       var data = {        
         servizi: macroservizio.servizi,
+        userid: user.id,
+        username: user.username,
       };
 
       MacroservizioDataService.create(data)
@@ -32,6 +34,8 @@ const AddMacroservizio = () => {
           servizi: response.data.servizi,
         });
         setSubmitted(true);
+        props.history.push("/listaMacroservizi");
+        window.location.reload();
         console.log(response.data);
       })
       .catch(e => {

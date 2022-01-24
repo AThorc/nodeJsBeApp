@@ -3,7 +3,13 @@ module.exports = mongoose => {
       {    
         servizi: String,       
         dataInizio: Date,
-        fatturato: Number       
+        fatturato: Number,
+        userid:
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        },
+        username: String,    
       },
       { timestamps: true }
     );
