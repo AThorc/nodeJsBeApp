@@ -23,6 +23,7 @@ export default class Login extends Component {
     this.onChangePassword = this.onChangePassword.bind(this);
 
     this.state = {
+      id: "",
       username: "",
       password: "",
       loading: false,
@@ -53,7 +54,7 @@ export default class Login extends Component {
     this.form.validateAll();
 
     if (this.checkBtn.context._errors.length === 0) {
-      AuthService.login(this.state.username, this.state.password).then(
+      AuthService.changePsw(this.state.password).then(
         () => {
           this.props.history.push("/home");
           window.location.reload();
@@ -95,17 +96,6 @@ export default class Login extends Component {
               this.form = c;
             }}
           >
-            <div className="form-group">
-              <label htmlFor="username">Username</label>
-              <Input
-                type="text"
-                className="form-control"
-                name="username"
-                value={this.state.username}
-                onChange={this.onChangeUsername}
-                validations={[required]}
-              />
-            </div>
 
             <div className="form-group">
               <label htmlFor="password">Password</label>
@@ -127,7 +117,7 @@ export default class Login extends Component {
                 {this.state.loading && (
                   <span className="spinner-border spinner-border-sm"></span>
                 )}
-                <span>Login</span>
+                <span>Cambia password</span>
               </button>
             </div>
 
