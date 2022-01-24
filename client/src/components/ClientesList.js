@@ -25,6 +25,7 @@ const ClientesList = props => {
   const [message, setMessage] = useState("");
 
   const user = AuthService.getCurrentUser();
+  const showAdminBoard = user.roles.includes("ROLE_ADMIN");
   const history = useHistory();
 
 
@@ -81,7 +82,7 @@ const ClientesList = props => {
   };
 
   const removeAllClientes = () => {
-    if(user){
+    if(user && showAdminBoard){
       ClienteDataService.removeAll()
       .then(response => {
         console.log(response.data);
@@ -95,7 +96,7 @@ const ClientesList = props => {
 
 
   const removeAllServizios = () => {
-    if(user){
+    if(user && showAdminBoard){
       ServizioDataService.removeAll()
       .then(response => {
         console.log(response.data);
@@ -137,7 +138,7 @@ const ClientesList = props => {
 
 
   const updateCliente = () => {
-    if(user){
+    if(user && showAdminBoard){
       currentCliente.userid = user.id;
       currentCliente.username = user.username;
       ClienteDataService.update(currentCliente.id, currentCliente)
@@ -155,7 +156,7 @@ const ClientesList = props => {
   };
 
   const deleteCliente = () => {
-    if(user){
+    if(user && showAdminBoard){
       ClienteDataService.remove(currentCliente.id)
       .then(response => {
         // console.log(response.data);
@@ -204,6 +205,7 @@ const ClientesList = props => {
                     value={currentCliente.ragioneSociale}
                     onChange={handleInputChange}
                     name="ragioneSociale"
+                    disabled={!showAdminBoard}
                 />
             </td>                         
             <td>
@@ -218,6 +220,7 @@ const ClientesList = props => {
                     value={currentCliente.codiceFiscale}
                     onChange={handleInputChange}
                     name="codiceFiscale"
+                    disabled={!showAdminBoard}
                 />
             </td>
             <td>
@@ -232,6 +235,7 @@ const ClientesList = props => {
                     value={currentCliente.partitaIVA}
                     onChange={handleInputChange}
                     name="partitaIVA"
+                    disabled={!showAdminBoard}
                 />
             </td>          
             <td>
@@ -246,6 +250,7 @@ const ClientesList = props => {
                     value={currentCliente.legaleRappresentate}
                     onChange={handleInputChange}
                     name="legaleRappresentate"
+                    disabled={!showAdminBoard}
                 />
             </td>
           </tr>
@@ -263,6 +268,7 @@ const ClientesList = props => {
                     value={currentCliente.telefono}
                     onChange={handleInputChange}
                     name="telefono"
+                    disabled={!showAdminBoard}
                 />
             </td>                    
             <td>
@@ -277,6 +283,7 @@ const ClientesList = props => {
                     value={currentCliente.cellulare}
                     onChange={handleInputChange}
                     name="cellulare"
+                    disabled={!showAdminBoard}
                 />
             </td>        
             <td>
@@ -291,6 +298,7 @@ const ClientesList = props => {
                     value={currentCliente.mail}
                     onChange={handleInputChange}
                     name="mail"
+                    disabled={!showAdminBoard}
                 />
             </td>
             <td>
@@ -305,6 +313,7 @@ const ClientesList = props => {
                     value={currentCliente.pec}
                     onChange={handleInputChange}
                     name="pec"
+                    disabled={!showAdminBoard}
                 />
             </td>       
           </tr>
@@ -322,6 +331,7 @@ const ClientesList = props => {
                     value={currentCliente.sede}
                     onChange={handleInputChange}
                     name="sede"
+                    disabled={!showAdminBoard}
                 />
             </td>                    
             <td>
@@ -336,6 +346,7 @@ const ClientesList = props => {
                     value={currentCliente.localita}
                     onChange={handleInputChange}
                     name="localita"
+                    disabled={!showAdminBoard}
                 />
             </td>        
             <td>
@@ -350,6 +361,7 @@ const ClientesList = props => {
                     value={currentCliente.cap}
                     onChange={handleInputChange}
                     name="cap"
+                    disabled={!showAdminBoard}
                 />
             </td>
             <td>
@@ -364,6 +376,7 @@ const ClientesList = props => {
                     value={moment(currentCliente.dataCostituzione).format('YYYY-MM-DD')} 
                     onChange={handleInputChange}
                     name="dataCostituzione"
+                    disabled={!showAdminBoard}
                 />
             </td>       
           </tr>
@@ -381,6 +394,7 @@ const ClientesList = props => {
                     value={moment(currentCliente.inizioAttivita).format('YYYY-MM-DD')} 
                     onChange={handleInputChange}
                     name="inizioAttivita"
+                    disabled={!showAdminBoard}
                 />
             </td>                    
             <td>
@@ -395,6 +409,7 @@ const ClientesList = props => {
                     value={currentCliente.tipo}
                     onChange={handleInputChange}
                     name="tipo"
+                    disabled={!showAdminBoard}
                 />
             </td>
             <td>
@@ -409,6 +424,7 @@ const ClientesList = props => {
                     value={currentCliente.dimensione}
                     onChange={handleInputChange}
                     name="dimensione"
+                    disabled={!showAdminBoard}
                 />
             </td>       
             <td>
@@ -423,6 +439,7 @@ const ClientesList = props => {
                     value={currentCliente.attIstatAteco2007}
                     onChange={handleInputChange}
                     name="attIstatAteco2007"
+                    disabled={!showAdminBoard}
                 />
             </td>
             <td>
@@ -437,6 +454,7 @@ const ClientesList = props => {
                     value={currentCliente.settore} 
                     onChange={handleInputChange}
                     name="settore"
+                    disabled={!showAdminBoard}
                 />
             </td>       
           </tr>
@@ -468,7 +486,7 @@ const ClientesList = props => {
                 Cerca
               </button>
               <button
-              className="btn btn-success float-right"
+              className={"btn btn-success float-right " + (!showAdminBoard ? "d-none" : "")}
               type="button"
               onClick={handleAggiungiClienteClick}
             >
@@ -498,6 +516,7 @@ const ClientesList = props => {
           <button
             className="m-3 btn btn-sm btn-danger d-none"
             onClick={removeAllClientes}
+            disabled={!showAdminBoard}
           >
             Remove All
           </button>          
@@ -520,14 +539,14 @@ const ClientesList = props => {
                   title= 'Cancella'
                   message= 'Sei sicuro di voler cancellare il cliente?'
                   onClickYes= {deleteCliente}
-                  className="btn btn-danger"
+                  className={"btn btn-danger " + (!showAdminBoard ? "d-none" : "")}
                 />
 
                 <ConfirmDialog 
                   title= 'Aggiorna'
                   message= 'Sei sicuro di voler aggiornare il cliente?'
                   onClickYes= {updateCliente}
-                  className="btn btn-primary"
+                  className={"btn btn-primary "+ (!showAdminBoard ? "d-none" : "")}  
                 />
 
                 <Link

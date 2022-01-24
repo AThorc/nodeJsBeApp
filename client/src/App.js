@@ -117,13 +117,13 @@ class App extends Component {
                 </Link>
               </li>
 
-              {showModeratorBoard && (
+              {/* {showModeratorBoard && (
                 <li className="nav-item">
                   <Link to={"/mod"} className="nav-link">
                     Moderator Board
                   </Link>
                 </li>
-              )}
+              )} */}
 
               {/* {showAdminBoard && (
                 <li className="nav-item ">
