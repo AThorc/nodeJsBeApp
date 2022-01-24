@@ -25,6 +25,12 @@ module.exports = mongoose => {
             ref: "Partner"
           }
         ],
+        userid:
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        },
+        username: String,
       },
       { timestamps: true }
     );

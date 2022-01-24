@@ -3,7 +3,7 @@ import PartnerDataService from "../services/PartnerService";
 
 import AuthService from "../services/auth.service";
 
-const AddPartner = () => {
+const AddPartner = (props) => {
   const initialPartnerState = {
     id: null,
     denominazione: "",
@@ -25,6 +25,8 @@ const AddPartner = () => {
       var data = {        
         denominazione: partner.denominazione,
         dataInizio: partner.dataInizio,
+        userid: user.id,
+        username: user.username,
       };
 
       PartnerDataService.create(data)
@@ -35,6 +37,8 @@ const AddPartner = () => {
           dataInizio: response.data.dataInizio,
         });
         setSubmitted(true);
+        props.history.push("/listaPartner");
+        window.location.reload();
         console.log(response.data);
       })
       .catch(e => {

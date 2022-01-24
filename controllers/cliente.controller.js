@@ -1,5 +1,6 @@
 const db = require("../models");
 const Cliente = db.clientes;
+const Modifica = db.modificas;
 const mongoose = require('mongoose');
 
 
@@ -31,7 +32,9 @@ exports.create = (req, res) => {
       tipo: req.body.tipo,
       dimensione: req.body.dimensione,
       attIstatAteco2007: req.body.attIstatAteco2007,
-      settore: req.body.settore
+      settore: req.body.settore,
+      userid: req.body.userid,
+      username: req.body.username,
     });
   
     // Save Cliente in the database
@@ -39,6 +42,16 @@ exports.create = (req, res) => {
       .save(cliente)
       .then(data => {
         res.send(data);
+        //Creo il record di modifica
+        const modifica = new Modifica({
+          clienteid : cliente.id,
+          data: new Date(),
+          userid: cliente.userid,
+          username: cliente.username,
+        });
+        modifica.save(modifica);
+
+
       })
       .catch(err => {
         res.status(500).send({
@@ -102,7 +115,18 @@ exports.update = (req, res) => {
           res.status(404).send({
             message: `Cannot update Cliente with id=${id}. Maybe Cliente was not found!`
           });
-        } else res.send({ message: "Cliente was updated successfully." });
+        } else{
+
+          //Creo il record di modifica
+          const modifica = new Modifica({
+            clienteid : id,
+            data: new Date(),
+            userid: req.body.userid,
+            username: req.body.username,
+          });
+          modifica.save(modifica);
+          res.send({ message: "Cliente was updated successfully." });
+        } 
       })
       .catch(err => {
         res.status(500).send({

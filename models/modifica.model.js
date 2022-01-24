@@ -1,25 +1,33 @@
 module.exports = mongoose => {
     var schema = mongoose.Schema(
-      {
+      {    
         servizioid:
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Servizio"
         },
-        userid:
+        clienteid:
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
-        },
-        clientes: [
-          {
-            type: mongoose.Schema.Types.ObjectId,
             ref: "Cliente"
-          }
-        ],
-        denominazione: String,
-        dataInizio: Date,      
-        username: String,  
+        },
+        partnerid:
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Partner"
+        },
+        legameid:
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Legame"
+        },
+        userid:
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User"
+        },
+        username: String,
+        data: Date,    
       },
       { timestamps: true }
     );
@@ -30,6 +38,6 @@ module.exports = mongoose => {
       return object;
     });
   
-    const Partner = mongoose.model("partner", schema);
-    return Partner;
+    const Modifica = mongoose.model("modifica", schema);
+    return Modifica;
   };

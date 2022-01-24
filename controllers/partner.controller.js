@@ -1,5 +1,6 @@
 const db = require("../models");
 const Partner = db.partners;
+const Modifica = db.modificas;
 
 // Create and Save a new Partner
 exports.create = (req, res) => {
@@ -14,7 +15,9 @@ exports.create = (req, res) => {
       servizioid: req.body.servizioid,
       denominazione: req.body.denominazione,
       dataInizio: req.body.dataInizio,
-      fatturatoPartner: req.body.fatturatoPartner
+      fatturatoPartner: req.body.fatturatoPartner,
+      userid: req.body.userid,
+      username: req.body.username,
     });
   
     // Save Partner in the database
@@ -22,6 +25,14 @@ exports.create = (req, res) => {
       .save(partner)
       .then(data => {
         res.send(data);
+        //Creo il record di modifica
+        const modifica = new Modifica({
+          partnerid : partner.id,
+          data: new Date(),
+          userid: partner.userid,
+          username: partner.username,
+        });
+        modifica.save(modifica);
       })
       .catch(err => {
         res.status(500).send({
@@ -101,7 +112,18 @@ exports.update = (req, res) => {
           res.status(404).send({
             message: `Cannot update Partner with id=${id}. Maybe Partner was not found!`
           });
-        } else res.send({ message: "Partner was updated successfully." });
+        } else{
+           //Creo il record di modifica
+          const modifica = new Modifica({
+            partnerid : id,
+            data: new Date(),
+            userid: req.body.userid,
+            username: req.body.username,
+
+          });
+          modifica.save(modifica);
+          res.send({ message: "Partner was updated successfully." });
+        } 
       })
       .catch(err => {
         res.status(500).send({
