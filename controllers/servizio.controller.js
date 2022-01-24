@@ -1,5 +1,6 @@
 const db = require("../models");
 const Servizio = db.servizios;
+const Modifica = db.modificas;
 
 // Create and Save a new Servizio
 exports.create = (req, res) => {
@@ -11,7 +12,9 @@ exports.create = (req, res) => {
   
     // Create a Servizio
     const servizio = new Servizio({      
-      servizi: req.body.servizi
+      servizi: req.body.servizi,
+      userid: req.body.userid,
+      username: req.body.username,
     });
   
     // Save Servizio in the database
@@ -19,6 +22,15 @@ exports.create = (req, res) => {
       .save(servizio)
       .then(data => {
         res.send(data);
+         //Creo il record di modifica
+         const modifica = new Modifica({
+          servizioid : servizio.id,
+          data: new Date(),
+          userid: servizio.userid,
+          username: servizio.username,
+        });
+        modifica.save(modifica);
+
       })
       .catch(err => {
         res.status(500).send({
@@ -98,7 +110,20 @@ exports.update = (req, res) => {
           res.status(404).send({
             message: `Cannot update Servizio with id=${id}. Maybe Servizio was not found!`
           });
-        } else res.send({ message: "Servizio was updated successfully." });
+        } else{
+            //Creo il record di modifica
+            const modifica = new Modifica({
+              servizioid : id,
+              data: new Date(),
+              userid: req.body.userid,
+              username: req.body.username,
+  
+            });
+            modifica.save(modifica);
+
+            res.send({ message: "Servizio was updated successfully." });
+
+        } 
       })
       .catch(err => {
         res.status(500).send({
