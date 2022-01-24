@@ -10,7 +10,9 @@ import ConfirmDialog from "./confirmDialog.component";
 
 import moment from 'moment';
 
-const ClientesList = () => {
+import ModificaDataService from "../services/ModificaService";
+
+const ClientesList = props => {
   const [clientes, setClientes] = useState([]);
   const [currentCliente, setCurrentCliente] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
@@ -136,11 +138,14 @@ const ClientesList = () => {
 
   const updateCliente = () => {
     if(user){
+      currentCliente.userid = user.id;
+      currentCliente.username = user.username;
       ClienteDataService.update(currentCliente.id, currentCliente)
       .then(response => {
         console.log(response.data);
         setMessage("Il cliente è stato aggiornato correttamente!");
-        refreshList();
+        // refreshList();
+        window.location.reload();
       })
       .catch(e => {
         console.log(e);
@@ -153,8 +158,25 @@ const ClientesList = () => {
     if(user){
       ClienteDataService.remove(currentCliente.id)
       .then(response => {
-        console.log(response.data);
-        refreshList();
+        // console.log(response.data);
+        // refreshList();
+
+        var modifica = {        
+          data: new Date(),          
+          userid: user.id,
+          username: user.username,
+        };
+        //Creo il record di modifica
+        ModificaDataService.create(modifica).then(response => {        
+          props.history.push("/anagrafica");
+          window.location.reload();
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+
+
       })
       .catch(e => {
         console.log(e);

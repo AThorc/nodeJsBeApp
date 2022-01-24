@@ -69,6 +69,7 @@ const Partner = props => {
           userid: user.id,
           username: user.username,
         };
+        //Creo il record di modifica
         ModificaDataService.create(modifica).then(response => {        
           props.history.push("/listaPartner");
           window.location.reload();

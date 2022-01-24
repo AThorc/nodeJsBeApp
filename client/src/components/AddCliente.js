@@ -6,7 +6,7 @@ import AuthService from "../services/auth.service";
 import moment from 'moment';
 
 
-const AddCliente = () => {
+const AddCliente = props => {
   const initialClienteState = {
     id: null,
     codiceFiscale: "",
@@ -58,6 +58,8 @@ const AddCliente = () => {
         dimensione: cliente.dimensione,
         attIstatAteco2007: cliente.attIstatAteco2007,
         settore: cliente.settore,
+        userid: user.id,
+        username: user.username,
       };
 
       ClienteDataService.create(data)
@@ -82,7 +84,9 @@ const AddCliente = () => {
           attIstatAteco2007: response.data.attIstatAteco2007,
           settore: response.data.settore,
         });
-        setSubmitted(true);
+        setSubmitted(true);        
+        props.history.push("/anagrafica");
+        window.location.reload();
         console.log(response.data);
       })
       .catch(e => {
@@ -362,7 +366,7 @@ const AddCliente = () => {
           <div>
             <h4>Cliente inserito correttamente!</h4>
             <button className="btn btn-success" onClick={newCliente}>
-              Add
+              Aggiungi
             </button>
           </div>
         ) : (

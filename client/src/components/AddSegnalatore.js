@@ -59,7 +59,7 @@ const AddSegnalatore = () => {
           <div>
             <h4>Segnalatore inserito correttamente!</h4>
             <button className="btn btn-success" onClick={newSegnalatore}>
-              Add
+              Aggiungi
             </button>
           </div>
         ) : (
