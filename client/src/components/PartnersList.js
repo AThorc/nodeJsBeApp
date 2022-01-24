@@ -25,6 +25,8 @@ const PartnersList = () => {
   var clientesExecuted = [];
 
   const user = AuthService.getCurrentUser();
+  const showAdminBoard = user.roles.includes("ROLE_ADMIN");
+
   const history = useHistory();
 
   useEffect(() => {
@@ -123,7 +125,7 @@ const PartnersList = () => {
   };
 
   const removeAllPartners = () => {
-    if(user){
+    if(user && showAdminBoard){
       PartnerDataService.removeAll()
       .then(response => {
         console.log(response.data);
@@ -244,7 +246,7 @@ const PartnersList = () => {
                 Cerca
               </button>
               <button
-              className="btn btn-success float-right"
+              className={"btn btn-success float-right " + (!showAdminBoard ? "d-none" : "")}
               type="button"
               onClick={handleAggiungiPartnerClick}
             >
@@ -286,12 +288,18 @@ const PartnersList = () => {
                 <label>
                   <strong>Denominazione:</strong>
                 </label>{" "}
-                <Link
-                  to={"/partners/" + currentPartner.id}
-                  className="badge badge-warning"
-                >
-                  {currentPartner.denominazione}
-                </Link>                
+                {showAdminBoard ? (
+                  <Link
+                    to={"/partners/" + currentPartner.id}
+                    className="badge badge-warning"
+                  >
+                    {currentPartner.denominazione}
+                  </Link>
+                  ) : (
+                    currentPartner.denominazione
+                  )
+                }
+                                  
               </div>
 
               <div>

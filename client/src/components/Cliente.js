@@ -57,6 +57,7 @@ const Cliente = props => {
   const [message, setMessage] = useState("");
 
   const user = AuthService.getCurrentUser();
+  const showAdminBoard = user.roles.includes("ROLE_ADMIN");
 
   const [macroservizi, setMacroservizi] = useState([]);
   const [currentMacroservizio, setCurrentMacroservizio] = useState(null);
@@ -211,7 +212,7 @@ const Cliente = props => {
   }; 
 
   const updateCliente = () => {
-    if(user){
+    if(user && showAdminBoard){
       ClienteDataService.update(currentCliente.id, currentCliente)
       .then(response => {
         console.log(response.data);
@@ -225,7 +226,7 @@ const Cliente = props => {
   };
 
   const deleteCliente = () => {
-    if(user){
+    if(user && showAdminBoard){
       ClienteDataService.remove(currentCliente.id)
       .then(response => {
         console.log(response.data);
@@ -297,7 +298,7 @@ const Cliente = props => {
           <tr key={legame.id}>
             <td>{currentCliente.ragioneSociale}</td>         
             <td>
-                <select value={partner.value} defaultValue="DEFAULT" onClick={_handlePartnerChange} onChange={_handlePartnerChange}>
+                <select value={partner.value} disabled={!showAdminBoard} defaultValue="DEFAULT" onClick={_handlePartnerChange} onChange={_handlePartnerChange}>
                   <option value="" disabled value="DEFAULT">{getDenominazionePartner(legame.partnerid)}</option>    
                     {partners &&
                       partners.map((partner, index) => (                  
@@ -316,6 +317,7 @@ const Cliente = props => {
                     key={index}
                     onChange={(e) => handleInputLegameChange(e, index)}
                     name="tipo"
+                    disabled={!showAdminBoard}
                 />
             </td>
             <td>
@@ -328,6 +330,7 @@ const Cliente = props => {
                       key={index}
                       onChange={(e) => handleInputLegameChange(e, index)}
                       name="dataInizio"
+                      disabled={!showAdminBoard}
                   />
             </td>            
             <td>
@@ -341,6 +344,7 @@ const Cliente = props => {
                     onChange={(e) => handleInputLegameChange(e, index)}
                     maxLength="9"
                     name="fatturatoPartner"
+                    disabled={!showAdminBoard}
                 />
             </td>
             <td>
@@ -354,6 +358,7 @@ const Cliente = props => {
                       onChange={(e) => handleInputLegameChange(e, index)}
                       name="fatturatoSocieta"
                       maxLength="9"
+                      disabled={!showAdminBoard}
                 />
             </td>
             <td>
@@ -361,14 +366,14 @@ const Cliente = props => {
                 title= {<BsXLg />}
                 message= 'Sei sicuro di voler cancellare il servizio?'
                 onClickYes= {()=> deleteLegame(legame.id)}
-                className="btn btn-danger"
+                className={"btn btn-danger " + (!showAdminBoard ? "d-none" : "")}
               /> 
 
               <ConfirmDialog 
                 title= {<BsFillPencilFill />}
                 message= 'Sei sicuro di voler aggiornare il servizio?'
                 onClickYes= {() => updateLegame(legame.id, {clientid: legame.clienteid, tipo: legame.tipo, dataInizio: legame.dataInizio, fatturatoPartner: legame.fatturatoPartner, fatturatoSocieta: legame.fatturatoSocieta})}
-                className="btn btn-primary"
+                className={"btn btn-primary " + (!showAdminBoard ? "d-none" : "")}
               />
 
               <button onClick={() => renderNote(legame)}
@@ -407,7 +412,7 @@ const Cliente = props => {
   };
 
   const deleteLegame = legameid => {
-    if(user){
+    if(user && showAdminBoard){
       LegameDataService.remove(legameid)
       .then(response => {
         // console.log(response.data);
@@ -441,7 +446,7 @@ const Cliente = props => {
     // console.log('UPDATELEGAME');
     // console.log(partner);
     data.partnerid= partner;
-    if(user){
+    if(user && showAdminBoard){
       data.userid = user.id;
       data.username = user.username;
       LegameDataService.update(legameid, data)
@@ -458,7 +463,7 @@ const Cliente = props => {
   };
 
   const updateNoteLegame = (legameid, data) => {
-    if(user){
+    if(user && showAdminBoard){
       data.userid = user.id;
       data.username = user.username;
       LegameDataService.update(legameid, data)
@@ -495,7 +500,7 @@ const Cliente = props => {
                       >
                         {macroservizio.servizi}
                         <button 
-                          className="margin-left-px btn btn-primary"
+                          className={"margin-left-px btn btn-primary " + (!showAdminBoard ? "d-none" : "")}
                           onClick={() => handleInserisciServizioClick(macroservizio, currentCliente, index)}
                         >
                           <BsPlusLg />
@@ -541,7 +546,7 @@ const Cliente = props => {
                 title= "Aggiorna note"
                 message= 'Sei sicuro di voler aggiornare le note del servizio?'
                 onClickYes= {() => updateNoteLegame(currentLegameNote.id, {note: currentLegameNote.note})}
-                className="note-button-margin-top btn btn-primary"
+                className={"note-button-margin-top btn btn-primary " + (!showAdminBoard ? "d-none" : "")}
                 
               /> 
           </div>  
