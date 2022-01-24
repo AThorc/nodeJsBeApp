@@ -6,6 +6,41 @@ const Role = db.role;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
+// Update a User by the id in the request
+exports.update = (req, res) => {
+  if (!req.body) {
+    return res.status(400).send({
+      message: "Data to update can not be empty!"
+    });
+  }
+
+  const id = req.body.userid;
+
+
+  // const user = new User({
+  //   password: bcrypt.hashSync(req.body.password, 8)
+  // });
+
+  req.body.password = bcrypt.hashSync(req.body.password, 8);
+
+  
+  User.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+  .then(data => {
+    if (!data) {
+      res.status(404).send({
+        message: `Non è stato possibile aggiornare la password`
+      });
+    } else{
+      res.send({ message: "Password aggiornata correttamente." });
+    } 
+  })
+  .catch(err => {
+    res.status(500).send({
+      message: `Si è verificato un errore`
+    });
+  });
+};
+
 exports.signup = (req, res) => {
   const user = new User({
     username: req.body.username,

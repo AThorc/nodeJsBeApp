@@ -19,6 +19,7 @@ import Login from "./components/login.component";
 import Register from "./components/register.component";
 import Home from "./components/home.component";
 import Profile from "./components/profile.component";
+import ChangePsw from "./components/changePsw.component";
 //import BoardUser from "./components/board-user.component";
 //import BoardUser from "./components/VisitasList";
 import BoardUser from "./components/ClientesList";
@@ -168,9 +169,14 @@ class App extends Component {
 
             {currentUser ? (
               <div className="navbar-nav ml-auto">
-                <li className="nav-item">
+                {/* <li className="nav-item">
                   <Link to={"/profile"} className="nav-link">
                     {currentUser.username}
+                  </Link>
+                </li> */}
+                <li className="nav-item">
+                  <Link to={"/changePsw"} className="nav-link">
+                    Cambia password
                   </Link>
                 </li>
                 <li className="nav-item">
@@ -202,7 +208,7 @@ class App extends Component {
           <Switch>
             <Route exact path={["/", "/home"]} component={Home} />            
             <Route exact path="/register" component={Register} />
-            <Route exact path="/profile" component={Profile} />
+            <Route exact path="/profile" component={Profile} />            
             <Route path="/anagrafica" component={BoardUser} />
             <Route path="/anagrafica/:clienteid" component={BoardUser} />
             <Route path="/mod" component={BoardModerator} />
@@ -225,6 +231,7 @@ class App extends Component {
         </div>
         <div className="container mt-3 center-login">
           <Route exact path="/login" component={Login} />
+          <Route exact path="/changePsw" component={ChangePsw} />
         </div>
         <div className="right-corner">
           {currentUser && modifiche && modifiche.length > 0 && (
