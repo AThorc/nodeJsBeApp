@@ -19,6 +19,8 @@ import { Link, useHistory } from "react-router-dom";
 
 import moment from 'moment';
 
+import ModificaDataService from "../services/ModificaService";
+
 const Cliente = props => {
   const initialClienteState = {
     id: null,
@@ -408,8 +410,25 @@ const Cliente = props => {
     if(user){
       LegameDataService.remove(legameid)
       .then(response => {
-        console.log(response.data);
-        refreshList();
+        // console.log(response.data);
+        // refreshList();
+
+        var modifica = {        
+          data: new Date(),          
+          userid: user.id,
+          username: user.username,
+        };
+        //Creo il record di modifica
+        ModificaDataService.create(modifica).then(response => {        
+          props.history.push("/clientes/"+ currentCliente.id);
+          window.location.reload();
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+
+
       })
       .catch(e => {
         console.log(e);
@@ -423,10 +442,13 @@ const Cliente = props => {
     // console.log(partner);
     data.partnerid= partner;
     if(user){
+      data.userid = user.id;
+      data.username = user.username;
       LegameDataService.update(legameid, data)
       .then(response => {
         console.log(response.data);
-        refreshList();
+        // refreshList();
+        window.location.reload();
       })
       .catch(e => {
         console.log(e);
@@ -437,10 +459,13 @@ const Cliente = props => {
 
   const updateNoteLegame = (legameid, data) => {
     if(user){
+      data.userid = user.id;
+      data.username = user.username;
       LegameDataService.update(legameid, data)
       .then(response => {
         console.log(response.data);
-        refreshList();
+        // refreshList();
+        window.location.reload();
       })
       .catch(e => {
         console.log(e);

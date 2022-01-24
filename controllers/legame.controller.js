@@ -1,5 +1,6 @@
 const db = require("../models");
 const Legame = db.legames;
+const Modifica = db.modificas;
 
 const mongoose = require('mongoose');
 
@@ -21,7 +22,9 @@ exports.create = (req, res) => {
       fatturatoPartner: req.body.fatturatoPartner,
       fatturatoSocieta: req.body.fatturatoSocieta,
       dataInizio: req.body.dataInizio,
-      note: req.body.note
+      note: req.body.note,
+      userid: req.body.userid,
+      username: req.body.username,
     });
   
     // Save Legame in the database
@@ -29,6 +32,16 @@ exports.create = (req, res) => {
       .save(legame)
       .then(data => {
         res.send(data);
+        //Creo il record di modifica
+        const modifica = new Modifica({
+          legameid : legame.id,
+          data: new Date(),
+          userid: legame.userid,
+          username: legame.username,
+        });
+        modifica.save(modifica);
+
+
       })
       .catch(err => {
         res.status(500).send({
@@ -112,7 +125,19 @@ exports.update = (req, res) => {
           res.status(404).send({
             message: `Cannot update Legame with id=${id}. Maybe Legame was not found!`
           });
-        } else res.send({ message: "Legame was updated successfully." });
+        } else{
+          //Creo il record di modifica
+          const modifica = new Modifica({
+            legameid : id,
+            data: new Date(),
+            userid: req.body.userid,
+            username: req.body.username,
+          });
+          modifica.save(modifica);
+
+          res.send({ message: "Legame was updated successfully." });
+
+        } 
       })
       .catch(err => {
         res.status(500).send({

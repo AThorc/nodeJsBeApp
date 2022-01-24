@@ -87,6 +87,8 @@ const InserisciServizio = props => {
         dataInizio: legame.dataInizio,
         fatturatoPartner: legame.fatturatoPartner,
         fatturatoSocieta: legame.fatturatoSocieta,
+        userid: user.id,
+        username: user.username,
       };
 
       LegameDataService.create(data)
@@ -102,7 +104,10 @@ const InserisciServizio = props => {
           fatturatoSocieta: response.data.fatturatoSocieta
         });
         setSubmitted(true);
-        console.log(response.data);
+         // console.log(response.data);
+         props.history.push("/clientes/"+currentCliente.id);
+         window.location.reload();
+         console.log(response.data);
       })
       .catch(e => {
         console.log(e);
