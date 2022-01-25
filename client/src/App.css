@@ -203,3 +203,7 @@ body.react-confirm-alert-body-element {
   bottom:0;
   right:0;
 }
+
+.name-user{
+  color: rgba(255,255,255,.75)!important;
+}

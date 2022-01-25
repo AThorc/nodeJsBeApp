@@ -169,11 +169,12 @@ class App extends Component {
 
             {currentUser ? (
               <div className="navbar-nav ml-auto">
-                {/* <li className="nav-item">
-                  <Link to={"/profile"} className="nav-link">
+                <li className="nav-item">
+                  {/* <Link to={"/profile"} className="nav-link">
                     {currentUser.username}
-                  </Link>
-                </li> */}
+                  </Link> */}
+                  <div className="nav-link name-user">{currentUser.username}</div>
+                </li>
                 <li className="nav-item">
                   <Link to={"/changePsw"} className="nav-link">
                     Cambia password
