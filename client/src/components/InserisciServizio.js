@@ -29,6 +29,14 @@ const InserisciServizio = props => {
 
   };
 
+  const tipologiaServizi = {
+    "CONSULENZA AZIENDALE": ['Contabilità', 'Business Plan', 'Fiscale/Tributaria', 'Consulenza'],
+    "CONSULENZA FINANZIARIA": ['Finanza Agevolata', 'Consulenza'],
+    "CONSULENZA DEL LAVORO": ['Buste Paga', 'Consulenza'],
+    "CONSULENZA LEGALE": ['Anatocismo', 'Controversie Commerciali', 'Consulenza'],
+    "CONSULENZA DIREZIONALE": ['Anticorruzione/Antiriciclaggio', 'Certificazione di Qualità', 'Sicurezza sul lavoro', 'Privacy', 'Consulenza'],
+  };
+
   const initialClienteState = {
     id: null,
     codiceFiscale: "",
@@ -64,6 +72,8 @@ const InserisciServizio = props => {
 
   const user = AuthService.getCurrentUser();
 
+  const [newTipoLegame, setNewTipoLegame] = useState(null);
+
   const handleInputChange = event => {
     const { name, value } = event.target;
     setMacroservizio({ ...macroservizio, [name]: value });
@@ -83,7 +93,7 @@ const InserisciServizio = props => {
         clienteid: currentCliente.id,
         partnerid: partner,
         segnalatoreid: segnalatore.value,  
-        tipo: legame.tipo,
+        tipo: newTipoLegame,
         dataInizio: legame.dataInizio,
         fatturatoPartner: legame.fatturatoPartner,
         fatturatoSocieta: legame.fatturatoSocieta,
@@ -223,22 +233,6 @@ const InserisciServizio = props => {
     return partnersOptions;
   };
 
-  const tipologiaServizi = macroservizioLabel => {
-    var tipologiaServizi = [];
-    if(macroservizioLabel == 'CONSULENZA AZIENDALE'){
-      tipologiaServizi = ['Contabilità', 'Business Plan', 'Fiscale/Tributaria', 'Consulenza'];
-    }else if(macroservizioLabel == 'CONSULENZA FINANZIARIA'){
-      tipologiaServizi = ['Finanza Agevolata', 'Consulenza'];
-    }else if(macroservizioLabel == 'CONSULENZA DEL LAVORO'){
-      tipologiaServizi = ['Buste Paga', 'Consulenza'];
-    }else if(macroservizioLabel == 'CONSULENZA LEGALE'){
-      tipologiaServizi = ['Anatocismo', 'Controversie Commerciali', 'Consulenza'];
-    }else if(macroservizioLabel == 'CONSULENZA DIREZIONALE'){
-      tipologiaServizi = ['Anticorruzione/Antiriciclaggio', 'Certificazione di Qualità', 'Sicurezza sul lavoro', 'Privacy', 'Consulenza'];
-    }
-    return tipologiaServizi;
-  };
-
 
   const deleteLegame = () => {
     if(user){
@@ -252,6 +246,11 @@ const InserisciServizio = props => {
       });
     }
     
+  };
+
+  const handleInputLegameTipoChange = event => {
+    const { name, value } = event.target;
+    setNewTipoLegame(value);
   };
 
 
@@ -308,10 +307,10 @@ const InserisciServizio = props => {
 
             <div className="form-group box">
               <label htmlFor="title">Tip. servizi</label>
-              <select value={legame.tipo} defaultValue={'DEFAULT'} onClick={handleInputLegameChange} onChange={handleInputLegameChange}>
+              <select defaultValue={'DEFAULT'} onClick={(e) => handleInputLegameTipoChange(e)} onChange={(e) => handleInputLegameTipoChange(e)}>
                 <option value="" disabled value="DEFAULT">Seleziona un tipo</option>    
-                {tipologiaServizi(macroservizio.servizi) &&
-                  tipologiaServizi(macroservizio.servizi).map((tipo, index) => (                  
+                {tipologiaServizi[macroservizio.servizi] &&
+                      tipologiaServizi[macroservizio.servizi].map((tipo, index) => (                  
                     
                       <option value={tipo} key={index} >{tipo}</option>                    
                   ))}
