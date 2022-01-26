@@ -116,12 +116,12 @@ body.react-confirm-alert-body-element {
 
 .half1 {
   float: left;
-  width:11%;
+  width:9%;
 }
 .half2 {
   float: left;
-  width: 85%!important;
-  -webkit-transform: scale(.8);
+  width: 91%!important;
+  -webkit-transform: scale(.7);
   transform-origin: top;
 }
 
@@ -187,7 +187,7 @@ body.react-confirm-alert-body-element {
 
 .note-wrapper{
   width: 1400px;
-  margin-top: 23%;
+  margin-top: 33%;
 }
 
 .note-button-margin-top{
