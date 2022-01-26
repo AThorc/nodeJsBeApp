@@ -43,6 +43,14 @@ const Cliente = props => {
     settore: ""
   };
 
+  const tipologiaServizi = {
+    "CONSULENZA AZIENDALE": ['Contabilità', 'Business Plan', 'Fiscale/Tributaria', 'Consulenza'],
+    "CONSULENZA FINANZIARIA": ['Finanza Agevolata', 'Consulenza'],
+    "CONSULENZA DEL LAVORO": ['Buste Paga', 'Consulenza'],
+    "CONSULENZA LEGALE": ['Anatocismo', 'Controversie Commerciali', 'Consulenza'],
+    "CONSULENZA DIREZIONALE": ['Anticorruzione/Antiriciclaggio', 'Certificazione di Qualità', 'Sicurezza sul lavoro', 'Privacy', 'Consulenza'],
+  };
+
   const initialLegameState = {
     id: null,
     tipo: "",
@@ -64,6 +72,8 @@ const Cliente = props => {
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [partnersLegame, setPartnersLegame] = useState([]);
   const [currentListaLegameMacroservizio, setCurrentListaLegameMacroservizio] = useState(null);
+
+  const [newTipoLegame, setNewTipoLegame] = useState(null);
 
   const [partnersFatturatoLegame, setPartnersFatturatoLegame] = useState([]);
 
@@ -193,6 +203,11 @@ const Cliente = props => {
     setCurrentLegameNote({ ...currentLegameNote, [name]: value });
   };
 
+  const handleInputLegameTipoChange = event => {
+    const { name, value } = event.target;
+    setNewTipoLegame(value);
+  };
+
   const handleInputLegameChange = (event, index) => {
     const { name, value } = event.target;
     console.log('handleInputLegameChange');
@@ -200,7 +215,7 @@ const Cliente = props => {
     console.log(value);
     const newLegame = [ ...currentListaLegameMacroservizio];
     newLegame[index][name] = value;    
-    setCurrentListaLegameMacroservizio(newLegame);
+    setCurrentListaLegameMacroservizio(newLegame);    
   };
 
   const _handlePartnerChange = event => {
@@ -208,7 +223,7 @@ const Cliente = props => {
     console.log('PARTNER');
     console.log(value);
     //console.log(id);
-    setPartner(value);
+    setPartner(value); 
   }; 
 
   const updateCliente = () => {
@@ -292,6 +307,8 @@ const Cliente = props => {
    return partnersLegame.filter(partner => partner.includes(partnerId)).toString().substring(partnersLegame.filter(partner => partner.includes(partnerId)).toString().indexOf('-')+1)
  };
 
+ 
+
   const renderTableData = () => {
     return currentListaLegameMacroservizio.map((legame, index) => {
       //const { clienteid, createdAt, id, partnerid, servizioid, tipo, updatedAt, fatturatoPartner, fatturatoSocieta } = legame //destructuring
@@ -299,8 +316,8 @@ const Cliente = props => {
           <tr key={legame.id}>
             <td>{currentCliente.ragioneSociale}</td>         
             <td>
-                <select value={partner.value} disabled={!showAdminBoard} defaultValue="DEFAULT" onClick={_handlePartnerChange} onChange={_handlePartnerChange}>
-                  <option value="" disabled value="DEFAULT">{getDenominazionePartner(legame.partnerid)}</option>    
+                <select className="form-control" disabled={!showAdminBoard} defaultValue={legame.partnerid} onClick={_handlePartnerChange} onChange={_handlePartnerChange}>
+                  <option value={legame.partnerid} disabled >{getDenominazionePartner(legame.partnerid)}</option>    
                     {partners &&
                       partners.map((partner, index) => (                  
                         
@@ -308,7 +325,7 @@ const Cliente = props => {
                       ))}
                 </select>
             </td>
-            <td>
+            {/* <td>
             <input
                     type="text"
                     className="form-control min-text-form-control"
@@ -320,7 +337,37 @@ const Cliente = props => {
                     name="tipo"
                     disabled={!showAdminBoard}
                 />
+            </td> */}
+
+            <td>
+                <select disabled={!showAdminBoard} className="form-control" defaultValue={legame.tipo} key={index} onClick={(e) => handleInputLegameTipoChange(e, index)} onChange={(e) => handleInputLegameTipoChange(e, index)}>
+                  <option value={legame.tipo} disabled>{legame.tipo}</option>
+                    {tipologiaServizi[currentMacroservizio.servizi] &&
+                      tipologiaServizi[currentMacroservizio.servizi].map((tipo, index) => {
+                          if(legame.tipo != tipo){
+                            return(                  
+                          
+                              <option value={tipo} key={index} >{tipo}</option>                    
+                            )
+                          }                        
+                        }
+                      )}
+                </select>
             </td>
+
+{/* 
+            <div className="form-group box">
+              <label htmlFor="title">Tip. servizi</label>
+              <select value={legame.tipo} defaultValue={'DEFAULT'} onClick={handleInputLegameChange} onChange={handleInputLegameChange}>
+                <option value="" disabled value="DEFAULT">Seleziona un tipo</option>    
+                {tipologiaServizi &&
+                  tipologiaServizi.map((tipo, index) => (                  
+                    
+                      <option value={tipo} key={index} >{tipo}</option>                    
+                  ))}
+                </select>
+            </div> */}
+
             <td>
               <input
                       type="date"
@@ -373,7 +420,7 @@ const Cliente = props => {
               <ConfirmDialog 
                 title= {<BsFillPencilFill />}
                 message= 'Sei sicuro di voler aggiornare il servizio?'
-                onClickYes= {() => updateLegame(legame.id, {clientid: legame.clienteid, tipo: legame.tipo, dataInizio: legame.dataInizio, fatturatoPartner: legame.fatturatoPartner, fatturatoSocieta: legame.fatturatoSocieta})}
+                onClickYes= {() => updateLegame(legame.id, {clientid: legame.clienteid, partnerid: partner.length>0?partner:legame.partnerid, tipo: newTipoLegame?newTipoLegame:legame.tipo, dataInizio: legame.dataInizio, fatturatoPartner: legame.fatturatoPartner, fatturatoSocieta: legame.fatturatoSocieta})}
                 className={"btn btn-primary " + (!showAdminBoard ? "d-none" : "")}
               />
 
@@ -446,7 +493,6 @@ const Cliente = props => {
   const updateLegame = (legameid, data) => {
     // console.log('UPDATELEGAME');
     // console.log(partner);
-    data.partnerid= partner;
     if(user && showAdminBoard){
       data.userid = user.id;
       data.username = user.username;

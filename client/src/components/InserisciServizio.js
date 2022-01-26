@@ -29,6 +29,14 @@ const InserisciServizio = props => {
 
   };
 
+  const tipologiaServizi = {
+    "CONSULENZA AZIENDALE": ['Contabilità', 'Business Plan', 'Fiscale/Tributaria', 'Consulenza'],
+    "CONSULENZA FINANZIARIA": ['Finanza Agevolata', 'Consulenza'],
+    "CONSULENZA DEL LAVORO": ['Buste Paga', 'Consulenza'],
+    "CONSULENZA LEGALE": ['Anatocismo', 'Controversie Commerciali', 'Consulenza'],
+    "CONSULENZA DIREZIONALE": ['Anticorruzione/Antiriciclaggio', 'Certificazione di Qualità', 'Sicurezza sul lavoro', 'Privacy', 'Consulenza'],
+  };
+
   const initialClienteState = {
     id: null,
     codiceFiscale: "",
@@ -64,6 +72,8 @@ const InserisciServizio = props => {
 
   const user = AuthService.getCurrentUser();
 
+  const [newTipoLegame, setNewTipoLegame] = useState(null);
+
   const handleInputChange = event => {
     const { name, value } = event.target;
     setMacroservizio({ ...macroservizio, [name]: value });
@@ -83,7 +93,7 @@ const InserisciServizio = props => {
         clienteid: currentCliente.id,
         partnerid: partner,
         segnalatoreid: segnalatore.value,  
-        tipo: legame.tipo,
+        tipo: newTipoLegame,
         dataInizio: legame.dataInizio,
         fatturatoPartner: legame.fatturatoPartner,
         fatturatoSocieta: legame.fatturatoSocieta,
@@ -238,6 +248,11 @@ const InserisciServizio = props => {
     
   };
 
+  const handleInputLegameTipoChange = event => {
+    const { name, value } = event.target;
+    setNewTipoLegame(value);
+  };
+
 
   if(user){
     return (
@@ -277,7 +292,7 @@ const InserisciServizio = props => {
               />
             </div>          
 
-            <div className="form-group">
+            {/* <div className="form-group">
               <label htmlFor="title">Tip. servizi</label>
               <input
                 type="text"
@@ -288,7 +303,19 @@ const InserisciServizio = props => {
                 onChange={handleInputLegameChange}
                 name="tipo"                           
               />
-            </div>      
+            </div>       */}
+
+            <div className="form-group box">
+              <label htmlFor="title">Tip. servizi</label>
+              <select defaultValue={'DEFAULT'} onClick={(e) => handleInputLegameTipoChange(e)} onChange={(e) => handleInputLegameTipoChange(e)}>
+                <option value="" disabled value="DEFAULT">Seleziona un tipo</option>    
+                {tipologiaServizi[macroservizio.servizi] &&
+                      tipologiaServizi[macroservizio.servizi].map((tipo, index) => (                  
+                    
+                      <option value={tipo} key={index} >{tipo}</option>                    
+                  ))}
+                </select>
+            </div>
 
             <div className="form-group box">
               <label htmlFor="title">Cliente</label>
