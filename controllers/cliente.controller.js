@@ -35,6 +35,13 @@ exports.create = (req, res) => {
       settore: req.body.settore,
       userid: req.body.userid,
       username: req.body.username,
+      naturaGiuridica: req.body.naturaGiuridica,
+      socio1: req.body.socio1,
+      socio2: req.body.socio2,
+      socio3: req.body.socio3,
+      socio4: req.body.socio4,
+      socio5: req.body.socio5,
+      socio6: req.body.socio6,
     });
   
     // Save Cliente in the database
