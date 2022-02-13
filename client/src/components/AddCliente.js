@@ -31,11 +31,18 @@ const AddCliente = props => {
   const [cliente, setCliente] = useState(initialClienteState);
   const [submitted, setSubmitted] = useState(false);
 
+  const [newNaturaGiuridica, setNewNaturaGiuridica] = useState(null);
+
   const user = AuthService.getCurrentUser();
 
   const handleInputChange = event => {
     const { name, value } = event.target;
     setCliente({ ...cliente, [name]: value });
+  };
+
+  const handleInputNGChange = event => {
+    const { name, value } = event.target;
+    setNewNaturaGiuridica(value);
   };
 
   const saveCliente = () => {
@@ -60,6 +67,13 @@ const AddCliente = props => {
         settore: cliente.settore,
         userid: user.id,
         username: user.username,
+        naturaGiuridica: newNaturaGiuridica,
+        socio1: cliente.socio1,
+        socio2: cliente.socio2,
+        socio3: cliente.socio3,
+        socio4: cliente.socio4,
+        socio5: cliente.socio5,
+        socio6: cliente.socio6
       };
 
       ClienteDataService.create(data)
@@ -83,6 +97,13 @@ const AddCliente = props => {
           dimensione: response.data.dimensione,
           attIstatAteco2007: response.data.attIstatAteco2007,
           settore: response.data.settore,
+          naturaGiuridica: response.data.naturaGiuridica,
+          socio1: response.data.socio1,
+          socio2: response.data.socio2,
+          socio3: response.data.socio3,
+          socio4: response.data.socio4,
+          socio5: response.data.socio5,
+          socio6: response.data.socio6
         });
         setSubmitted(true);        
         props.history.push("/anagrafica");
@@ -99,6 +120,17 @@ const AddCliente = props => {
     setCliente(initialClienteState);
     setSubmitted(false);
   };
+
+  const naturaGiuridicas = [
+    "Ditta Individuale",
+    "Società a responsabilità limitata",
+    "Società Semplice",
+    "Società a responsabilità limitata semplice (srls)",
+    "Società a nome collettivo(snc)",
+    " Società in accomandita semplice",
+    "Srl unipersonale",
+    "Società cooperativa"
+  ];
 
   const renderTableData = () => {  
     return (
@@ -351,6 +383,111 @@ const AddCliente = props => {
                     name="settore"
                 />
             </td>       
+          </tr>
+
+          <tr key={5}>
+            <td>
+              <div className="form-group box">              
+                <label>
+                  <strong>Natura Giuririca:</strong>
+                </label>{" "}
+                <select defaultValue={'DEFAULT'} onClick={(e) => handleInputNGChange(e)} onChange={(e) => handleInputNGChange(e)}>
+                  <option disabled value="DEFAULT">{cliente.naturaGiuridica?cliente.naturaGiuridica:"Seleziona una natura giuridica"}</option>    
+                  {
+                      naturaGiuridicas && naturaGiuridicas.map((natura, index) => (                  
+                      
+                        <option value={natura} key={index} >{natura}</option>                    
+                    ))}
+                  </select>
+              </div>
+            </td>
+            <td>
+              <label>
+                <strong>Socio 1:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="socio1"
+                    required
+                    value={cliente.socio1} 
+                    onChange={handleInputChange}
+                    name="socio1"
+                />
+            </td>
+            <td>
+              <label>
+                <strong>Socio 2:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="socio2"
+                    required
+                    value={cliente.socio2} 
+                    onChange={handleInputChange}
+                    name="socio2"
+                />
+            </td>    
+            <td>
+              <label>
+                <strong>Socio 3:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="socio3"
+                    required
+                    value={cliente.socio3} 
+                    onChange={handleInputChange}
+                    name="socio3"
+                />
+            </td>               
+           
+          </tr>
+          <tr key={6}>
+            <td>
+              <label>
+                <strong>Socio 4:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="socio4"
+                    required
+                    value={cliente.socio4} 
+                    onChange={handleInputChange}
+                    name="socio4"
+                />
+            </td>    
+            <td>
+              <label>
+                <strong>Socio 5:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="socio5"
+                    required
+                    value={cliente.socio5} 
+                    onChange={handleInputChange}
+                    name="socio5"
+                />
+            </td>    
+            <td>
+              <label>
+                <strong>Socio 6:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="socio6"
+                    required
+                    value={cliente.socio6} 
+                    onChange={handleInputChange}
+                    name="socio6"
+                />
+            </td>         
           </tr>
 
         </tbody>
