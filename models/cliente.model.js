@@ -31,6 +31,13 @@ module.exports = mongoose => {
             ref: "User"
         },
         username: String,
+        naturaGiuridica: String,
+        socio1: String,
+        socio2: String,
+        socio3: String,
+        socio4: String,
+        socio5: String,
+        socio6: String
       },
       { timestamps: true }
     );

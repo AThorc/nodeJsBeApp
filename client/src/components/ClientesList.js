@@ -28,6 +28,8 @@ const ClientesList = props => {
   const showAdminBoard = user.roles.includes("ROLE_ADMIN");
   const history = useHistory();
 
+  const [newNaturaGiuridica, setNewNaturaGiuridica] = useState(null);
+
 
 
   useEffect(() => {
@@ -94,6 +96,16 @@ const ClientesList = props => {
     }    
   };
 
+  const naturaGiuridicas = [
+    "Ditta Individuale",
+    "Società a responsabilità limitata",
+    "Società Semplice",
+    "Società a responsabilità limitata semplice (srls)",
+    "Società a nome collettivo(snc)",
+    " Società in accomandita semplice",
+    "Srl unipersonale",
+    "Società cooperativa"
+  ];
 
   const removeAllServizios = () => {
     if(user && showAdminBoard){
@@ -141,6 +153,7 @@ const ClientesList = props => {
     if(user && showAdminBoard){
       currentCliente.userid = user.id;
       currentCliente.username = user.username;
+      if(newNaturaGiuridica && newNaturaGiuridica != 'DEFAULT') currentCliente.naturaGiuridica = newNaturaGiuridica;
       ClienteDataService.update(currentCliente.id, currentCliente)
       .then(response => {
         console.log(response.data);
@@ -184,6 +197,11 @@ const ClientesList = props => {
       });
     }
     
+  };
+
+  const handleInputNGChange = event => {
+    const { name, value } = event.target;
+    setNewNaturaGiuridica(value);
   };
 
 
@@ -458,6 +476,118 @@ const ClientesList = props => {
                 />
             </td>       
           </tr>
+
+          <tr key={5}>
+            <td>
+              <div className="form-group box">              
+                <label>
+                  <strong>Natura Giuririca:</strong>
+                </label>{" "}
+                <select defaultValue={'DEFAULT'} onClick={(e) => handleInputNGChange(e)} onChange={(e) => handleInputNGChange(e)}>
+                  <option disabled value="DEFAULT">{currentCliente.naturaGiuridica?currentCliente.naturaGiuridica:"Seleziona una natura giuridica"}</option>    
+                  {
+                      naturaGiuridicas && naturaGiuridicas.map((natura, index) => (                  
+                      
+                        <option value={natura} key={index} >{natura}</option>                    
+                    ))}
+                  </select>
+              </div>
+            </td>
+            <td>
+              <label>
+                <strong>Socio 1:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="socio1"
+                    required
+                    value={currentCliente.socio1} 
+                    onChange={handleInputChange}
+                    name="socio1"
+                    disabled={!showAdminBoard}
+                />
+            </td>
+            <td>
+              <label>
+                <strong>Socio 2:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="socio2"
+                    required
+                    value={currentCliente.socio2} 
+                    onChange={handleInputChange}
+                    name="socio2"
+                    disabled={!showAdminBoard}
+                />
+            </td>    
+            <td>
+              <label>
+                <strong>Socio 3:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="socio3"
+                    required
+                    value={currentCliente.socio3} 
+                    onChange={handleInputChange}
+                    name="socio3"
+                    disabled={!showAdminBoard}
+                />
+            </td>               
+           
+          </tr>
+          <tr key={6}>
+            <td>
+              <label>
+                <strong>Socio 4:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="socio4"
+                    required
+                    value={currentCliente.socio4} 
+                    onChange={handleInputChange}
+                    name="socio4"
+                    disabled={!showAdminBoard}
+                />
+            </td>    
+            <td>
+              <label>
+                <strong>Socio 5:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="socio5"
+                    required
+                    value={currentCliente.socio5} 
+                    onChange={handleInputChange}
+                    name="socio5"
+                    disabled={!showAdminBoard}
+                />
+            </td>    
+            <td>
+              <label>
+                <strong>Socio 6:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="socio6"
+                    required
+                    value={currentCliente.socio6} 
+                    onChange={handleInputChange}
+                    name="socio6"
+                    disabled={!showAdminBoard}
+                />
+            </td>         
+          </tr>
+         
 
         </tbody>
         
