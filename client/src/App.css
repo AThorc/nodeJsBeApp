@@ -207,9 +207,9 @@ body.react-confirm-alert-body-element {
 }
 
 .right-corner{
-  position: relative;
-  bottom: 0;
-  left: 67%;
+  position: relative!important;
+  display: -webkit-inline-box;
+  float: right!important;
 }
 
 .name-user{
