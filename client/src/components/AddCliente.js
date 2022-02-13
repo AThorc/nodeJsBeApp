@@ -389,7 +389,7 @@ const AddCliente = props => {
             <td>
               <div className="form-group box">              
                 <label>
-                  <strong>Natura Giuririca:</strong>
+                  <strong>Natura Giuridica:</strong>
                 </label>{" "}
                 <select defaultValue={'DEFAULT'} onClick={(e) => handleInputNGChange(e)} onChange={(e) => handleInputNGChange(e)}>
                   <option disabled value="DEFAULT">{cliente.naturaGiuridica?cliente.naturaGiuridica:"Seleziona una natura giuridica"}</option>    
