@@ -484,11 +484,11 @@ const ClientesList = props => {
                   <strong>Natura Giuririca:</strong>
                 </label>{" "}
                 <select defaultValue={'DEFAULT'} onClick={(e) => handleInputNGChange(e)} onChange={(e) => handleInputNGChange(e)}>
-                  <option disabled value="DEFAULT">{currentCliente.naturaGiuridica?currentCliente.naturaGiuridica:"Seleziona una natura giuridica"}</option>    
+                  <option disabled={!showAdminBoard} value="DEFAULT">{currentCliente.naturaGiuridica?currentCliente.naturaGiuridica:"Seleziona una natura giuridica"}</option>    
                   {
                       naturaGiuridicas && naturaGiuridicas.map((natura, index) => (                  
                       
-                        <option value={natura} key={index} >{natura}</option>                    
+                        <option disabled={!showAdminBoard} value={natura} key={index} >{natura}</option>                    
                     ))}
                   </select>
               </div>
