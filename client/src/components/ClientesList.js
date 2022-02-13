@@ -638,7 +638,7 @@ const ClientesList = props => {
                   onClick={() => setActiveCliente(cliente, index)}
                   key={index}
                 >
-                  {cliente.codiceFiscale}
+                  {cliente.ragioneSociale}
                 </li>
               ))}
           </ul>
