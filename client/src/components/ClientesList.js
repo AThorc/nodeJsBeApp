@@ -256,24 +256,26 @@ const ClientesList = props => {
                     disabled={!showAdminBoard}
                 />
             </td>          
-            <td>
-              <label>
-                <strong>Legale rappresentante:</strong>
-              </label>{" "}
-              <input
-                    type="text"
-                    className="form-control fit-content"
-                    id="legaleRappresentate"
-                    required
-                    value={currentCliente.legaleRappresentate}
-                    onChange={handleInputChange}
-                    name="legaleRappresentate"
-                    disabled={!showAdminBoard}
-                />
-            </td>
+            
           </tr>
 
           <tr key={2}>
+            <td>
+                <label>
+                  <strong>Legale rappresentante:</strong>
+                </label>{" "}
+                <input
+                      type="text"
+                      className="form-control fit-content"
+                      id="legaleRappresentate"
+                      required
+                      value={currentCliente.legaleRappresentate}
+                      onChange={handleInputChange}
+                      name="legaleRappresentate"
+                      disabled={!showAdminBoard}
+                  />
+              </td>
+
             <td>
               <label>
                 <strong>Telefono:</strong>
@@ -303,8 +305,11 @@ const ClientesList = props => {
                     name="cellulare"
                     disabled={!showAdminBoard}
                 />
-            </td>        
-            <td>
+            </td>                    
+          </tr>
+
+          <tr key={3}>
+          <td>
               <label>
                 <strong>Mail:</strong>
               </label>{" "}
@@ -334,9 +339,7 @@ const ClientesList = props => {
                     disabled={!showAdminBoard}
                 />
             </td>       
-          </tr>
 
-          <tr key={3}>
             <td>
               <label>
                 <strong>Sede:</strong>
@@ -352,7 +355,11 @@ const ClientesList = props => {
                     disabled={!showAdminBoard}
                 />
             </td>                    
-            <td>
+           
+          </tr>
+
+          <tr key={4}>
+          <td>
               <label>
                 <strong>Località:</strong>
               </label>{" "}
@@ -399,8 +406,9 @@ const ClientesList = props => {
             </td>       
           </tr>
 
-          <tr key={4}>
-            <td>
+          <tr key={5}>
+            
+          <td>
               <label>
                 <strong>Inizio attività:</strong>
               </label>{" "}
@@ -445,7 +453,11 @@ const ClientesList = props => {
                     disabled={!showAdminBoard}
                 />
             </td>       
-            <td>
+            
+           
+          </tr>
+          <tr key={6}>
+          <td>
               <label>
                 <strong>Att Istat Ateco 2007:</strong>
               </label>{" "}
@@ -475,9 +487,7 @@ const ClientesList = props => {
                     disabled={!showAdminBoard}
                 />
             </td>       
-          </tr>
 
-          <tr key={5}>
             <td>
               <div className="form-group box">              
                 <label>
@@ -492,7 +502,9 @@ const ClientesList = props => {
                     ))}
                   </select>
               </div>
-            </td>
+            </td>            
+          </tr>
+          <tr key={7}>
             <td>
               <label>
                 <strong>Socio 1:</strong>
@@ -537,11 +549,12 @@ const ClientesList = props => {
                     name="socio3"
                     disabled={!showAdminBoard}
                 />
-            </td>               
-           
+            </td>                        
+
           </tr>
-          <tr key={6}>
-            <td>
+         
+         <tr key ={8}>
+           <td>
               <label>
                 <strong>Socio 4:</strong>
               </label>{" "}
@@ -586,8 +599,8 @@ const ClientesList = props => {
                     disabled={!showAdminBoard}
                 />
             </td>         
-          </tr>
-         
+
+         </tr>
 
         </tbody>
         
