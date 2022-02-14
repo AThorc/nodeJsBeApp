@@ -180,7 +180,8 @@ body.react-confirm-alert-body-element {
 }
 
 .wrapper-anagrafica{
-  margin-left: -46%;
+  /* margin-left: -46%; */
+  margin-left: 0%;
 }
 
 .table-inserisci-anag{
