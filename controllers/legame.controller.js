@@ -25,6 +25,8 @@ exports.create = (req, res) => {
       note: req.body.note,
       userid: req.body.userid,
       username: req.body.username,
+      acconto: req.body.acconto,
+      saldo: req.body.saldo
     });
   
     // Save Legame in the database

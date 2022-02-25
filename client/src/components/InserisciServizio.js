@@ -99,6 +99,8 @@ const InserisciServizio = props => {
         fatturatoSocieta: legame.fatturatoSocieta,
         userid: user.id,
         username: user.username,
+        acconto: legame.acconto,
+        saldo: legame.saldo
       };
 
       LegameDataService.create(data)
@@ -111,7 +113,9 @@ const InserisciServizio = props => {
           tipo: response.data.tipo,
           dataInizio: response.data.dataInizio,
           fatturatoPartner: response.data.fatturatoPartner,
-          fatturatoSocieta: response.data.fatturatoSocieta
+          fatturatoSocieta: response.data.fatturatoSocieta,
+          acconto: response.data.acconto,
+          saldo: response.data.saldo
         });
         setSubmitted(true);
          // console.log(response.data);
@@ -367,7 +371,33 @@ const InserisciServizio = props => {
                   onChange={handleInputLegameChange}
                   name="fatturatoSocieta"
                 />
-              </div>              
+              </div>     
+
+              <div className="form-group">
+                <label htmlFor="title">Acconto</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  id="acconto"
+                  required
+                  value={legame.acconto}
+                  onChange={handleInputLegameChange}
+                  name="acconto"
+                />
+              </div> 
+
+              <div className="form-group">
+                <label htmlFor="title">Saldo</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  id="saldo"
+                  required
+                  value={legame.saldo}
+                  onChange={handleInputLegameChange}
+                  name="saldo"
+                />
+              </div>          
   
 
             <ConfirmDialog 

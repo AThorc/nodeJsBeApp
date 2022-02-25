@@ -29,6 +29,8 @@ module.exports = mongoose => {
             ref: "User"
         },
         username: String,
+        acconto: Number,
+        saldo: Number
       },
       { timestamps: true }
     );
