@@ -57,7 +57,9 @@ const Cliente = props => {
     fatturatoPartner: undefined,
     fatturatoSocieta: undefined,
     dataInizio: undefined,
-    note: ""
+    note: "",
+    acconto: undefined,
+    saldo: undefined
 
   };
   const [currentCliente, setCurrentCliente] = useState(initialClienteState);
@@ -273,7 +275,9 @@ const Cliente = props => {
     header.push(<th key={4}>Data inizio</th>);
     header.push(<th key={5}>Fatturato Partner</th>);
     header.push(<th key={6}>Fatturato Multifinance</th>);
-    header.push(<th key={7}>Azioni</th>);
+    header.push(<th key={7}>Acconto</th>);
+    header.push(<th key={8}>Saldo</th>);
+    header.push(<th key={9}>Azioni</th>);
     return header;
  };
 
@@ -410,6 +414,34 @@ const Cliente = props => {
                 />
             </td>
             <td>
+              <input
+                      type="number"
+                      className="form-control"
+                      id="acconto"
+                      required
+                      value={legame.acconto}
+                      key={index}
+                      onChange={(e) => handleInputLegameChange(e, index)}
+                      name="acconto"
+                      maxLength="9"
+                      disabled={!showAdminBoard}
+                />
+            </td>
+            <td>
+              <input
+                      type="number"
+                      className="form-control"
+                      id="saldo"
+                      required
+                      value={legame.saldo}
+                      key={index}
+                      onChange={(e) => handleInputLegameChange(e, index)}
+                      name="saldo"
+                      maxLength="9"
+                      disabled={!showAdminBoard}
+                />
+            </td>
+            <td>
               <ConfirmDialog 
                 title= {<BsXLg />}
                 message= 'Sei sicuro di voler cancellare il servizio?'
@@ -420,7 +452,7 @@ const Cliente = props => {
               <ConfirmDialog 
                 title= {<BsFillPencilFill />}
                 message= 'Sei sicuro di voler aggiornare il servizio?'
-                onClickYes= {() => updateLegame(legame.id, {clientid: legame.clienteid, partnerid: partner.length>0?partner:legame.partnerid, tipo: newTipoLegame?newTipoLegame:legame.tipo, dataInizio: legame.dataInizio, fatturatoPartner: legame.fatturatoPartner, fatturatoSocieta: legame.fatturatoSocieta})}
+                onClickYes= {() => updateLegame(legame.id, {clientid: legame.clienteid, partnerid: partner.length>0?partner:legame.partnerid, tipo: newTipoLegame?newTipoLegame:legame.tipo, dataInizio: legame.dataInizio, fatturatoPartner: legame.fatturatoPartner, fatturatoSocieta: legame.fatturatoSocieta, acconto: legame.acconto, saldo: legame.saldo})}
                 className={"btn btn-primary " + (!showAdminBoard ? "d-none" : "")}
               />
 
