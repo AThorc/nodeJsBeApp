@@ -25,7 +25,16 @@ const AddCliente = props => {
     tipo: "",
     dimensione: "",
     attIstatAteco2007: "",
-    settore: ""
+    settore: "",
+    userid: "",
+    username: "",
+    //naturaGiuridica: "",
+    socio1: "",
+    socio2: "",
+    socio3: "",
+    socio4: "",
+    socio5: "",
+    socio6: "",
 
   };
   const [cliente, setCliente] = useState(initialClienteState);
