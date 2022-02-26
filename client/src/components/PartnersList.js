@@ -302,49 +302,6 @@ const PartnersList = () => {
 
   };
 
-  function geClientiByLegameExcel(promise, partnerid, legami, promises){
-    for(const i in legami){
-      var legame = legami[i];
-      promises.push(getClienteExcel(promise, partnerid, legame.clienteid));
-          
-    }
-  };
-
-  function getClienteExcel(promise, partnerid, id){
-    var promise = new Promise( (resolve, reject) => {
-      ClienteDataService.get(id)
-      .then(response => {
-        console.log(response.data);
-        if(!clientiPartner.hasOwnProperty(partnerid)){
-          clientiPartner[partnerid] = [];
-          clientiPartner[partnerid].push(response.data);
-          console.log('CLIENTI PER PARTNER PRIMO IF:');
-          console.log(clientiPartner);
-        }else{
-          var clienteExists = clientiPartner[partnerid].some(cliente => cliente.codiceFiscale === response.data.codiceFiscale);
-          if(!clienteExists) {
-            clientiPartner[partnerid].push(response.data);
-            console.log('CLIENTI PER PARTNER ELSE:');
-            console.log(clientiPartner);       
-          }
-  
-        }
-        resolve("Promise resolved successfully");
-        promise.resolve("Promise findByPartnerId resolved successfully");
-      })
-      .catch(e => {
-        console.log(e);
-        reject(Error("Promise rejected"));
-      });
-
-    });
-    
-    //promise.then(result => console.log('ClienteDataService.get(id) then method'));
-    return promise;
-    
-  };
-
-
 
   //FORMATTA PER LISTA CLIENTI PER PARTNER
   function handleEsportaClientiPerPartnerClick(){    
@@ -387,7 +344,8 @@ const PartnersList = () => {
   if(user){
     return (
       <div className="list row">
-        <div className="col-md-8">
+        {/* <div className="col-md-8"> */}
+        <div>
           <div className="input-group mb-3">
             <input
               type="text"
