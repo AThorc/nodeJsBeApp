@@ -247,6 +247,11 @@ const PartnersList = () => {
         console.log(response.data);
         //geClientiByLegameExcel(this, partnerid, response.data, promises);
 
+        //SE NON CI SONO LEGAMI PER QUEL PARTNER VADO AVANTI E RISOLVO LA PROMISE
+        if(response.data.length == 0){
+          resolve("Promise retrieveLegamiByPartnerForExcel resolved successfully, 0 legami found");  
+        }
+
         for(const i in response.data){
           var legame = response.data[i];
           //promises.push(getClienteExcel(promise, partnerid, legame.clienteid));
