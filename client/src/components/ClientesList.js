@@ -12,6 +12,9 @@ import moment from 'moment';
 
 import ModificaDataService from "../services/ModificaService";
 
+import exportFromJSON from 'export-from-json'
+
+
 const ClientesList = props => {
   const [clientes, setClientes] = useState([]);
   const [currentCliente, setCurrentCliente] = useState(null);
@@ -149,6 +152,15 @@ const ClientesList = props => {
   }
 
 
+  function handleEsportaClientiClick() {    
+    //const data = [{'a':1, 'b':2},{'a':3, 'b':4}];
+    const data = clientes;
+    const fileName = 'listaClienti';
+    const exportType =  exportFromJSON.types.xls;
+    exportFromJSON({ data, fileName, exportType });
+  }
+
+
   const updateCliente = () => {
     if(user && showAdminBoard){
       currentCliente.userid = user.id;
@@ -203,8 +215,7 @@ const ClientesList = props => {
     const { name, value } = event.target;
     setNewNaturaGiuridica(value);
   };
-
-
+  
 
 
   const renderTableData = () => {  
@@ -634,6 +645,13 @@ const ClientesList = props => {
               onClick={handleAggiungiClienteClick}
             >
               Aggiungi cliente
+            </button>
+            <button
+              className={"btn btn-primary float-right " + (!showAdminBoard ? "d-none" : "")}
+              type="button"
+              onClick={handleEsportaClientiClick}
+            >
+              Esporta lista clienti
             </button>
             </div>
           </div>

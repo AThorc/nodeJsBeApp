@@ -4330,6 +4330,11 @@
     "jest-message-util" "^24.9.0"
     "jest-regex-util" "^24.9.0"
 
+"export-from-json@^1.5.2":
+  "integrity" "sha512-LFgpRKmRUKhUX/ikefSW2dxewwzl53E4vQRlC2ZDFzvcwPw15P7/+0ldUBbCg+nh5kjwCy2zqYp2gaJQkkPAQQ=="
+  "resolved" "https://registry.npmjs.org/export-from-json/-/export-from-json-1.5.2.tgz"
+  "version" "1.5.2"
+
 "express@^4.17.1":
   "integrity" "sha512-mHJ9O79RqluphRrcw2X/GTh3k9tVv8YcoyY4Kkh4WDMUYKRZUq0h1o0w2rrrxBqM7VoeUVqgb27xlEMXTnYt4g=="
   "resolved" "https://registry.npmjs.org/express/-/express-4.17.1.tgz"
