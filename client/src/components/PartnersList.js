@@ -9,12 +9,14 @@ import moment from 'moment'
 
 import AuthService from "../services/auth.service";
 
+import exportFromJSON from 'export-from-json';
+
 const PartnersList = () => {
   const [partners, setPartners] = useState([]);
   const [clientes, setClientes] = useState([]);
   const [currentPartner, setCurrentPartner] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
-  const [searchDenominazione, setSearchDenominazione] = useState("");
+  const [searchDenominazione, setSearchDenominazione] = useState("");  
 
   //const [clientiIdByLegame, setClientiIdByLegame] = useState([]);
 
@@ -23,6 +25,8 @@ const PartnersList = () => {
   //var ragioneSociale = [];
 
   var clientesExecuted = [];
+
+  var clientiPartner = [];
 
   const user = AuthService.getCurrentUser();
   const showAdminBoard = user.roles.includes("ROLE_ADMIN");
@@ -98,6 +102,7 @@ const PartnersList = () => {
     }    
   };
 
+  
   const refreshList = () => {
     retrievePartners();
     refreshSearchedList();
@@ -224,6 +229,155 @@ const PartnersList = () => {
     history.push("/addPartner");
   }
 
+  function getPartnerName(partnerid){
+    for(var i in partners){
+      var p = partners[i];
+      if(partnerid == partners[i].id){
+        return p.denominazione;
+      }
+    }
+  }
+
+
+  function retrieveLegamiByPartnerForExcel(partnerid, promises, ultimoPartner){
+    var promise = new Promise( (resolve, reject) => {
+      LegameDataService.findByPartnerId(partnerid)
+      .then(response => {
+        console.log('LEGAMI PER PARTNER:');
+        console.log(response.data);
+        //geClientiByLegameExcel(this, partnerid, response.data, promises);
+
+        for(const i in response.data){
+          var legame = response.data[i];
+          //promises.push(getClienteExcel(promise, partnerid, legame.clienteid));
+
+          ClienteDataService.get(legame.clienteid)
+          .then(response => {
+            console.log(response.data);
+            if(!clientiPartner.hasOwnProperty(partnerid)){
+              clientiPartner[partnerid] = [];
+              clientiPartner[partnerid].push(response.data);
+              console.log('CLIENTI PER PARTNER PRIMO IF:');
+              console.log(clientiPartner);
+            }else{
+              var clienteExists = clientiPartner[partnerid].some(cliente => cliente.codiceFiscale === response.data.codiceFiscale);
+              if(!clienteExists) {
+                clientiPartner[partnerid].push(response.data);
+                console.log('CLIENTI PER PARTNER ELSE:');
+                console.log(clientiPartner);       
+              }
+      
+            }
+            //SONO ALL'ULTIMO FOR DEL LEGAME dell'ultimo partner
+            if(ultimoPartner && !response.data[i+1])
+            resolve("Promise retrieveLegamiByPartnerForExcel resolved successfully");            
+          })
+          .catch(e => {
+            console.log(e);
+            reject(Error("Promise rejected"));
+          });
+              
+        }
+
+
+
+
+        ////resolve("Promise findByPartnerId resolved successfully");
+      })
+      .catch(e => {
+        console.log(e);
+        reject(Error("Promise rejected"));
+      });
+
+    });
+    //promise.then(result => console.log('LegameDataService.findByPartnerId then method'));
+    promises.push(promise);
+    console.log('PROMISES:');
+    console.log(promises);
+
+  };
+
+  function geClientiByLegameExcel(promise, partnerid, legami, promises){
+    for(const i in legami){
+      var legame = legami[i];
+      promises.push(getClienteExcel(promise, partnerid, legame.clienteid));
+          
+    }
+  };
+
+  function getClienteExcel(promise, partnerid, id){
+    var promise = new Promise( (resolve, reject) => {
+      ClienteDataService.get(id)
+      .then(response => {
+        console.log(response.data);
+        if(!clientiPartner.hasOwnProperty(partnerid)){
+          clientiPartner[partnerid] = [];
+          clientiPartner[partnerid].push(response.data);
+          console.log('CLIENTI PER PARTNER PRIMO IF:');
+          console.log(clientiPartner);
+        }else{
+          var clienteExists = clientiPartner[partnerid].some(cliente => cliente.codiceFiscale === response.data.codiceFiscale);
+          if(!clienteExists) {
+            clientiPartner[partnerid].push(response.data);
+            console.log('CLIENTI PER PARTNER ELSE:');
+            console.log(clientiPartner);       
+          }
+  
+        }
+        resolve("Promise resolved successfully");
+        promise.resolve("Promise findByPartnerId resolved successfully");
+      })
+      .catch(e => {
+        console.log(e);
+        reject(Error("Promise rejected"));
+      });
+
+    });
+    
+    //promise.then(result => console.log('ClienteDataService.get(id) then method'));
+    return promise;
+    
+  };
+
+
+
+  //FORMATTA PER LISTA CLIENTI PER PARTNER
+  function handleEsportaClientiPerPartnerClick(){    
+    var promises = [];
+    for(var i in partners){
+      var partner = partners[i];
+      var ultimoPartner = !partners[i+1]?true:false;
+      retrieveLegamiByPartnerForExcel(partner.id, promises, ultimoPartner);
+    }
+    Promise.all(promises).then((values) => {
+      var data =[];
+      console.log('DENTRO LA VALORIZZAZIONE promises');
+      console.log(promises);
+      console.log(clientiPartner);
+      console.log(values);
+      console.log('FINE VALORIZZAZIONE promises');
+      for(var pid in clientiPartner){
+        var pName = getPartnerName(pid);
+        for(var j in clientiPartner[pid]){
+          var cliente = clientiPartner[pid][j];
+          var record = Object.assign({}, cliente);
+
+          // ADD IN CERTAIN POSITION
+          var keyValues = Object.entries(record); //convert object to keyValues ["key1", "value1"] ["key2", "value2"]
+          keyValues.splice(0,0, ["partnerName", pName]); // insert key value at the index you want like 1.
+          var newRecord = Object.fromEntries(keyValues) // convert key values to obj {key1: "value1", newKey: "newValue", key2: "value2"}
+          data.push(newRecord);
+          console.log('DENTRO LA VALORIZZAZIONE DATA');
+          console.log(data);
+
+        }        
+      }
+      const fileName = 'listaClientiPerPartner';
+      const exportType =  exportFromJSON.types.xls;
+      exportFromJSON({ data, fileName, exportType });
+
+    });
+  }
 
   if(user){
     return (
@@ -251,6 +405,13 @@ const PartnersList = () => {
               onClick={handleAggiungiPartnerClick}
             >
               Aggiungi partner
+            </button>
+            <button
+              className={"btn btn-primary float-right "}
+              type="button"
+              onClick={handleEsportaClientiPerPartnerClick}
+            >
+              Esporta lista clienti partner
             </button>
             </div>
           </div>
