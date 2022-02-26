@@ -12,7 +12,7 @@ import moment from 'moment';
 
 import ModificaDataService from "../services/ModificaService";
 
-import exportFromJSON from 'export-from-json'
+import exportFromJSON from 'export-from-json';
 
 
 const ClientesList = props => {
@@ -647,7 +647,7 @@ const ClientesList = props => {
               Aggiungi cliente
             </button>
             <button
-              className={"btn btn-primary float-right " + (!showAdminBoard ? "d-none" : "")}
+              className={"btn btn-primary float-right "}
               type="button"
               onClick={handleEsportaClientiClick}
             >
