@@ -9,6 +9,7 @@
     "apexcharts": "^3.32.1",
     "axios": "^0.19.2",
     "bootstrap": "^4.6.1",
+    "export-from-json": "^1.5.2",
     "formik": "^2.2.9",
     "jquery": "^3.6.0",
     "moment": "^2.29.1",
