@@ -171,11 +171,15 @@ const PartnersList = () => {
   };
 
   const renderTableHeader = () => {
-    var header = Object.keys(clientiById[0])
-    header =  header.map((key, index) => {
-      if(['ragioneSociale', 'codiceFiscale', 'partitaIVA'].includes(key))
-        return <th key={index}>{initCap(key)}</th>
-    })
+    // var header = Object.keys(clientiById[0])
+    // header =  header.map((key, index) => {
+    //   if(['ragioneSociale', 'codiceFiscale', 'partitaIVA'].includes(key))
+    //     return <th key={index}>{initCap(key)}</th>
+    // })
+    var header = [];
+    header.push(<th key={1}>Ragione sociale</th>);
+    header.push(<th key={2}>Codice fiscale</th>);
+    header.push(<th key={2}>PartitaIva</th>);
     return header;
  };
 
