@@ -332,6 +332,19 @@ const PartnersList = () => {
           var keyValues = Object.entries(record); //convert object to keyValues ["key1", "value1"] ["key2", "value2"]
           keyValues.splice(0,0, ["partnerName", pName]); // insert key value at the index you want like 1.
           var newRecord = Object.fromEntries(keyValues) // convert key values to obj {key1: "value1", newKey: "newValue", key2: "value2"}
+
+          delete newRecord.ragioneSocialeid;
+          delete newRecord.createdAt;
+          delete newRecord.updatedAt;
+          delete newRecord.partners;
+          delete newRecord.userid;
+          delete newRecord.username;
+          delete newRecord.username;
+          delete newRecord.id;
+          newRecord.dataCostituzione = new Date(newRecord.dataCostituzione).toLocaleDateString("en-GB");
+          newRecord.inizioAttivita = new Date(newRecord.inizioAttivita).toLocaleDateString("en-GB");
+
+
           data.push(newRecord);
           console.log('DENTRO LA VALORIZZAZIONE DATA');
           console.log(data);
