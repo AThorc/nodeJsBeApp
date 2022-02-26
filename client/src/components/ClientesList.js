@@ -154,7 +154,21 @@ const ClientesList = props => {
 
   function handleEsportaClientiClick() {    
     //const data = [{'a':1, 'b':2},{'a':3, 'b':4}];
-    const data = clientes;
+    const data = clientes.map(function(e){
+                  delete e.ragioneSocialeid;
+                  delete e.createdAt;
+                  delete e.updatedAt;
+                  delete e.partners;
+                  delete e.userid;
+                  delete e.username;
+                  delete e.username;
+                  delete e.id;
+                  e.dataCostituzione = new Date(e.dataCostituzione).toLocaleDateString("en-GB");
+                  e.inizioAttivita = new Date(e.inizioAttivita).toLocaleDateString("en-GB");
+                  return e;
+                });
+
+
     const fileName = 'listaClienti';
     const exportType =  exportFromJSON.types.xls;
     exportFromJSON({ data, fileName, exportType });
