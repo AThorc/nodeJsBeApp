@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PartnerDataService from "../services/PartnerService";
 import ClienteDataService from "../services/ClienteService";
+import MacroservizioDataService from "../services/MacroservizioService";
 import { Link, useHistory } from "react-router-dom";
 
 import LegameDataService from "../services/LegameService";
@@ -10,6 +11,9 @@ import moment from 'moment'
 import AuthService from "../services/auth.service";
 
 import exportFromJSON from 'export-from-json';
+
+import ExcelJS from "exceljs/dist/es5/exceljs.browser";
+import { saveAs } from 'file-saver';
 
 const PartnersList = () => {
   const [partners, setPartners] = useState([]);
@@ -243,7 +247,95 @@ const PartnersList = () => {
   }
 
 
-  function retrieveLegamiByPartnerForExcel(partnerid, promises, ultimoPartner){
+  function retrieveLegamiByPartnerForExcel(partnerid, promises){
+    var promise = new Promise( (resolve, reject) => {
+      LegameDataService.findByPartnerId(partnerid)
+      .then(responseLegame => {
+         //SE NON CI SONO LEGAMI PER QUEL PARTNER VADO AVANTI E RISOLVO LA PROMISE
+         if(responseLegame.data.length == 0){
+          resolve("Promise retrieveLegamiByPartnerForExcel resolved successfully, 0 legami found"); 
+          console.log('Nessun legame trovato') ;          
+        }else{
+          var legamiClone =  responseLegame.data;
+          var promisesInternal = [];
+
+          for(const j in legamiClone){
+            var legameConNamingCompleto = legamiClone[j];
+            console.log('legameConNamingCompleto');
+            console.log(legameConNamingCompleto);
+
+             var promiseInternal = new Promise( (resolve, reject) => {
+            
+              ClienteDataService.get(legameConNamingCompleto.clienteid)
+              .then(responseCliente => {
+                console.log('responseCliente.data####');
+                console.log(responseCliente.data);
+                resolve(responseCliente.data);
+
+
+              });
+
+            });
+
+            var promiseMacro = new Promise( (resolve, reject) => {
+            
+              MacroservizioDataService.get(legameConNamingCompleto.servizioid)
+                .then(responseMacro => {
+                  console.log('responseMacro.data####');
+                  console.log(responseMacro.data);
+                  resolve(responseMacro.data);     
+                })
+                .catch(e => {
+                  console.log(e);
+                });
+
+            });
+
+            promisesInternal.push(promiseInternal);            
+            promisesInternal.push(promiseMacro);     
+            promises.push(promiseInternal);     
+            promises.push(promiseMacro);    
+
+          }
+
+          Promise.all(promisesInternal).then((anagrafiche) => {
+            //clientiPartner[partnerid].push.apply(clientiPartner[partnerid], legamiClone);
+            console.log('INSIDE ******+anagrafiche legameConNamingCompleto');
+            console.log(anagrafiche);
+
+            for(const j in legamiClone){
+              var legm = legamiClone[j];
+              for(var k in anagrafiche){
+                var anag = anagrafiche[k];
+                if(anag.ragioneSociale && legm.clienteid == anag.id){
+                  legm.ragioneSociale = anag.ragioneSociale;
+                  legm.codiceFiscale = anag.codiceFiscale;
+                }
+                if(anag.servizi && legm.servizioid == anag.id){
+                  legm.servizioName = anag.servizi;
+                }
+
+              }
+            }
+
+            clientiPartner[partnerid]=legamiClone;
+
+            resolve("Promise retrieveLegamiByMacroServizioForExcel resolved a prescindire"); 
+          });
+
+
+          
+        }
+        
+
+      });
+    });
+    promises.push(promise);    
+  }
+
+
+
+  function retrieveLegamiByPartnerForExcelOld(partnerid, promises, ultimoPartner){
     var promise = new Promise( (resolve, reject) => {
       LegameDataService.findByPartnerId(partnerid)
       .then(response => {
@@ -307,8 +399,84 @@ const PartnersList = () => {
   };
 
 
+  function getPartnerName(partnerid){
+    for(var i in partners){
+      var p = partners[i];
+      if(partnerid == p.id){
+        return p.denominazione;
+      }
+    }
+  }
+
+
+  async function handleEsportaClientiPerPartnerClick(ev, partnerid){
+    console.log('partnerid****');
+    console.log(partnerid);
+    var promises = [];
+    if(!partnerid){
+      console.log('partners****');
+      console.log(partners);
+      for(var i in partners){
+        var part = partners[i];
+        console.log('part.id****');
+        console.log(part.id);
+        if(!clientiPartner.hasOwnProperty(part.id)){
+          clientiPartner[part.id] = [];
+        }
+        
+        retrieveLegamiByPartnerForExcel(part.id, promises);
+      }
+    }else{
+      if(!clientiPartner.hasOwnProperty(partnerid)){
+        clientiPartner[partnerid] = [];
+      }
+      retrieveLegamiByPartnerForExcel(partnerid, promises);
+    }
+    
+    Promise.all(promises).then(async (values) => {
+      console.log('lista aux excel');
+      console.log(clientiPartner);
+      console.log('Length promises:');
+      console.log(promises);
+
+      //Inizio costruzione file EXCEL
+      const wb = new ExcelJS.Workbook()
+
+      for(var pid in clientiPartner){
+        var pName = getPartnerName(pid);
+        var ws = wb.addWorksheet(pName);
+        var cols = ['Nome Servizio', 'Ragione Sociale', 'Codice Fiscale', 'Tipo', 'Fatturato Partner', 'Fatturato Multifinance', 'Acconto', 'Saldo', 'Note'];
+
+        //Inserisco nomi colonne
+
+        const colonne = ws.addRow(cols);
+        colonne.font = { bold: true }
+    
+
+        for(var j in clientiPartner[pid]){            
+          var cliente = clientiPartner[pid][j];
+
+          
+          //Inserisco le righe
+          const righe = ws.addRow([cliente.servizioName, cliente.ragioneSociale, cliente.codiceFiscale, cliente.tipo, cliente.fatturatoPartner, cliente.fatturatoSocieta, cliente.acconto, cliente.saldo, cliente.note]);
+
+        }
+
+
+      }
+
+      const buf = await wb.xlsx.writeBuffer();
+      saveAs(new Blob([buf]), 'listaClientiPerPartner.xlsx')
+      clientiPartner = [];
+
+
+    });
+  
+  }
+
+
   //FORMATTA PER LISTA CLIENTI PER PARTNER
-  function handleEsportaClientiPerPartnerClick(){    
+  function handleEsportaClientiPerPartnerClickOld(){    
     var promises = [];
     for(var i in partners){
       var partner = partners[i];
@@ -462,7 +630,15 @@ const PartnersList = () => {
         <div className="col-md-6">
           {currentPartner ? (
             <div>
-              <h4>Lista clienti di {currentPartner.denominazione}</h4>
+              <h4>Lista clienti di {currentPartner.denominazione}  
+              <button
+                  className={"margin-left3 btn btn-primary"}
+                  type="button"                  
+                  onClick={() => handleEsportaClientiPerPartnerClick(this, currentPartner.id)}
+                >
+                  Esporta
+                </button>             
+              </h4>
               {clientiById && clientiById.length > 0 ? (
                 <div>
                   <table id='clientiById' className="table w-auto">
