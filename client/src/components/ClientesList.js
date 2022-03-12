@@ -14,6 +14,9 @@ import ModificaDataService from "../services/ModificaService";
 
 import exportFromJSON from 'export-from-json';
 
+import ExcelJS from "exceljs/dist/es5/exceljs.browser";
+import { saveAs } from 'file-saver';
+
 
 const ClientesList = props => {
   const [clientes, setClientes] = useState([]);
@@ -152,8 +155,13 @@ const ClientesList = props => {
   }
 
 
-  function handleEsportaClientiClick() {    
+  async function handleEsportaClientiClick() {    
     //const data = [{'a':1, 'b':2},{'a':3, 'b':4}];
+
+    //Inizio costruzione file EXCEL
+    const wb = new ExcelJS.Workbook();
+    var ws = wb.addWorksheet('listaClienti');
+
     const data = clientes.map(function(e){
                   delete e.ragioneSocialeid;
                   delete e.createdAt;
@@ -168,10 +176,32 @@ const ClientesList = props => {
                   return e;
                 });
 
+    var cols = ['Ragione sociale', 'Codice fiscale', 'Partita IVA', 'Legale rappresentante', 'Telefono',
+    'Cellulare', 'Mail', 'Pec', 'Sede', 'Localita', 'Cap', 'Data costituzione', 'Inizio attivita',
+    'Tipo', 'Dimensione', 'Att Istat Ateco 2007', 'Settore', 'Natura Giuridica',
+    'Socio 1', 'Socio 2', 'Socio 3', 'Socio 4','Socio 5', 'Socio 6'];
 
-    const fileName = 'listaClienti';
-    const exportType =  exportFromJSON.types.xls;
-    exportFromJSON({ data, fileName, exportType });
+    //Inserisco nomi colonne
+
+    const colonne = ws.addRow(cols);
+    colonne.font = { bold: true }
+
+    for(var i in data){
+      var cliente = data[i];
+      //Inserisco le righe
+      const righe = ws.addRow([cliente.ragioneSociale, cliente.codiceFiscale, cliente.partitaIVA, cliente.legaleRappresentate, cliente.telefono, cliente.cellulare, cliente.mail, cliente.pec, cliente.sede,
+                              cliente.localita, cliente.cap, cliente.dataCostituzione, cliente.inizioAttivita, cliente.tipo, cliente.dimensione, cliente.attIstatAteco2007,
+                              cliente.settore, cliente.naturaGiuridica, cliente.socio1, cliente.socio2, cliente.socio3, cliente.socio4, cliente.socio5, cliente.socio6
+                             ]);
+    }
+
+    const buf = await wb.xlsx.writeBuffer();
+    saveAs(new Blob([buf]), 'listaClienti.xlsx')
+      
+
+    // const fileName = 'listaClienti';
+    // const exportType =  exportFromJSON.types.xls;
+    // exportFromJSON({ data, fileName, exportType });
   }
 
 
