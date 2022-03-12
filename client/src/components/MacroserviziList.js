@@ -471,16 +471,26 @@ const MacroserviziList = () => {
   // }
 
 
-  async function handleEsportaClientiPerMacroServizioClick(){
+  async function handleEsportaClientiPerMacroServizioClick(ev, macroId){
+    console.log('MACROID****');
+    console.log(macroId);
     var promises = [];
-    for(var p in macroservizi){
-      var macroservizio = macroservizi[p];
-      if(!clientiMacroservizio.hasOwnProperty(macroservizio.id)){
-        clientiMacroservizio[macroservizio.id] = [];
+    if(!macroId){
+      for(var p in macroservizi){
+        var macroservizio = macroservizi[p];
+        if(!clientiMacroservizio.hasOwnProperty(macroservizio.id)){
+          clientiMacroservizio[macroservizio.id] = [];
+        }
+        
+        retrieveLegamiByMacroServizioForExcel(macroservizio.id, promises);
       }
-      
-      retrieveLegamiByMacroServizioForExcel(macroservizio.id, promises);
+    }else{
+      if(!clientiMacroservizio.hasOwnProperty(macroId)){
+        clientiMacroservizio[macroId] = [];
+      }
+      retrieveLegamiByMacroServizioForExcel(macroId, promises);
     }
+    
     Promise.all(promises).then(async (values) => {
       console.log('lista aux excel');
       console.log(clientiMacroservizio);
@@ -515,6 +525,7 @@ const MacroserviziList = () => {
 
       const buf = await wb.xlsx.writeBuffer();
       saveAs(new Blob([buf]), 'listaClientiPerMacroservizio.xlsx')
+      clientiMacroservizio = [];
 
 
     });
@@ -697,7 +708,14 @@ const MacroserviziList = () => {
                   ) : (
                     currentMacroservizio.servizi
                   )
-                }               
+                }
+                 <button
+                  className={"btn btn-primary"}
+                  type="button"                  
+                  onClick={() => handleEsportaClientiPerMacroServizioClick(this, currentMacroservizio.id)}
+                >
+                  Esporta lista clienti {currentMacroservizio.servizi}
+                </button>             
               </div>
                            
             </div>
