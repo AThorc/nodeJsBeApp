@@ -6,7 +6,8 @@ import AuthService from "../services/auth.service";
 const AddMacroservizio = props => {
   const initialMacroservizioState = {
     id: null,
-    servizi: ""
+    servizi: "",
+    dataInizio: "" 
 
   };
   const [macroservizio, setMacroservizio] = useState(initialMacroservizioState);
@@ -23,6 +24,7 @@ const AddMacroservizio = props => {
     if(user){
       var data = {        
         servizi: macroservizio.servizi,
+        dataInizio: macroservizio.dataInizio,
         userid: user.id,
         username: user.username,
       };
@@ -73,7 +75,19 @@ const AddMacroservizio = props => {
                 onChange={handleInputChange}
                 name="servizi"
               />
-            </div>           
+            </div>      
+            <div className="form-group">
+              <label htmlFor="title">Data inizio</label>
+              <input
+                type="date"
+                className="form-control"
+                id="dataInizio"
+                required
+                value={macroservizio.dataInizio}
+                onChange={handleInputChange}
+                name="dataInizio"
+              />
+            </div>         
   
             <button onClick={saveMacroservizio} className="btn btn-success">
               Conferma

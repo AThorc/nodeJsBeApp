@@ -13,6 +13,7 @@ exports.create = (req, res) => {
     // Create a Servizio
     const servizio = new Servizio({      
       servizi: req.body.servizi,
+      dataInizio: req.body.dataInizio,
       userid: req.body.userid,
       username: req.body.username,
     });
