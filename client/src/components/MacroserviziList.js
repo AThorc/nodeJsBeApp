@@ -355,17 +355,6 @@ const MacroserviziList = () => {
               .then(responseCliente => {
                 console.log('responseCliente.data####');
                 console.log(responseCliente.data);
-    
-                
-                //Aggiungo solo RS e CF per ora
-                // legameConNamingCompleto.ragioneSociale = responseCliente.data.ragioneSociale;
-                // legameConNamingCompleto.codiceFiscale = responseCliente.data.codiceFiscale;
-
-                // console.log('INSIDE INTERNAL legameConNamingCompleto');
-                // console.log(legameConNamingCompleto);
-
-                
-                // resolve("Promise interna resolved a prescindire"); 
                 resolve(responseCliente.data);
 
 
@@ -373,8 +362,24 @@ const MacroserviziList = () => {
 
             });
 
+            var promisePartners = new Promise( (resolve, reject) => {
+            
+              PartnerDataService.get(legameConNamingCompleto.partnerid)
+                .then(responsePartner => {
+                  console.log('responsePartner.data####');
+                  console.log(responsePartner.data);
+                  resolve(responsePartner.data);     
+                })
+                .catch(e => {
+                  console.log(e);
+                });
+
+            });
+
             promisesInternal.push(promiseInternal);            
+            promisesInternal.push(promisePartners);     
             promises.push(promiseInternal);     
+            promises.push(promisePartners);    
 
           }
 
@@ -386,10 +391,13 @@ const MacroserviziList = () => {
             for(const j in legamiClone){
               var legm = legamiClone[j];
               for(var k in anagrafiche){
-                var cli = anagrafiche[k];
-                if(legm.clienteid == cli.id){
-                  legm.ragioneSociale = cli.ragioneSociale;
-                  legm.codiceFiscale = cli.codiceFiscale;
+                var anag = anagrafiche[k];
+                if(anag.ragioneSociale && legm.clienteid == anag.id){
+                  legm.ragioneSociale = anag.ragioneSociale;
+                  legm.codiceFiscale = anag.codiceFiscale;
+                }
+                if(anag.denominazione && legm.partnerid == anag.id){
+                  legm.partnerName = anag.denominazione;
                 }
 
               }
@@ -463,16 +471,26 @@ const MacroserviziList = () => {
   // }
 
 
-  async function handleEsportaClientiPerMacroServizioClick(){
+  async function handleEsportaClientiPerMacroServizioClick(ev, macroId){
+    console.log('MACROID****');
+    console.log(macroId);
     var promises = [];
-    for(var p in macroservizi){
-      var macroservizio = macroservizi[p];
-      if(!clientiMacroservizio.hasOwnProperty(macroservizio.id)){
-        clientiMacroservizio[macroservizio.id] = [];
+    if(!macroId){
+      for(var p in macroservizi){
+        var macroservizio = macroservizi[p];
+        if(!clientiMacroservizio.hasOwnProperty(macroservizio.id)){
+          clientiMacroservizio[macroservizio.id] = [];
+        }
+        
+        retrieveLegamiByMacroServizioForExcel(macroservizio.id, promises);
       }
-      
-      retrieveLegamiByMacroServizioForExcel(macroservizio.id, promises);
+    }else{
+      if(!clientiMacroservizio.hasOwnProperty(macroId)){
+        clientiMacroservizio[macroId] = [];
+      }
+      retrieveLegamiByMacroServizioForExcel(macroId, promises);
     }
+    
     Promise.all(promises).then(async (values) => {
       console.log('lista aux excel');
       console.log(clientiMacroservizio);
@@ -485,7 +503,7 @@ const MacroserviziList = () => {
       for(var mid in clientiMacroservizio){
         var mName = getMacroservizioName(mid);
         var ws = wb.addWorksheet(mName);
-        var cols = ['Ragione Sociale', 'Codice Fiscale', 'Tipo', 'Fatturato Partner', 'Fatturato Multifinance', 'Acconto', 'Saldo', 'Note'];
+        var cols = ['Nome Partner', 'Ragione Sociale', 'Codice Fiscale', 'Tipo', 'Fatturato Partner', 'Fatturato Multifinance', 'Acconto', 'Saldo', 'Note'];
 
         //Inserisco nomi colonne
 
@@ -498,7 +516,7 @@ const MacroserviziList = () => {
 
           
           //Inserisco le righe
-          const righe = ws.addRow([cliente.ragioneSociale, cliente.codiceFiscale, cliente.tipo, cliente.fatturatoPartner, cliente.fatturatoSocieta, cliente.acconto, cliente.saldo, cliente.note]);
+          const righe = ws.addRow([cliente.partnerName, cliente.ragioneSociale, cliente.codiceFiscale, cliente.tipo, cliente.fatturatoPartner, cliente.fatturatoSocieta, cliente.acconto, cliente.saldo, cliente.note]);
 
         }
 
@@ -507,6 +525,7 @@ const MacroserviziList = () => {
 
       const buf = await wb.xlsx.writeBuffer();
       saveAs(new Blob([buf]), 'listaClientiPerMacroservizio.xlsx')
+      clientiMacroservizio = [];
 
 
     });
@@ -689,7 +708,14 @@ const MacroserviziList = () => {
                   ) : (
                     currentMacroservizio.servizi
                   )
-                }               
+                }
+                 <button
+                  className={"btn btn-primary"}
+                  type="button"                  
+                  onClick={() => handleEsportaClientiPerMacroServizioClick(this, currentMacroservizio.id)}
+                >
+                  Esporta lista clienti {currentMacroservizio.servizi}
+                </button>             
               </div>
                            
             </div>
