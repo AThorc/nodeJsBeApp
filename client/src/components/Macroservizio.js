@@ -13,6 +13,7 @@ const Macroservizio = props => {
   const initialMacroservizioState = {
     id: null,
     servizi: "",  
+    dataInizio: ""  
   };
   const [currentMacroservizio, setCurrentMacroservizio] = useState(initialMacroservizioState);
   const [message, setMessage] = useState("");
@@ -110,6 +111,18 @@ const Macroservizio = props => {
                   name="servizi"
                 />
               </div>
+              <div className="form-group">
+                <label htmlFor="title">Data inizio</label>
+                <input
+                  type="date"
+                  className="form-control"
+                  id="dataInizio"
+                  required
+                  value={moment(currentMacroservizio.dataInizio).format('YYYY-MM-DD')}  
+                  onChange={handleInputChange}
+                  name="dataInizio"
+                />
+              </div>       
               
             </form>          
   
