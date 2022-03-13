@@ -392,10 +392,11 @@ const Statistiche = () => {
     return header;
  };
 
-  const renderTableData = () => {
+  const renderTableData = (filtro) => {
     console.log('macroServiziFormatted');
     console.log(macroServiziFormatted);
-    var macroServiziFormattedFiltered=macroServiziFormatted.filter(p => ( ( (filtroData.dataDa &&  moment(p.dataInizio).format('YYYY-MM-DD') >= filtroData.dataDa)|| filtroData.dataDa == null ) && (filtroData.dataA && moment(p.dataInizio).format('YYYY-MM-DD') <= filtroData.dataA)|| filtroData.dataA == null ) ) ;
+    var macroServiziFormattedFiltered=macroServiziFormatted;
+    if(filtro) macroServiziFormattedFiltered=macroServiziFormatted.filter(p => ( ( (filtroData.dataDa &&  moment(p.dataInizio).format('YYYY-MM-DD') >= filtroData.dataDa)|| filtroData.dataDa == null ) && (filtroData.dataA && moment(p.dataInizio).format('YYYY-MM-DD') <= filtroData.dataA)|| filtroData.dataA == null ) ) ;
     return macroServiziFormattedFiltered.map((macroServizioFormatted, index) => {
       return (
           <tr key={index}>
@@ -407,10 +408,11 @@ const Statistiche = () => {
     })
   };
 
-  const renderTablePartnersData = () => {
+  const renderTablePartnersData = (filtro) => {
     console.log('partnersFormatted');
     console.log(partnersFormatted);
-    var partnersFormattedFiltered=partnersFormatted.filter(p => ( ( (filtroData.dataDa &&  moment(p.dataInizio).format('YYYY-MM-DD') >= filtroData.dataDa)|| filtroData.dataDa == null ) && (filtroData.dataA && moment(p.dataInizio).format('YYYY-MM-DD') <= filtroData.dataA)|| filtroData.dataA == null ) ) ;
+    var partnersFormattedFiltered=partnersFormatted;
+    if(filtro) partnersFormattedFiltered=partnersFormatted.filter(p => ( ( (filtroData.dataDa &&  moment(p.dataInizio).format('YYYY-MM-DD') >= filtroData.dataDa)|| filtroData.dataDa == null ) && (filtroData.dataA && moment(p.dataInizio).format('YYYY-MM-DD') <= filtroData.dataA)|| filtroData.dataA == null ) ) ;
     return partnersFormattedFiltered
     .map((partnerFormatted, index) => {
       return (
@@ -423,6 +425,12 @@ const Statistiche = () => {
     })
   };
 
+  const applicaFiltro = () =>{
+    renderTableData(true);
+    renderTablePartnersData(true);
+
+    retrievePartners();
+  }
 
 
   if(user){
@@ -458,7 +466,7 @@ const Statistiche = () => {
                <button
                   className={"margin-left3 btn btn-primary"}
                   type="button"                  
-                  onClick={retrievePartners}
+                  onClick={applicaFiltro}
                 >
                   Applica filtro
                 </button>   
