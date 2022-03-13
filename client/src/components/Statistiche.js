@@ -323,11 +323,11 @@ const Statistiche = () => {
         var macroservizi = response.data.filter(p => ( ( (filtroData.dataDa &&  moment(p.dataInizio).format('YYYY-MM-DD') >= filtroData.dataDa)|| filtroData.dataDa == null ) && (filtroData.dataA && moment(p.dataInizio).format('YYYY-MM-DD') <= filtroData.dataA)|| filtroData.dataA == null ) ) ;       
         
         if(macroservizi.length > 0){
-          setMacroservizi(response.data);
+          setMacroservizi(macroservizi);
 
-          addDataInSerie(response.data);        
+          addDataInSerie(macroservizi);        
   
-          console.log(response.data);
+          console.log(macroservizi);
         }
        
       })
@@ -343,9 +343,9 @@ const Statistiche = () => {
     setPartnersSeries([]);
 
 
-    // setMacroservizi([]);
-    // setMacroServiziFormatted([]);
-    // setSeries([]);
+    setMacroservizi([]);
+    setMacroServiziFormatted([]);
+    setSeries([]);
 
 
   }
@@ -430,6 +430,7 @@ const Statistiche = () => {
     renderTablePartnersData(true);
 
     retrievePartners();
+    retrieveMacroservizi();
   }
 
 
