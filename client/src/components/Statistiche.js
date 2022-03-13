@@ -13,6 +13,11 @@ import moment from 'moment'
 import AuthService from "../services/auth.service";
 
 const Statistiche = () => {
+  const initialFiltroDataState = {
+    dataDa: null,
+    dataA: null 
+  };
+
   const [macroservizi, setMacroservizi] = useState([]);
 
   const [series, setSeries] = useState([]);
@@ -26,6 +31,20 @@ const Statistiche = () => {
 
 
   const user = AuthService.getCurrentUser();
+
+  
+  const [filtroData, setFiltroData] = useState(initialFiltroDataState);
+
+
+  const handleInputChange = event => {
+    console.log(event.target);
+    const { name, value } = event.target;
+    setFiltroData({ ...filtroData, [name]: value });
+    console.log('FILTRO BEFORE LEGAMI* ');
+    console.log(filtroData);
+    //retrievePartners();
+    //retrieveMacroservizi();
+  };  
 
 
   var barChart = {
@@ -166,7 +185,7 @@ const Statistiche = () => {
 
           console.log('result');
           console.log(result);
-          addMacroServiziFormatted({servizi: result.servizi, fatturatoSocieta: result.elementSoc.y, fatturatoPartner:  result.elementPartner.y})
+          addMacroServiziFormatted({servizi: result.servizi, fatturatoSocieta: result.elementSoc.y, fatturatoPartner:  result.elementPartner.y, dataInizio: result.dataInizio})
         })
         );
       }
@@ -188,8 +207,10 @@ const Statistiche = () => {
     for(var i in partners){
       var partner = partners[i];
 
+    
       //PRENDO LA SOMMA DEI FATTURATI SOC E PARTNER DI OGNI MACROSERVIZI
-      defs = retrieveLegamiByPartnerId(partner, defs);
+      defs = retrieveLegamiByPartnerId(partner, defs);      
+
 
     }
     Promise.all(defs).then(() => {
@@ -209,7 +230,7 @@ const Statistiche = () => {
 
           console.log('result');
           console.log(result);
-          addPartnersFormatted({denominazione: result.denominazione, fatturatoSocieta: result.elementSoc.y, fatturatoPartner:  result.elementPartner.y})
+          addPartnersFormatted({denominazione: result.denominazione, fatturatoSocieta: result.elementSoc.y, fatturatoPartner:  result.elementPartner.y, dataInizio: result.dataInizio})
         })
         );
       }
@@ -237,6 +258,7 @@ const Statistiche = () => {
       var fatturatoSoc = 0;
       var fatturatoPartner = 0;
 
+      
       var def =
       LegameDataService.findByServizioId(servizioid)
       .then(response => {
@@ -248,7 +270,7 @@ const Statistiche = () => {
         var category = splitLabels(macroservizio.servizi);
         var elementSoc = {x: category, y: fatturatoSoc};
         var elementPartner = {x: category, y: fatturatoPartner};
-        return {elementSoc: elementSoc, elementPartner: elementPartner, servizi: macroservizio.servizi};
+        return {elementSoc: elementSoc, elementPartner: elementPartner, servizi: macroservizio.servizi, dataInizio: macroservizio.dataInizio};
 
       })
       .catch(e => {
@@ -256,6 +278,7 @@ const Statistiche = () => {
         //def.reject('Error on findByServizioId');
       });
       defs.push(def);
+      
       return defs;
     }
   };
@@ -265,6 +288,8 @@ const Statistiche = () => {
       var fatturatoSoc = 0;
       var fatturatoPartner = 0;
 
+
+      
       var def =
       LegameDataService.findByPartnerId(partner.id)
       .then(response => {
@@ -275,14 +300,17 @@ const Statistiche = () => {
         }
         var elementSoc = {x: partner.denominazione, y: fatturatoSoc};
         var elementPartner = {x: partner.denominazione, y: fatturatoPartner};
-        return {elementSoc: elementSoc, elementPartner: elementPartner, denominazione: partner.denominazione};
+        return {elementSoc: elementSoc, elementPartner: elementPartner, denominazione: partner.denominazione, dataInizio: partner.dataInizio};
 
       })
       .catch(e => {
         console.log(e);
         //def.reject('Error on findByServizioId');
       });
-      defs.push(def);
+      defs.push(def);      
+
+
+     
       return defs;
     }
   };
@@ -291,11 +319,17 @@ const Statistiche = () => {
     if(user){
       MacroservizioDataService.getAll()
       .then(response => {
-        setMacroservizi(response.data);
+        initVar();
+        var macroservizi = response.data.filter(p => ( ( (filtroData.dataDa &&  moment(p.dataInizio).format('YYYY-MM-DD') >= filtroData.dataDa)|| filtroData.dataDa == null ) && (filtroData.dataA && moment(p.dataInizio).format('YYYY-MM-DD') <= filtroData.dataA)|| filtroData.dataA == null ) ) ;       
+        
+        if(macroservizi.length > 0){
+          setMacroservizi(macroservizi);
 
-        addDataInSerie(response.data);        
-
-        console.log(response.data);
+          addDataInSerie(macroservizi);        
+  
+          console.log(macroservizi);
+        }
+       
       })
       .catch(e => {
         console.log(e);
@@ -303,15 +337,36 @@ const Statistiche = () => {
     }
   };
 
-  const retrievePartners = () => {
+  const initVar = () => {
+    setPartners([]);
+    setPartnersFormatted([]);
+    setPartnersSeries([]);
+
+
+    setMacroservizi([]);
+    setMacroServiziFormatted([]);
+    setSeries([]);
+
+
+  }
+
+  const retrievePartners = () => {    
     if(user){
       PartnerDataService.getAll()
       .then(response => {
-        setPartners(response.data);
+        initVar();
+        var partners = response.data.filter(p => ( ( (filtroData.dataDa &&  moment(p.dataInizio).format('YYYY-MM-DD') >= filtroData.dataDa)|| filtroData.dataDa == null ) && (filtroData.dataA && moment(p.dataInizio).format('YYYY-MM-DD') <= filtroData.dataA)|| filtroData.dataA == null ) ) ;       
+        if(partners.length > 0){
+          setPartners(partners);
 
-        addDataPartnersInSerie(response.data);
-
-        console.log(response.data);
+          addDataPartnersInSerie(partners);
+  
+          console.log(partners);
+          console.log('FILTRO DATA*');
+          console.log(filtroData);
+          
+        }
+        
       })
       .catch(e => {
         console.log(e);
@@ -337,10 +392,12 @@ const Statistiche = () => {
     return header;
  };
 
-  const renderTableData = () => {
+  const renderTableData = (filtro) => {
     console.log('macroServiziFormatted');
     console.log(macroServiziFormatted);
-    return macroServiziFormatted.map((macroServizioFormatted, index) => {
+    var macroServiziFormattedFiltered=macroServiziFormatted;
+    if(filtro) macroServiziFormattedFiltered=macroServiziFormatted.filter(p => ( ( (filtroData.dataDa &&  moment(p.dataInizio).format('YYYY-MM-DD') >= filtroData.dataDa)|| filtroData.dataDa == null ) && (filtroData.dataA && moment(p.dataInizio).format('YYYY-MM-DD') <= filtroData.dataA)|| filtroData.dataA == null ) ) ;
+    return macroServiziFormattedFiltered.map((macroServizioFormatted, index) => {
       return (
           <tr key={index}>
             <td>{macroServizioFormatted.servizi}</td>       
@@ -351,10 +408,13 @@ const Statistiche = () => {
     })
   };
 
-  const renderTablePartnersData = () => {
+  const renderTablePartnersData = (filtro) => {
     console.log('partnersFormatted');
     console.log(partnersFormatted);
-    return partnersFormatted.map((partnerFormatted, index) => {
+    var partnersFormattedFiltered=partnersFormatted;
+    if(filtro) partnersFormattedFiltered=partnersFormatted.filter(p => ( ( (filtroData.dataDa &&  moment(p.dataInizio).format('YYYY-MM-DD') >= filtroData.dataDa)|| filtroData.dataDa == null ) && (filtroData.dataA && moment(p.dataInizio).format('YYYY-MM-DD') <= filtroData.dataA)|| filtroData.dataA == null ) ) ;
+    return partnersFormattedFiltered
+    .map((partnerFormatted, index) => {
       return (
           <tr key={index}>
             <td>{partnerFormatted.denominazione}</td>       
@@ -365,12 +425,53 @@ const Statistiche = () => {
     })
   };
 
+  const applicaFiltro = () =>{
+    renderTableData(true);
+    renderTablePartnersData(true);
+
+    retrievePartners();
+    retrieveMacroservizi();
+  }
 
 
   if(user){
     return (
       <div className="list row">        
        <div className="app">
+          <div className="row"> 
+            <label>
+              <strong>Da:</strong>
+            </label>{" "}
+            <input
+                  type="date"
+                  className="form-control fit-content"
+                  id="dataDa"
+                  required
+                  value={moment(filtroData.dataDa).format('YYYY-MM-DD')} 
+                  onChange={handleInputChange}
+                  name="dataDa"
+              />
+
+            <label>
+              <strong>A:</strong>
+            </label>{" "}
+            <input
+                  type="date"
+                  className="form-control fit-content"
+                  id="dataA"
+                  required
+                  value={moment(filtroData.dataA).format('YYYY-MM-DD')} 
+                  onChange={handleInputChange}
+                  name="dataA"
+              />
+               <button
+                  className={"margin-left3 btn btn-primary"}
+                  type="button"                  
+                  onClick={applicaFiltro}
+                >
+                  Applica filtro
+                </button>   
+          </div>
           <div className="row">            
             {macroServiziFormatted && macroServiziFormatted.length > 0 ? (              
               <div className="half1-statistiche table-responsive text-nowrap">
