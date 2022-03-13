@@ -40,6 +40,10 @@ const Statistiche = () => {
     console.log(event.target);
     const { name, value } = event.target;
     setFiltroData({ ...filtroData, [name]: value });
+    console.log('FILTRO BEFORE LEGAMI* ');
+    console.log(filtroData);
+    //retrievePartners();
+    //retrieveMacroservizi();
   };  
 
 
@@ -203,8 +207,10 @@ const Statistiche = () => {
     for(var i in partners){
       var partner = partners[i];
 
+    
       //PRENDO LA SOMMA DEI FATTURATI SOC E PARTNER DI OGNI MACROSERVIZI
-      defs = retrieveLegamiByPartnerId(partner, defs);
+      defs = retrieveLegamiByPartnerId(partner, defs);      
+
 
     }
     Promise.all(defs).then(() => {
@@ -252,6 +258,7 @@ const Statistiche = () => {
       var fatturatoSoc = 0;
       var fatturatoPartner = 0;
 
+      
       var def =
       LegameDataService.findByServizioId(servizioid)
       .then(response => {
@@ -271,6 +278,7 @@ const Statistiche = () => {
         //def.reject('Error on findByServizioId');
       });
       defs.push(def);
+      
       return defs;
     }
   };
@@ -280,6 +288,8 @@ const Statistiche = () => {
       var fatturatoSoc = 0;
       var fatturatoPartner = 0;
 
+
+      
       var def =
       LegameDataService.findByPartnerId(partner.id)
       .then(response => {
@@ -297,7 +307,10 @@ const Statistiche = () => {
         console.log(e);
         //def.reject('Error on findByServizioId');
       });
-      defs.push(def);
+      defs.push(def);      
+
+
+     
       return defs;
     }
   };
@@ -306,11 +319,17 @@ const Statistiche = () => {
     if(user){
       MacroservizioDataService.getAll()
       .then(response => {
-        setMacroservizi(response.data);
+        initVar();
+        var macroservizi = response.data.filter(p => ( ( (filtroData.dataDa &&  moment(p.dataInizio).format('YYYY-MM-DD') >= filtroData.dataDa)|| filtroData.dataDa == null ) && (filtroData.dataA && moment(p.dataInizio).format('YYYY-MM-DD') <= filtroData.dataA)|| filtroData.dataA == null ) ) ;       
+        
+        if(macroservizi.length > 0){
+          setMacroservizi(response.data);
 
-        addDataInSerie(response.data);        
-
-        console.log(response.data);
+          addDataInSerie(response.data);        
+  
+          console.log(response.data);
+        }
+       
       })
       .catch(e => {
         console.log(e);
@@ -318,15 +337,36 @@ const Statistiche = () => {
     }
   };
 
-  const retrievePartners = () => {
+  const initVar = () => {
+    setPartners([]);
+    setPartnersFormatted([]);
+    setPartnersSeries([]);
+
+
+    // setMacroservizi([]);
+    // setMacroServiziFormatted([]);
+    // setSeries([]);
+
+
+  }
+
+  const retrievePartners = () => {    
     if(user){
       PartnerDataService.getAll()
       .then(response => {
-        setPartners(response.data);
+        initVar();
+        var partners = response.data.filter(p => ( ( (filtroData.dataDa &&  moment(p.dataInizio).format('YYYY-MM-DD') >= filtroData.dataDa)|| filtroData.dataDa == null ) && (filtroData.dataA && moment(p.dataInizio).format('YYYY-MM-DD') <= filtroData.dataA)|| filtroData.dataA == null ) ) ;       
+        if(partners.length > 0){
+          setPartners(partners);
 
-        addDataPartnersInSerie(response.data);
-
-        console.log(response.data);
+          addDataPartnersInSerie(partners);
+  
+          console.log(partners);
+          console.log('FILTRO DATA*');
+          console.log(filtroData);
+          
+        }
+        
       })
       .catch(e => {
         console.log(e);
@@ -415,6 +455,13 @@ const Statistiche = () => {
                   onChange={handleInputChange}
                   name="dataA"
               />
+               <button
+                  className={"margin-left3 btn btn-primary"}
+                  type="button"                  
+                  onClick={retrievePartners}
+                >
+                  Applica filtro
+                </button>   
           </div>
           <div className="row">            
             {macroServiziFormatted && macroServiziFormatted.length > 0 ? (              
