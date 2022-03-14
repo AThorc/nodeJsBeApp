@@ -273,6 +273,10 @@ const PartnersList = () => {
                 resolve(responseCliente.data);
 
 
+              })
+              .catch(responseClienteFail => {
+                console.log('responseCliente.FAIL####');
+                resolve(responseClienteFail);
               });
 
             });
@@ -285,8 +289,12 @@ const PartnersList = () => {
                   console.log(responseMacro.data);
                   resolve(responseMacro.data);     
                 })
-                .catch(e => {
-                  console.log(e);
+                // .catch(e => {
+                //   console.log(e);
+                // })
+                .catch(responseMacroFail => {
+                  console.log('responseMacroFail.FAIL####');
+                  resolve(responseMacroFail);
                 });
 
             });
