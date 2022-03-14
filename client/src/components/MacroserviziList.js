@@ -356,9 +356,14 @@ const MacroserviziList = () => {
                 console.log('responseCliente.data####');
                 console.log(responseCliente.data);
                 resolve(responseCliente.data);
-
-
+              })
+              .catch(responseClienteFail => {
+                console.log('responseCliente.FAIL####');
+                resolve(responseClienteFail);
               });
+
+              
+              ;
 
             });
 
@@ -372,7 +377,15 @@ const MacroserviziList = () => {
                 })
                 .catch(e => {
                   console.log(e);
+                })
+                 // .catch(e => {
+                //   console.log(e);
+                // })
+                .catch(responsePartnerFail => {
+                  console.log('responsePartnerFail.FAIL####');
+                  resolve(responsePartnerFail);
                 });
+                ;
 
             });
 
