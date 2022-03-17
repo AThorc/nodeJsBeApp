@@ -24,7 +24,7 @@ const InserisciServizio = props => {
     tipo: "",
     fatturatoPartner: undefined,
     fatturatoSocieta: undefined,
-    dataInizio: undefined,
+    dataInizio: '',
     note: undefined
 
   };
@@ -291,7 +291,7 @@ const InserisciServizio = props => {
                 className="form-control"
                 id="dataInizio"                
                 value={legame.dataInizio}  
-                onChange={handleInputChange}
+                onChange={handleInputLegameChange}
                 name="dataInizio"
               />
             </div>          

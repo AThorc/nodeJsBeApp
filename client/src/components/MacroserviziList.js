@@ -341,6 +341,8 @@ const MacroserviziList = () => {
           resolve("Promise retrieveLegamiByMacroServizioForExcel resolved successfully, 0 legami found"); 
           console.log('Nessun legame trovato') ;          
         }else{
+          console.log('#ASDASF');
+          console.log(responseLegame);
           var legamiClone =  responseLegame.data;
           var promisesInternal = [];
 
@@ -526,10 +528,13 @@ const MacroserviziList = () => {
 
         for(var j in clientiMacroservizio[mid]){            
           var cliente = clientiMacroservizio[mid][j];
-
+          console.log('DATA INIZIO');
+          console.log(cliente.dataInizio);
+          cliente.dataInizio = new Date(cliente.dataInizio).toLocaleDateString("en-GB");          
+          console.log(cliente.dataInizio);
           
           //Inserisco le righe
-          const righe = ws.addRow([cliente.partnerName, cliente.ragioneSociale, cliente.codiceFiscale, cliente.tipo, new Date(cliente.dataInizio).toLocaleDateString("en-GB"),cliente.fatturatoPartner, cliente.fatturatoSocieta, cliente.acconto, cliente.saldo, cliente.note]);
+          const righe = ws.addRow([cliente.partnerName, cliente.ragioneSociale, cliente.codiceFiscale, cliente.tipo, cliente.dataInizio, cliente.fatturatoPartner, cliente.fatturatoSocieta, cliente.acconto, cliente.saldo, cliente.note]);
 
         }
 
