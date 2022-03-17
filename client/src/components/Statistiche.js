@@ -264,8 +264,10 @@ const Statistiche = () => {
       .then(response => {
         for(const i in response.data){
           var legame = response.data[i];
-          fatturatoSoc += (legame.fatturatoSocieta || 0);
-          fatturatoPartner += (legame.fatturatoPartner || 0);
+          if( ((filtroData.dataDa &&  moment(legame.dataInizio).format('YYYY-MM-DD') >= filtroData.dataDa) || filtroData.dataDa == null ) && ( (filtroData.dataA && moment(legame.dataInizio).format('YYYY-MM-DD') <= filtroData.dataA)|| filtroData.dataA == null ) ){
+            fatturatoSoc += (legame.fatturatoSocieta || 0);
+            fatturatoPartner += (legame.fatturatoPartner || 0);
+          }          
         }
         var category = splitLabels(macroservizio.servizi);
         var elementSoc = {x: category, y: fatturatoSoc};
@@ -295,8 +297,10 @@ const Statistiche = () => {
       .then(response => {
         for(const i in response.data){
           var legame = response.data[i];
-          fatturatoSoc += (legame.fatturatoSocieta || 0);
-          fatturatoPartner += (legame.fatturatoPartner || 0);
+          if( ((filtroData.dataDa &&  moment(legame.dataInizio).format('YYYY-MM-DD') >= filtroData.dataDa) || filtroData.dataDa == null ) && ( (filtroData.dataA && moment(legame.dataInizio).format('YYYY-MM-DD') <= filtroData.dataA)|| filtroData.dataA == null ) ){
+            fatturatoSoc += (legame.fatturatoSocieta || 0);
+            fatturatoPartner += (legame.fatturatoPartner || 0);
+          }
         }
         var elementSoc = {x: partner.denominazione, y: fatturatoSoc};
         var elementPartner = {x: partner.denominazione, y: fatturatoPartner};
@@ -320,8 +324,8 @@ const Statistiche = () => {
       MacroservizioDataService.getAll()
       .then(response => {
         initVar();
-        var macroservizi = response.data.filter(p => ( ( (filtroData.dataDa &&  moment(p.dataInizio).format('YYYY-MM-DD') >= filtroData.dataDa)|| filtroData.dataDa == null ) && (filtroData.dataA && moment(p.dataInizio).format('YYYY-MM-DD') <= filtroData.dataA)|| filtroData.dataA == null ) ) ;       
-        
+        //var macroservizi = response.data.filter(p => ( ( (filtroData.dataDa &&  moment(p.dataInizio).format('YYYY-MM-DD') >= filtroData.dataDa)|| filtroData.dataDa == null ) && (filtroData.dataA && moment(p.dataInizio).format('YYYY-MM-DD') <= filtroData.dataA)|| filtroData.dataA == null ) ) ;       
+        var macroservizi = response.data;
         if(macroservizi.length > 0){
           setMacroservizi(macroservizi);
 
@@ -355,7 +359,8 @@ const Statistiche = () => {
       PartnerDataService.getAll()
       .then(response => {
         initVar();
-        var partners = response.data.filter(p => ( ( (filtroData.dataDa &&  moment(p.dataInizio).format('YYYY-MM-DD') >= filtroData.dataDa)|| filtroData.dataDa == null ) && (filtroData.dataA && moment(p.dataInizio).format('YYYY-MM-DD') <= filtroData.dataA)|| filtroData.dataA == null ) ) ;       
+        //var partners = response.data.filter(p => ( ( (filtroData.dataDa &&  moment(p.dataInizio).format('YYYY-MM-DD') >= filtroData.dataDa)|| filtroData.dataDa == null ) && (filtroData.dataA && moment(p.dataInizio).format('YYYY-MM-DD') <= filtroData.dataA)|| filtroData.dataA == null ) ) ;       
+        var partners = response.data;
         if(partners.length > 0){
           setPartners(partners);
 
@@ -396,7 +401,7 @@ const Statistiche = () => {
     console.log('macroServiziFormatted');
     console.log(macroServiziFormatted);
     var macroServiziFormattedFiltered=macroServiziFormatted;
-    if(filtro) macroServiziFormattedFiltered=macroServiziFormatted.filter(p => ( ( (filtroData.dataDa &&  moment(p.dataInizio).format('YYYY-MM-DD') >= filtroData.dataDa)|| filtroData.dataDa == null ) && (filtroData.dataA && moment(p.dataInizio).format('YYYY-MM-DD') <= filtroData.dataA)|| filtroData.dataA == null ) ) ;
+    //if(filtro) macroServiziFormattedFiltered=macroServiziFormatted.filter(p => ( ( (filtroData.dataDa &&  moment(p.dataInizio).format('YYYY-MM-DD') >= filtroData.dataDa)|| filtroData.dataDa == null ) && (filtroData.dataA && moment(p.dataInizio).format('YYYY-MM-DD') <= filtroData.dataA)|| filtroData.dataA == null ) ) ;
     return macroServiziFormattedFiltered.map((macroServizioFormatted, index) => {
       return (
           <tr key={index}>
@@ -412,7 +417,7 @@ const Statistiche = () => {
     console.log('partnersFormatted');
     console.log(partnersFormatted);
     var partnersFormattedFiltered=partnersFormatted;
-    if(filtro) partnersFormattedFiltered=partnersFormatted.filter(p => ( ( (filtroData.dataDa &&  moment(p.dataInizio).format('YYYY-MM-DD') >= filtroData.dataDa)|| filtroData.dataDa == null ) && (filtroData.dataA && moment(p.dataInizio).format('YYYY-MM-DD') <= filtroData.dataA)|| filtroData.dataA == null ) ) ;
+    //if(filtro) partnersFormattedFiltered=partnersFormatted.filter(p => ( ( (filtroData.dataDa &&  moment(p.dataInizio).format('YYYY-MM-DD') >= filtroData.dataDa)|| filtroData.dataDa == null ) && (filtroData.dataA && moment(p.dataInizio).format('YYYY-MM-DD') <= filtroData.dataA)|| filtroData.dataA == null ) ) ;
     return partnersFormattedFiltered
     .map((partnerFormatted, index) => {
       return (

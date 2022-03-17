@@ -76,7 +76,7 @@ const AddMacroservizio = props => {
                 name="servizi"
               />
             </div>      
-            <div className="form-group">
+            {/* <div className="form-group">
               <label htmlFor="title">Data inizio</label>
               <input
                 type="date"
@@ -87,7 +87,7 @@ const AddMacroservizio = props => {
                 onChange={handleInputChange}
                 name="dataInizio"
               />
-            </div>         
+            </div>          */}
   
             <button onClick={saveMacroservizio} className="btn btn-success">
               Conferma

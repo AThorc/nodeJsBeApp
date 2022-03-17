@@ -77,7 +77,7 @@ const AddSegnalatore = () => {
               />
             </div>
   
-            <div className="form-group">
+            {/* <div className="form-group">
               <label htmlFor="title">Data inizio</label>
               <input
                 type="date"
@@ -88,7 +88,7 @@ const AddSegnalatore = () => {
                 onChange={handleInputChange}
                 name="dataInizio"
               />
-            </div>
+            </div> */}
   
             <div className="form-group">
               <label htmlFor="title">Fatturato segnalatore</label>

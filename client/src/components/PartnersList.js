@@ -619,12 +619,12 @@ const PartnersList = () => {
                                   
               </div>
 
-              <div>
+              {/* <div>
                 <label>
                   <strong>Data inizio:</strong>
                 </label>{" "}
                 {moment(currentPartner.dataInizio).format('YYYY-MM-DD')}
-              </div>                   
+              </div>                    */}
 
             </div>
           ) : (

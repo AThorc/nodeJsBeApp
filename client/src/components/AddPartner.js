@@ -78,7 +78,7 @@ const AddPartner = (props) => {
               />
             </div>
   
-            <div className="form-group">
+            {/* <div className="form-group">
               <label htmlFor="title">Data inizio</label>
               <input
                 type="date"
@@ -89,7 +89,7 @@ const AddPartner = (props) => {
                 onChange={handleInputChange}
                 name="dataInizio"
               />
-            </div>                    
+            </div>                     */}
   
             <button onClick={savePartner} className="btn btn-success">
               Conferma
