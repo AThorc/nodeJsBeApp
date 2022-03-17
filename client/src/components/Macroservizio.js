@@ -111,7 +111,7 @@ const Macroservizio = props => {
                   name="servizi"
                 />
               </div>
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label htmlFor="title">Data inizio</label>
                 <input
                   type="date"
@@ -122,7 +122,7 @@ const Macroservizio = props => {
                   onChange={handleInputChange}
                   name="dataInizio"
                 />
-              </div>       
+              </div>        */}
               
             </form>          
   

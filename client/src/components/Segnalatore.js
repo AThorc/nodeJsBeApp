@@ -89,7 +89,7 @@ const Segnalatore = props => {
                 />
               </div>
   
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label htmlFor="title">Data inizio</label>
                 <input
                   type="date"
@@ -100,7 +100,7 @@ const Segnalatore = props => {
                   onChange={handleInputChange}
                   name="dataInizio"
                 />
-              </div>
+              </div> */}
   
               <div className="form-group">
                 <label htmlFor="title">Fatturato segnalatore</label>

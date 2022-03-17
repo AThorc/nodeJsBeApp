@@ -723,12 +723,12 @@ const MacroserviziList = () => {
                   )
                 }
 
-                <div>
+                {/* <div>
                   <label>
                     <strong>Data inizio:</strong>
                   </label>{" "}
                   {moment(currentMacroservizio.dataInizio).format('YYYY-MM-DD')}
-                </div>    
+                </div>     */}
 
                  <button
                   className={"btn btn-primary"}
