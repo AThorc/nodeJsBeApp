@@ -453,7 +453,7 @@ const PartnersList = () => {
       for(var pid in clientiPartner){
         var pName = getPartnerName(pid);
         var ws = wb.addWorksheet(pName);
-        var cols = ['Nome Servizio', 'Ragione Sociale', 'Codice Fiscale', 'Tipo', 'Fatturato Partner', 'Fatturato Multifinance', 'Acconto', 'Saldo', 'Note'];
+        var cols = ['Nome Servizio', 'Ragione Sociale', 'Codice Fiscale', 'Tipo', 'Data Inizio', 'Fatturato Partner', 'Fatturato Multifinance', 'Acconto', 'Saldo', 'Note'];
 
         //Inserisco nomi colonne
 
@@ -466,7 +466,7 @@ const PartnersList = () => {
 
           
           //Inserisco le righe
-          const righe = ws.addRow([cliente.servizioName, cliente.ragioneSociale, cliente.codiceFiscale, cliente.tipo, cliente.fatturatoPartner, cliente.fatturatoSocieta, cliente.acconto, cliente.saldo, cliente.note]);
+          const righe = ws.addRow([cliente.servizioName, cliente.ragioneSociale, cliente.codiceFiscale, cliente.tipo, new Date(cliente.dataInizio).toLocaleDateString("en-GB"), cliente.fatturatoPartner, cliente.fatturatoSocieta, cliente.acconto, cliente.saldo, cliente.note]);
 
         }
 
