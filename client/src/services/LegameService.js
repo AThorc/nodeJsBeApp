@@ -35,6 +35,10 @@ const findByPartnerId = (partnerId) => {
   return http.get(`/legames?partnerid=${partnerId}`);
 };
 
+const findByClienteId = (clienteId) => {
+  return http.get(`/legames?clienteid=${clienteId}`);
+};
+
 export default {
   getAll,
   get,
@@ -44,5 +48,6 @@ export default {
   removeAll,
   findByServizioId,
   findByServizioIdClienteId,
-  findByPartnerId
+  findByPartnerId,
+  findByClienteId
 };
