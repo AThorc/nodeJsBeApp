@@ -11,6 +11,7 @@ import ConfirmDialog from "./confirmDialog.component";
 import moment from 'moment';
 
 import ModificaDataService from "../services/ModificaService";
+import LegameDataService from "../services/LegameService";
 
 import exportFromJSON from 'export-from-json';
 
@@ -246,6 +247,18 @@ const ClientesList = props => {
           console.log(e);
         });
 
+        //Cancello tutti i legami del cliente da cancellare
+        LegameDataService.findByClienteId(currentCliente.id)
+        .then(responseLegami => {
+          var legami = responseLegami.data;
+          if(legami.length > 0){
+            for(var i in legami){
+              var legame = legami[i];
+              LegameDataService.remove(legame.id);
+            }
+          }
+
+        })
 
       })
       .catch(e => {
