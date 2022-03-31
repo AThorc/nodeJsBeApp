@@ -6,7 +6,7 @@ const path = require("path")
 const app = express();
 
 var corsOptions = {
-  origin: process.env.REACT_APP_HEROKU_URL || "http://localhost:8081"
+  origin: process.env.REACT_APP_HEROKU_URL || "http://192.168.10.7:8081"
 };
 
 app.use(cors(corsOptions));
