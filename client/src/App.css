@@ -1,3 +1,13 @@
+.container{
+  width: 100%!important;
+  float: left!important;
+  margin-left: -7%;
+}
+
+.container-logo{
+  margin-left: 10%;
+}
+
 .list {
   text-align: left;
   max-width: 830px;
@@ -6,21 +16,23 @@
 
 .submit-form {
   max-width: 300px;
-  margin: auto;
+  margin-left: 50%;
 }
 
 .edit-form {
   max-width: 300px;
-  margin: auto;
+  margin-left: 50%;
 }
 
 .edit-anagrafica-form {
   margin: auto;
+  width: 126%;
+  margin-left: 11%;
 }
 
 
 label {
-  display: block;
+  display: inline-block!important;
   margin-top: 10px;
 }
 
@@ -156,7 +168,7 @@ body.react-confirm-alert-body-element {
   display: inline-block;
   margin-top: 2%;
   text-align: -webkit-auto;
-  margin-right: 3.5%;
+  margin-right: 5%;
 }
 
 .table-anagrafica{
@@ -168,7 +180,8 @@ body.react-confirm-alert-body-element {
 }
 
 .wrapper-anagrafica{
-  margin-left: -32%;
+  /* margin-left: -46%; */
+  margin-left: 0%;
 }
 
 .table-inserisci-anag{
@@ -180,14 +193,10 @@ body.react-confirm-alert-body-element {
   width: 1400px;
 }
 
-.container{
-  margin-left: 3%!important;
-}
-
-
 .note-wrapper{
-  width: 1400px;
+  width: 1230px;
   margin-top: 33%;
+  margin-left: 11%;
 }
 
 .note-button-margin-top{
@@ -199,9 +208,9 @@ body.react-confirm-alert-body-element {
 }
 
 .right-corner{
-  position: relative;
-  bottom: 0;
-  left: 67%;
+  position: relative!important;
+  display: -webkit-inline-box;
+  float: right!important;
 }
 
 .name-user{
