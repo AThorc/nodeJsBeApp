@@ -93,6 +93,11 @@ const InserisciServizio = props => {
     setPercentualePartner(value);
   };
 
+  const handleInputCompensoPartnerChange = event => {
+    const { value} = event.target;
+    setCompensoPartner(value);
+  };
+
   const saveLegame = () => {
     if(user){
       console.log('LEGAME');
@@ -439,9 +444,8 @@ const InserisciServizio = props => {
                           className="form-control fit-content"
                           id="compensoPartner"                          
                           value={compensoPartner}
-                          onChange={handleInputLegameChange}
+                          onChange={handleInputCompensoPartnerChange}
                           name="compensoPartner"
-                          readOnly="readonly"
                       />
                   </td>                 
                 </tr>
