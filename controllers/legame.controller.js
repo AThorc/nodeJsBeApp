@@ -19,14 +19,17 @@ exports.create = (req, res) => {
       segnalatoreid: req.body.segnalatoreid,
       tipo: req.body.tipo,
       servizioid: req.body.servizioid,
-      fatturatoPartner: req.body.fatturatoPartner,
-      fatturatoSocieta: req.body.fatturatoSocieta,
+      // fatturatoPartner: req.body.fatturatoPartner,
+      // fatturatoSocieta: req.body.fatturatoSocieta,
       dataInizio: req.body.dataInizio,
       note: req.body.note,
       userid: req.body.userid,
       username: req.body.username,
-      acconto: req.body.acconto,
-      saldo: req.body.saldo
+      // acconto: req.body.acconto,
+      // saldo: req.body.saldo
+      totalePratica: req.body.totalePratica,
+      incassato:  req.body.incassato,
+      compensoPartner: req.body.compensoPartner
     });
   
     // Save Legame in the database
