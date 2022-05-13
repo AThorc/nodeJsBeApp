@@ -18,6 +18,7 @@ exports.create = (req, res) => {
       fatturatoPartner: req.body.fatturatoPartner,
       userid: req.body.userid,
       username: req.body.username,
+      percentuale: req.body.percentuale,
     });
   
     // Save Partner in the database

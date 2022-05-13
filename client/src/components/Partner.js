@@ -13,7 +13,8 @@ const Partner = props => {
   const initialPartnerState = {
     id: null,
     denominazione: "",
-    dataInizio: ""  
+    dataInizio: "",
+    percentuale: ""
   };
   const [currentPartner, setCurrentPartner] = useState(initialPartnerState);
   const [message, setMessage] = useState("");
@@ -103,6 +104,19 @@ const Partner = props => {
                   value={currentPartner.denominazione}
                   onChange={handleInputChange}
                   name="denominazione"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="title">Percentuale Partner</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="percentuale"
+                  required
+                  value={currentPartner.percentuale}
+                  onChange={handleInputChange}
+                  name="percentuale"
                 />
               </div>
   

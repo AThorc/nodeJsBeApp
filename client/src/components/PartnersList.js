@@ -622,6 +622,13 @@ const PartnersList = () => {
                                   
               </div>
 
+              <div>
+                <label>
+                  <strong>Percentuale partner</strong>
+                </label>{" "}
+                {currentPartner.percentuale}
+              </div>  
+
               {/* <div>
                 <label>
                   <strong>Data inizio:</strong>
