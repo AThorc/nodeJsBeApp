@@ -19,7 +19,8 @@ module.exports = mongoose => {
         ],
         denominazione: String,
         dataInizio: Date,      
-        username: String,  
+        username: String,
+        percentuale: Number
       },
       { timestamps: true }
     );
