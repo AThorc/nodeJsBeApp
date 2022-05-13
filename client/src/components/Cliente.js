@@ -59,7 +59,10 @@ const Cliente = props => {
     dataInizio: undefined,
     note: "",
     acconto: undefined,
-    saldo: undefined
+    saldo: undefined,
+    totalePratica: undefined,
+    incassato: undefined,
+    compensoPartner: undefined
 
   };
   const [currentCliente, setCurrentCliente] = useState(initialClienteState);
@@ -384,8 +387,80 @@ const Cliente = props => {
                       name="dataInizio"
                       disabled={!showAdminBoard}
                   />
-            </td>            
+            </td>
             <td>
+              <input
+                      type="number"
+                      className="form-control"
+                      id="totalePratica"
+                      required
+                      value={legame.totalePratica}
+                      key={index}
+                      onChange={(e) => handleInputLegameChange(e, index)}
+                      name="totalePratica"
+                      maxLength="9"
+                      disabled={!showAdminBoard}
+                />
+            </td>
+            <td>
+              <input
+                      type="number"
+                      className="form-control"
+                      id="incassato"
+                      required
+                      value={legame.incassato}
+                      key={index}
+                      onChange={(e) => handleInputLegameChange(e, index)}
+                      name="incassato"
+                      maxLength="9"
+                      disabled={!showAdminBoard}
+                />
+            </td>
+            <td>
+              <input
+                      type="number"
+                      className="form-control"
+                      id="daIncassare"
+                      required
+                      value={legame.totalePratica - legame.incassato}
+                      key={index}
+                      onChange={(e) => handleInputLegameChange(e, index)}
+                      name="daIncassare"
+                      maxLength="9"
+                      disabled="true"
+                />
+            </td>
+
+            <td>
+              <input
+                      type="number"
+                      className="form-control"
+                      id="compensoPartner"
+                      required
+                      value={legame.compensoPartner}
+                      key={index}
+                      onChange={(e) => handleInputLegameChange(e, index)}
+                      name="compensoPartner"
+                      maxLength="9"
+                      disabled={!showAdminBoard}
+                />
+            </td>
+            <td>
+              <input
+                      type="number"
+                      className="form-control"
+                      id="netto"
+                      required
+                      value={legame.totalePratica - legame.compensoPartner}
+                      key={index}
+                      onChange={(e) => handleInputLegameChange(e, index)}
+                      name="netto"
+                      maxLength="9"
+                      disabled="true"
+                />
+            </td>  
+
+            {/* <td>
               <input
                     type="number"
                     className="form-control"
@@ -440,7 +515,7 @@ const Cliente = props => {
                       maxLength="9"
                       disabled={!showAdminBoard}
                 />
-            </td>
+            </td> */}
             <td>
               <ConfirmDialog 
                 title= {<BsXLg />}
@@ -452,7 +527,8 @@ const Cliente = props => {
               <ConfirmDialog 
                 title= {<BsFillPencilFill />}
                 message= 'Sei sicuro di voler aggiornare il servizio?'
-                onClickYes= {() => updateLegame(legame.id, {clientid: legame.clienteid, partnerid: partner.length>0?partner:legame.partnerid, tipo: newTipoLegame?newTipoLegame:legame.tipo, dataInizio: legame.dataInizio, fatturatoPartner: legame.fatturatoPartner, fatturatoSocieta: legame.fatturatoSocieta, acconto: legame.acconto, saldo: legame.saldo})}
+                //onClickYes= {() => updateLegame(legame.id, {clientid: legame.clienteid, partnerid: partner.length>0?partner:legame.partnerid, tipo: newTipoLegame?newTipoLegame:legame.tipo, dataInizio: legame.dataInizio, fatturatoPartner: legame.fatturatoPartner, fatturatoSocieta: legame.fatturatoSocieta, acconto: legame.acconto, saldo: legame.saldo})}
+                onClickYes= {() => updateLegame(legame.id, {clientid: legame.clienteid, partnerid: partner.length>0?partner:legame.partnerid, tipo: newTipoLegame?newTipoLegame:legame.tipo, dataInizio: legame.dataInizio, totalePratica: legame.totalePratica, incassato: legame.incassato, compensoPartner: legame.compensoPartner})}
                 className={"btn btn-primary " + (!showAdminBoard ? "d-none" : "")}
               />
 
