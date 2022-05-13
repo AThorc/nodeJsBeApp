@@ -30,7 +30,10 @@ module.exports = mongoose => {
         },
         username: String,
         acconto: Number,
-        saldo: Number
+        saldo: Number,
+        totalePratica: Number,
+        incassato: Number,
+        compensoPartner: Number
       },
       { timestamps: true }
     );

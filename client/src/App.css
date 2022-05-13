@@ -221,3 +221,15 @@ body.react-confirm-alert-body-element {
 .margin-left3{
   margin-left: 3%;
 }
+
+.max50pxWidth{
+  width: 50px!important;
+}
+
+.percentualeDiv{
+  display: flex;
+}
+
+.marginLeft7{
+  margin-left: 7%;
+}

@@ -74,6 +74,10 @@ const InserisciServizio = props => {
 
   const [newTipoLegame, setNewTipoLegame] = useState(null);
 
+  const [percentualePartner, setPercentualePartner] = useState(null);
+
+  const [compensoPartner, setCompensoPartner] = useState(null);
+
   const handleInputChange = event => {
     const { name, value } = event.target;
     setMacroservizio({ ...macroservizio, [name]: value });
@@ -82,6 +86,11 @@ const InserisciServizio = props => {
   const handleInputLegameChange = event => {
     const { name, value } = event.target;
     setLegame({ ...legame, [name]: value });
+  };
+
+  const handleInputPercentualeChange = event => {
+    const { value} = event.target;
+    setPercentualePartner(value);
   };
 
   const saveLegame = () => {
@@ -95,12 +104,15 @@ const InserisciServizio = props => {
         segnalatoreid: segnalatore.value,  
         tipo: newTipoLegame,
         dataInizio: legame.dataInizio,
-        fatturatoPartner: legame.fatturatoPartner,
-        fatturatoSocieta: legame.fatturatoSocieta,
+        // fatturatoPartner: legame.fatturatoPartner,
+        // fatturatoSocieta: legame.fatturatoSocieta,
         userid: user.id,
         username: user.username,
-        acconto: legame.acconto,
-        saldo: legame.saldo
+        // acconto: legame.acconto,
+        // saldo: legame.saldo
+        totalePratica: legame.totalePratica,
+        incassato: legame.incassato,
+        compensoPartner: compensoPartner,
       };
 
       LegameDataService.create(data)
@@ -112,10 +124,13 @@ const InserisciServizio = props => {
           partnerid: response.data.partnerid,
           tipo: response.data.tipo,
           dataInizio: response.data.dataInizio,
-          fatturatoPartner: response.data.fatturatoPartner,
-          fatturatoSocieta: response.data.fatturatoSocieta,
-          acconto: response.data.acconto,
-          saldo: response.data.saldo
+          // fatturatoPartner: response.data.fatturatoPartner,
+          // fatturatoSocieta: response.data.fatturatoSocieta,
+          // acconto: response.data.acconto,
+          // saldo: response.data.saldo
+          totalePratica: response.data.totalePratica,
+          incassato: response.data.incassato,
+          compensoPartner: response.data.compensoPartner,
         });
         setSubmitted(true);
          // console.log(response.data);
@@ -180,10 +195,19 @@ const InserisciServizio = props => {
   };
 
   const _handlePartnerChange = event => {
-    const { value,} = event.target;
+    const { value} = event.target;
     console.log(value);
     //console.log(id);
     setPartner(value);
+
+    for(var i in partners){
+      var currPart = partners[i];
+      console.log('CURR PART');
+      console.log(currPart);
+      if(currPart.value == value){
+        setPercentualePartner(currPart.percentuale);
+      }
+    }    
   };
 
 
@@ -212,6 +236,15 @@ const InserisciServizio = props => {
     return clientiOptions;
   };
 
+
+  const calcolaCompensoPartner = () => {
+    console.log('calcolaComp');
+    console.log(legame);
+    console.log(percentualePartner);
+    setCompensoPartner((legame.totalePratica * percentualePartner) / 100);
+
+  }
+
   const retrievePartners = () => {
     if(user){
       PartnerDataService.getAll()
@@ -231,7 +264,7 @@ const InserisciServizio = props => {
     var partnersOptions = [];
     for(const i in partners){
       var partner = partners[i];
-      var partnerOption = { value: partner.id, label: partner.denominazione };
+      var partnerOption = { value: partner.id, label: partner.denominazione, percentuale: partner.percentuale };
       partnersOptions.push(partnerOption);
     }
     return partnersOptions;
@@ -260,7 +293,7 @@ const InserisciServizio = props => {
 
   if(user){
     return (
-      <div className="submit-form">
+      <div className="">
         {submitted ? (
           <div>
             <h4>Servizio inserito correttamente!</h4>
@@ -271,30 +304,168 @@ const InserisciServizio = props => {
         ) : (
           <div>
             <h4>Inserisci il servizio</h4>
-            <div className="form-group">
-              <label htmlFor="title">Servizi</label>
-              <input
-                type="text"
-                className="form-control"
-                id="servizi"                
-                value={macroservizio.servizi}
-                onChange={handleInputChange}
-                name="servizi"
-                readOnly="readonly"
-              />
-            </div>
-  
-            <div className="form-group">
-              <label htmlFor="title">Data inizio</label>
-              <input
-                type="date"
-                className="form-control"
-                id="dataInizio"                
-                value={legame.dataInizio}  
-                onChange={handleInputLegameChange}
-                name="dataInizio"
-              />
-            </div>          
+
+            <div >
+              <table id='inserisciServizioIdDiv' className="table">
+                
+              <tbody>       
+                <tr key={1}>
+                  <td>
+                    <label htmlFor="title">Servizi</label>
+                    <input
+                          type="text"
+                          className="form-control fit-content"
+                          id="servizi"                          
+                          value={macroservizio.servizi}
+                          onChange={handleInputChange}
+                          name="servizi"
+                          readOnly="readonly"
+                      />
+                  </td>
+                  <td>
+                    <label htmlFor="title">Cliente</label>
+                    <input
+                      type="text"
+                      className="form-control fit-content"
+                      id="cliente"           
+                      value={currentCliente.ragioneSociale}
+                      onChange={handleInputLegameChange}
+                      name="cliente"
+                      readOnly="readonly"                        
+                    />
+                  </td>
+                  <td>
+                    <label htmlFor="title">Data inizio</label>
+                    <input
+                      type="date"
+                      className="form-control fit-content"
+                      id="dataInizio"                
+                      value={legame.dataInizio}  
+                      onChange={handleInputLegameChange}
+                      name="dataInizio"
+                    />
+                  </td>
+
+                </tr>
+
+                <tr key={2}>
+                  <td>
+                    <label htmlFor="title">Tip. servizi</label>
+                    <div className="form-group box">
+                      <select defaultValue={'DEFAULT'} onClick={(e) => handleInputLegameTipoChange(e)} onChange={(e) => handleInputLegameTipoChange(e)}>
+                        <option value="" disabled value="DEFAULT">Seleziona un tipo</option>    
+                        {tipologiaServizi[macroservizio.servizi] &&
+                              tipologiaServizi[macroservizio.servizi].map((tipo, index) => (                  
+                            
+                              <option value={tipo} key={index} >{tipo}</option>                    
+                          ))}
+                        </select>
+                      </div>
+                  </td>
+                  <td>
+                    <label htmlFor="title">Partner</label>
+                    <div className="form-group box">
+                      <select value={partner.value} defaultValue={'DEFAULT'} onClick={_handlePartnerChange} onChange={_handlePartnerChange}>
+                        <option value="" disabled value="DEFAULT">Seleziona un partner</option>    
+                        {partners &&
+                          partners.map((partner, index) => (                  
+                            
+                              <option value={partner.value} key={index} >{partner.label}</option>                    
+                          ))}
+                        </select>
+                      </div>
+                  </td>                  
+
+                </tr>
+
+                <tr key={3}>
+                  <td>
+                    <label htmlFor="title">Totale Pratica</label>
+                    <input
+                          type="text"
+                          className="form-control fit-content"
+                          id="totalePratica"                          
+                          value={legame.totalePratica}
+                          onChange={handleInputLegameChange}
+                          name="totalePratica"
+                      />
+                  </td>
+                  <td>
+                    <label htmlFor="title">Incassato</label>
+                    <input
+                          type="text"
+                          className="form-control fit-content"
+                          id="incassato"                          
+                          value={legame.incassato}
+                          onChange={handleInputLegameChange}
+                          name="incassato"
+                      />
+                  </td>
+                  <td>
+                    <label htmlFor="title">Da Incassare</label>
+                    <input
+                          type="text"
+                          className="form-control fit-content"
+                          id="daIncassare"                          
+                          value={legame.totalePratica - legame.incassato}
+                          onChange={handleInputLegameChange}
+                          name="daIncassare"
+                          readOnly="readonly"
+                      />
+                  </td>
+                </tr>
+
+                <tr key={4}>
+                  <td>
+                    <label htmlFor="title">Compenso Partner</label><br></br>                    
+                    <div className="percentualeDiv">
+                      <label htmlFor="title">Percentuale</label>
+                      <input
+                            type="text"
+                            className="form-control fit-content max50pxWidth marginLeft7"
+                            id="percentuale"                          
+                            value={percentualePartner}
+                            onChange={handleInputPercentualeChange}
+                            name="percentuale"
+                        />                        
+                        <button className="btn btn-warning marginLeft7" onClick={calcolaCompensoPartner}>
+                          Calcola
+                        </button> 
+
+                    </div>
+                   
+                      <input
+                          type="text"
+                          className="form-control fit-content"
+                          id="compensoPartner"                          
+                          value={compensoPartner}
+                          onChange={handleInputLegameChange}
+                          name="compensoPartner"
+                          readOnly="readonly"
+                      />
+                  </td>                 
+                </tr>
+                <tr key={5}>
+                  <td>
+                      <label htmlFor="title">Netto</label>
+                      <input
+                            type="text"
+                            className="form-control fit-content"
+                            id="netto"                          
+                            value={legame.totalePratica - compensoPartner}
+                            onChange={handleInputLegameChange}
+                            name="netto"
+                            readOnly="readonly"
+                        />
+                    </td>
+                </tr>
+
+
+              </tbody>    
+
+              </table> 
+            </div> 
+
 
             {/* <div className="form-group">
               <label htmlFor="title">Tip. servizi</label>
@@ -309,45 +480,9 @@ const InserisciServizio = props => {
               />
             </div>       */}
 
-            <div className="form-group box">
-              <label htmlFor="title">Tip. servizi</label>
-              <select defaultValue={'DEFAULT'} onClick={(e) => handleInputLegameTipoChange(e)} onChange={(e) => handleInputLegameTipoChange(e)}>
-                <option value="" disabled value="DEFAULT">Seleziona un tipo</option>    
-                {tipologiaServizi[macroservizio.servizi] &&
-                      tipologiaServizi[macroservizio.servizi].map((tipo, index) => (                  
-                    
-                      <option value={tipo} key={index} >{tipo}</option>                    
-                  ))}
-                </select>
-            </div>
+            
 
-            <div className="form-group box">
-              <label htmlFor="title">Cliente</label>
-              <input
-                type="text"
-                className="form-control"
-                id="cliente"  
-                required                
-                value={currentCliente.ragioneSociale}
-                onChange={handleInputLegameChange}
-                name="cliente"
-                readOnly="readonly"                        
-              />
-            </div>
-
-            <div className="form-group box">
-              <label htmlFor="title">Partner</label>
-              <select value={partner.value} defaultValue={'DEFAULT'} onClick={_handlePartnerChange} onChange={_handlePartnerChange}>
-                <option value="" disabled value="DEFAULT">Seleziona un partner</option>    
-                {partners &&
-                  partners.map((partner, index) => (                  
-                    
-                      <option value={partner.value} key={index} >{partner.label}</option>                    
-                  ))}
-                </select>
-            </div>
-
-            <div className="form-group">
+            {/* <div className="form-group">
                 <label htmlFor="title">Fatturato partner</label>
                 <input
                   type="number"
@@ -397,7 +532,7 @@ const InserisciServizio = props => {
                   onChange={handleInputLegameChange}
                   name="saldo"
                 />
-              </div>          
+              </div>           */}
   
 
             <ConfirmDialog 
