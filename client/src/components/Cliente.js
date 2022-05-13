@@ -276,11 +276,16 @@ const Cliente = props => {
         return <th key={index}>{initCap(key).replace('id','')}</th>
     })
     header.push(<th key={4}>Data inizio</th>);
-    header.push(<th key={5}>Fatturato Partner</th>);
-    header.push(<th key={6}>Fatturato Multifinance</th>);
-    header.push(<th key={7}>Acconto</th>);
-    header.push(<th key={8}>Saldo</th>);
-    header.push(<th key={9}>Azioni</th>);
+    header.push(<th key={5}>Totale Pratica</th>);
+    header.push(<th key={6}>Incassato</th>);
+    header.push(<th key={7}>Da Incassare</th>);
+    header.push(<th key={8}>Compenso Partner</th>);
+    header.push(<th key={9}>Netto</th>);
+    // header.push(<th key={5}>Fatturato Partner</th>);
+    // header.push(<th key={6}>Fatturato Multifinance</th>);
+    // header.push(<th key={7}>Acconto</th>);
+    // header.push(<th key={8}>Saldo</th>);
+    header.push(<th key={10}>Azioni</th>);
     return header;
  };
 
