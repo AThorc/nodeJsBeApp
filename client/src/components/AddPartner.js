@@ -8,6 +8,7 @@ const AddPartner = (props) => {
     id: null,
     denominazione: "",
     dataInizio: "",
+    percentuale: ""
 
   };
   const [partner, setPartner] = useState(initialPartnerState);
@@ -27,6 +28,7 @@ const AddPartner = (props) => {
         dataInizio: partner.dataInizio,
         userid: user.id,
         username: user.username,
+        percentuale: partner.percentuale
       };
 
       PartnerDataService.create(data)
@@ -75,6 +77,19 @@ const AddPartner = (props) => {
                 value={partner.denominazione}
                 onChange={handleInputChange}
                 name="denominazione"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="title">Percentuale partner</label>
+              <input
+                type="text"
+                className="form-control"
+                id="percentuale"
+                required
+                value={partner.percentuale}
+                onChange={handleInputChange}
+                name="percentuale"
               />
             </div>
   
