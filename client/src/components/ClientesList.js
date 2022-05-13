@@ -179,8 +179,9 @@ const ClientesList = props => {
 
     var cols = ['Ragione sociale', 'Codice fiscale', 'Partita IVA', 'Legale rappresentante', 'Telefono',
     'Cellulare', 'Mail', 'Pec', 'Sede', 'Localita', 'Cap', 'Data costituzione', 'Inizio attivita',
-    'Tipo', 'Dimensione', 'Att Istat Ateco 2007', 'Settore', 'Natura Giuridica',
-    'Socio 1', 'Socio 2', 'Socio 3', 'Socio 4','Socio 5', 'Socio 6'];
+    'Tipo', 'Dimensione', 'Att Istat Ateco 2007', 'Settore', 'Natura Giuridica', 'Segnalatore',
+    'Socio 1', 'Percentuale Socio 1', 'Socio 2', 'Percentuale Socio 2', 'Socio 3', 'Percentuale Socio 3',
+    'Socio 4', 'Percentuale Socio 4', 'Socio 5', 'Percentuale Socio 5', 'Socio 6', 'Percentuale Socio 6',];
 
     //Inserisco nomi colonne
 
@@ -192,7 +193,8 @@ const ClientesList = props => {
       //Inserisco le righe
       const righe = ws.addRow([cliente.ragioneSociale, cliente.codiceFiscale, cliente.partitaIVA, cliente.legaleRappresentate, cliente.telefono, cliente.cellulare, cliente.mail, cliente.pec, cliente.sede,
                               cliente.localita, cliente.cap, cliente.dataCostituzione, cliente.inizioAttivita, cliente.tipo, cliente.dimensione, cliente.attIstatAteco2007,
-                              cliente.settore, cliente.naturaGiuridica, cliente.socio1, cliente.socio2, cliente.socio3, cliente.socio4, cliente.socio5, cliente.socio6
+                              cliente.settore, cliente.naturaGiuridica, cliente.segnalatore, cliente.socio1, cliente.percentualeSocio1, cliente.socio2, cliente.percentualeSocio2,
+                              cliente.socio3, cliente.percentualeSocio3, cliente.socio4, cliente.percentualeSocio4, cliente.socio5, cliente.percentualeSocio5, cliente.socio6, cliente.percentualeSocio6
                              ]);
     }
 
@@ -554,8 +556,9 @@ const ClientesList = props => {
                     name="settore"
                     disabled={!showAdminBoard}
                 />
-            </td>       
-
+            </td>                     
+          </tr>
+          <tr key={7}>
             <td>
               <div className="form-group box">              
                 <label>
@@ -570,9 +573,26 @@ const ClientesList = props => {
                     ))}
                   </select>
               </div>
-            </td>            
+            </td>
+            <td>
+              <label>
+                <strong>Segnalatore:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="segnalatore"
+                    required
+                    value={currentCliente.segnalatore} 
+                    onChange={handleInputChange}
+                    name="segnalatore"
+                    disabled={!showAdminBoard}
+                />
+            </td>
           </tr>
-          <tr key={7}>
+
+          <tr key={8}>    
+
             <td>
               <label>
                 <strong>Socio 1:</strong>
@@ -588,6 +608,25 @@ const ClientesList = props => {
                     disabled={!showAdminBoard}
                 />
             </td>
+
+            <td>
+              <label>
+                <strong>Percentuale Socio 1:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="percentualeSocio1"
+                    required
+                    value={currentCliente.percentualeSocio1} 
+                    onChange={handleInputChange}
+                    name="percentualeSocio1"
+                    disabled={!showAdminBoard}
+                />
+            </td>
+          </tr>
+
+          <tr key={9}>  
             <td>
               <label>
                 <strong>Socio 2:</strong>
@@ -602,7 +641,26 @@ const ClientesList = props => {
                     name="socio2"
                     disabled={!showAdminBoard}
                 />
-            </td>    
+            </td>  
+
+            <td>
+              <label>
+                <strong>Percentuale Socio 2:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="percentualeSocio2"
+                    required
+                    value={currentCliente.percentualeSocio2} 
+                    onChange={handleInputChange}
+                    name="percentualeSocio2"
+                    disabled={!showAdminBoard}
+                />
+            </td>
+          </tr>
+
+          <tr key={10}>
             <td>
               <label>
                 <strong>Socio 3:</strong>
@@ -617,12 +675,28 @@ const ClientesList = props => {
                     name="socio3"
                     disabled={!showAdminBoard}
                 />
-            </td>                        
+            </td>   
+
+            <td>
+              <label>
+                <strong>Percentuale Socio 3:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="percentualeSocio3"
+                    required
+                    value={currentCliente.percentualeSocio3} 
+                    onChange={handleInputChange}
+                    name="percentualeSocio3"
+                    disabled={!showAdminBoard}
+                />
+            </td>                     
 
           </tr>
-         
-         <tr key ={8}>
-           <td>
+
+          <tr key={11}>
+            <td>
               <label>
                 <strong>Socio 4:</strong>
               </label>{" "}
@@ -636,7 +710,27 @@ const ClientesList = props => {
                     name="socio4"
                     disabled={!showAdminBoard}
                 />
-            </td>    
+            </td>   
+
+            <td>
+              <label>
+                <strong>Percentuale Socio 4:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="percentualeSocio4"
+                    required
+                    value={currentCliente.percentualeSocio4} 
+                    onChange={handleInputChange}
+                    name="percentualeSocio4"
+                    disabled={!showAdminBoard}
+                />
+            </td>                     
+
+          </tr>
+
+          <tr key={12}>
             <td>
               <label>
                 <strong>Socio 5:</strong>
@@ -651,7 +745,27 @@ const ClientesList = props => {
                     name="socio5"
                     disabled={!showAdminBoard}
                 />
-            </td>    
+            </td>   
+
+            <td>
+              <label>
+                <strong>Percentuale Socio 5:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="percentualeSocio5"
+                    required
+                    value={currentCliente.percentualeSocio5} 
+                    onChange={handleInputChange}
+                    name="percentualeSocio5"
+                    disabled={!showAdminBoard}
+                />
+            </td>                     
+
+          </tr>
+
+          <tr key={13}>
             <td>
               <label>
                 <strong>Socio 6:</strong>
@@ -666,9 +780,27 @@ const ClientesList = props => {
                     name="socio6"
                     disabled={!showAdminBoard}
                 />
-            </td>         
+            </td>   
 
-         </tr>
+            <td>
+              <label>
+                <strong>Percentuale Socio 6:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="percentualeSocio6"
+                    required
+                    value={currentCliente.percentualeSocio6} 
+                    onChange={handleInputChange}
+                    name="percentualeSocio6"
+                    disabled={!showAdminBoard}
+                />
+            </td>                     
+
+          </tr>
+         
+         
 
         </tbody>
         

@@ -37,7 +37,14 @@ module.exports = mongoose => {
         socio3: String,
         socio4: String,
         socio5: String,
-        socio6: String
+        socio6: String,
+        segnalatore: String,
+        percentualeSocio1: Number,
+        percentualeSocio2: Number,
+        percentualeSocio3: Number,
+        percentualeSocio4: Number,
+        percentualeSocio5: Number,
+        percentualeSocio6: Number
       },
       { timestamps: true }
     );

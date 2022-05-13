@@ -42,6 +42,14 @@ exports.create = (req, res) => {
       socio4: req.body.socio4,
       socio5: req.body.socio5,
       socio6: req.body.socio6,
+      segnalatore: req.body.segnalatore,
+      percentualeSocio1: req.body.percentualeSocio1,
+      percentualeSocio2: req.body.percentualeSocio2,
+      percentualeSocio3: req.body.percentualeSocio3,
+      percentualeSocio4: req.body.percentualeSocio4,
+      percentualeSocio5: req.body.percentualeSocio5,
+      percentualeSocio6: req.body.percentualeSocio6,
+
     });
   
     // Save Cliente in the database
