@@ -35,6 +35,13 @@ const AddCliente = props => {
     socio4: "",
     socio5: "",
     socio6: "",
+    segnalatore: "",
+    percentualeSocio1: "",
+    percentualeSocio2: "",
+    percentualeSocio3: "",
+    percentualeSocio4: "",
+    percentualeSocio5: "",
+    percentualeSocio6: ""
 
   };
   const [cliente, setCliente] = useState(initialClienteState);
@@ -82,7 +89,14 @@ const AddCliente = props => {
         socio3: cliente.socio3,
         socio4: cliente.socio4,
         socio5: cliente.socio5,
-        socio6: cliente.socio6
+        socio6: cliente.socio6,
+        segnalatore: cliente.segnalatore,
+        percentualeSocio1: cliente.percentualeSocio1,
+        percentualeSocio2: cliente.percentualeSocio2,
+        percentualeSocio3: cliente.percentualeSocio3,
+        percentualeSocio4: cliente.percentualeSocio4,
+        percentualeSocio5: cliente.percentualeSocio5,
+        percentualeSocio6: cliente.percentualeSocio6,
       };
 
       ClienteDataService.create(data)
@@ -112,7 +126,14 @@ const AddCliente = props => {
           socio3: response.data.socio3,
           socio4: response.data.socio4,
           socio5: response.data.socio5,
-          socio6: response.data.socio6
+          socio6: response.data.socio6,
+          segnalatore: response.data.segnalatore,
+          percentualeSocio1: response.data.percentualeSocio1,
+          percentualeSocio2: response.data.percentualeSocio2,
+          percentualeSocio3: response.data.percentualeSocio3,
+          percentualeSocio4: response.data.percentualeSocio4,
+          percentualeSocio5: response.data.percentualeSocio5,
+          percentualeSocio6: response.data.percentualeSocio6
         });
         setSubmitted(true);        
         props.history.push("/anagrafica");
@@ -412,6 +433,22 @@ const AddCliente = props => {
             </td>
             <td>
               <label>
+                <strong>Segnalatore:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="segnalatore"
+                    required
+                    value={cliente.segnalatore} 
+                    onChange={handleInputChange}
+                    name="segnalatore"
+                />
+            </td>
+          </tr>
+          <tr key={6}>
+            <td>
+              <label>
                 <strong>Socio 1:</strong>
               </label>{" "}
               <input
@@ -426,6 +463,22 @@ const AddCliente = props => {
             </td>
             <td>
               <label>
+                <strong>Percentuale Socio 1:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="percentualeSocio1"
+                    required
+                    value={cliente.percentualeSocio1} 
+                    onChange={handleInputChange}
+                    name="percentualeSocio1"
+                />
+            </td>
+          </tr>
+          <tr key={7}>
+            <td>
+              <label>
                 <strong>Socio 2:</strong>
               </label>{" "}
               <input
@@ -437,7 +490,23 @@ const AddCliente = props => {
                     onChange={handleInputChange}
                     name="socio2"
                 />
-            </td>    
+            </td>
+            <td>
+              <label>
+                <strong>Percentuale Socio 2:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="percentualeSocio2"
+                    required
+                    value={cliente.percentualeSocio2} 
+                    onChange={handleInputChange}
+                    name="percentualeSocio2"
+                />
+            </td>
+          </tr>
+          <tr key={8}> 
             <td>
               <label>
                 <strong>Socio 3:</strong>
@@ -451,10 +520,24 @@ const AddCliente = props => {
                     onChange={handleInputChange}
                     name="socio3"
                 />
-            </td>               
+            </td>
+            <td>
+              <label>
+                <strong>Percentuale Socio 3:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="percentualeSocio3"
+                    required
+                    value={cliente.percentualeSocio3} 
+                    onChange={handleInputChange}
+                    name="percentualeSocio3"
+                />
+            </td>           
            
           </tr>
-          <tr key={6}>
+          <tr key={9}>
             <td>
               <label>
                 <strong>Socio 4:</strong>
@@ -468,7 +551,24 @@ const AddCliente = props => {
                     onChange={handleInputChange}
                     name="socio4"
                 />
-            </td>    
+            </td>  
+            <td>
+              <label>
+                <strong>Percentuale Socio 4:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="percentualeSocio4"
+                    required
+                    value={cliente.percentualeSocio4} 
+                    onChange={handleInputChange}
+                    name="percentualeSocio4"
+                />
+            </td>
+          </tr>  
+          
+          <tr key={10}>
             <td>
               <label>
                 <strong>Socio 5:</strong>
@@ -482,7 +582,23 @@ const AddCliente = props => {
                     onChange={handleInputChange}
                     name="socio5"
                 />
-            </td>    
+            </td> 
+            <td>
+              <label>
+                <strong>Percentuale Socio 5:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="percentualeSocio5"
+                    required
+                    value={cliente.percentualeSocio5} 
+                    onChange={handleInputChange}
+                    name="percentualeSocio5"
+                />
+            </td>
+          </tr>
+          <tr key={11}>
             <td>
               <label>
                 <strong>Socio 6:</strong>
@@ -496,7 +612,21 @@ const AddCliente = props => {
                     onChange={handleInputChange}
                     name="socio6"
                 />
-            </td>         
+            </td> 
+            <td>
+              <label>
+                <strong>Percentuale Socio 6:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="percentualeSocio6"
+                    required
+                    value={cliente.percentualeSocio6} 
+                    onChange={handleInputChange}
+                    name="percentualeSocio6"
+                />
+            </td>        
           </tr>
 
         </tbody>
