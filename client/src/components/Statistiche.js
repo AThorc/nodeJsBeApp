@@ -52,7 +52,8 @@ const Statistiche = () => {
     user: AuthService.getCurrentUser(),
     options: {
       chart: {
-        type: 'bar'
+        type: 'bar',
+        stacked:true
       },
       plotOptions: {
         bar: {
@@ -87,7 +88,10 @@ const Statistiche = () => {
               return '#'+Math.floor(Math.random()*16777215).toString(16);
           }
 
-      }],      
+      }],
+      dataLabels: {
+        enabled: false
+      },
     },   
 
   };
@@ -240,11 +244,11 @@ const Statistiche = () => {
       }
 
       Promise.all(defsTmp).then(() => {
-        var serieTotPratica= {name:'Totale Pratica', data: dataTotPratica};
+        //var serieTotPratica= {name:'Totale Pratica', data: dataTotPratica};
         var serieNetto = {name:'Netto', data: dataNetto};        
         var serieCompensoPartner = {name:'Compenso Partner', data: dataCompensoPartner}; 
         var serieIncassato = {name:'Incassato', data: dataIncassato};        
-        addSerie(serieTotPratica);
+        //addSerie(serieTotPratica);
         addSerie(serieNetto);
         addSerie(serieCompensoPartner);
         addSerie(serieIncassato);
@@ -340,11 +344,11 @@ const Statistiche = () => {
       }
 
       Promise.all(defsTmp).then(() => {
-        var serieTotPratica= {name:'Totale Pratica', data: dataTotPratica};
+        //var serieTotPratica= {name:'Totale Pratica', data: dataTotPratica};
         var serieNetto = {name:'Netto', data: dataNetto};        
         var serieCompensoPartner = {name:'Compenso Partner', data: dataCompensoPartner}; 
         var serieIncassato = {name:'Incassato', data: dataIncassato}; 
-        addPartnersSerie(serieTotPratica);
+        //addPartnersSerie(serieTotPratica);
         addPartnersSerie(serieNetto);
         addPartnersSerie(serieCompensoPartner);
         addPartnersSerie(serieIncassato);
