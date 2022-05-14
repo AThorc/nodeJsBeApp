@@ -46,6 +46,12 @@ const Statistiche = () => {
   const [dataMacroServiziHC, setDataMacroServiziHC] = useState([]);
   const addDataMacroServiziHC = (newDataMacroServiziHC) => setDataMacroServiziHC(state => [...state, newDataMacroServiziHC]);
 
+  const [labelPartnerHC, setLabelPartnerHC] = useState([]);
+  const addLabelPartnerHC = (newLabelPartnerHC) => setLabelPartnerHC(state => [...state, newLabelPartnerHC]);
+
+  const [dataPartnerHC, setDataPartnerHC] = useState([]);
+  const addDataPartnerHC = (newDataPartnerHC) => setDataPartnerHC(state => [...state, newDataPartnerHC]);
+
   const handleInputChange = event => {
     console.log(event.target);
     const { name, value } = event.target;
@@ -256,9 +262,9 @@ const Statistiche = () => {
           
           addLabelMacroServiziHC(result.servizi);
 
-          dataNettoHc.push(result.elementNetto.y)
-          dataCompensoPartnerHc.push(result.elementCompensoPartner.y)
-          dataIncassatoHc.push(result.elementIncassato.y)
+          dataNettoHc.push(result.elementNetto.y);
+          dataCompensoPartnerHc.push(result.elementCompensoPartner.y);
+          dataIncassatoHc.push(result.elementIncassato.y);
           
           
         })
@@ -360,6 +366,10 @@ const Statistiche = () => {
         var dataNetto = [];
         var dataCompensoPartner = [];
         var dataIncassato = [];
+
+        var dataNettoHc = [];
+        var dataCompensoPartnerHc = [];
+        var dataIncassatoHc = [];
         
 
         defsTmp.push(
@@ -374,6 +384,14 @@ const Statistiche = () => {
           addPartnersFormatted({denominazione: result.denominazione, totalePratica: result.elementTotPratica.y, netto:  result.elementNetto.y, 
                                 compensoPartner:  result.elementCompensoPartner.y, incassato:  result.elementIncassato.y, 
                                 dataInizio: result.dataInizio})
+
+          addLabelPartnerHC(result.denominazione);
+          dataNettoHc.push(result.elementNetto.y)
+          dataCompensoPartnerHc.push(result.elementCompensoPartner.y)
+          dataIncassatoHc.push(result.elementIncassato.y)
+          
+
+
         })
         );
       }
@@ -387,6 +405,14 @@ const Statistiche = () => {
         addPartnersSerie(serieNetto);
         addPartnersSerie(serieCompensoPartner);
         addPartnersSerie(serieIncassato);
+
+        var serieNettoHC = {name:'Netto', data: dataNettoHc,  stack: 1};        
+        var serieCompensoPartnerHC = {name:'Compenso Partner', data: dataCompensoPartnerHc,  stack: 1}; 
+        var serieIncassatoHC = {name:'Incassato', data: dataIncassatoHc, stack: 2};  
+
+        addDataPartnerHC(serieCompensoPartnerHC);
+        addDataPartnerHC(serieNettoHC);        
+        addDataPartnerHC(serieIncassatoHC);
       });
      
     });
@@ -720,6 +746,7 @@ const Statistiche = () => {
 
   const applicaFiltro = () =>{
     setDataMacroServiziHC([]);
+    setDataPartnerHC([]);
 
     renderTableData(true);
     renderTablePartnersData(true);
@@ -767,6 +794,47 @@ const Statistiche = () => {
     //   }
     // ],
     series: dataMacroServiziHC
+  };
+
+  const highOptionsPartner = {
+    title: {
+      text: 'Performance partner'
+  },
+    chart: {
+      type: "bar",
+      width: 1200,
+      height: 750
+    },
+    xAxis: {
+      // categories: [""]
+      categories: labelPartnerHC
+    },    
+    legend: {
+      reversed: false
+    },
+    plotOptions: {
+      series: {
+        stacking: "normal"
+      }
+    },
+    // series: [
+    //   {
+    //     name: "HDS",
+    //     data: [5,34,5,45,6],
+    //     stack: 1
+    //   },
+    //   {
+    //     name: "36LB",
+    //     data: [2],
+    //     stack: 1
+    //   },
+    //   {
+    //     name: "Pack",
+    //     data: [3],
+    //     stack: 2
+    //   }
+    // ],
+    series: dataPartnerHC
   };
 
   if(user){
@@ -864,12 +932,17 @@ const Statistiche = () => {
             )}           
 
             <div className="mixed-chart">
-              <Chart
+              {/* <Chart
                 options={partnerBarChart.options}
                 series={partnersSeries}
                 type="bar"
                 width="1200"
                 height="600"
+              /> */}
+
+              <HighchartsReact highcharts={Highcharts}
+              options={highOptionsPartner}
+              
               />
             </div>
           </div>
