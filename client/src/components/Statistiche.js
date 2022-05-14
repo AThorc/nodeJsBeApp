@@ -728,7 +728,7 @@ const Statistiche = () => {
           </div>
           <div className="row">            
             {macroServiziFormatted && macroServiziFormatted.length > 0 ? (              
-              <div className="half1-statistiche table-responsive text-nowrap">
+              <div className="table-responsive text-nowrap">
                 <h4>Performance servizi</h4>
                 <table id='servizi' className="table w-auto">
                   <tbody>
@@ -740,13 +740,13 @@ const Statistiche = () => {
               </div>
             )}           
 
-            <div className="half2-statistiche mixed-chart">
+            <div className="mixed-chart">
               <Chart
                 options={barChart.options}
                 series={series}
                 type="bar"
-                width="600"
-                height="300"
+                width="1200"
+                height="600"
               />
             </div>
           </div>
@@ -757,7 +757,7 @@ const Statistiche = () => {
         <div className="app">
           <div className="row">            
             {macroServiziFormatted && macroServiziFormatted.length > 0 ? (              
-              <div className="half1-statistiche table-responsive text-nowrap">
+              <div className="table-responsive text-nowrap">
                 <h4>Performance partner</h4>
                 <table id='servizi' className="table w-auto">
                   <tbody>
@@ -769,13 +769,13 @@ const Statistiche = () => {
               </div>
             )}           
 
-            <div className="half2-statistiche mixed-chart">
+            <div className="mixed-chart">
               <Chart
                 options={partnerBarChart.options}
                 series={partnersSeries}
                 type="bar"
-                width="800"
-                height="300"
+                width="1200"
+                height="600"
               />
             </div>
           </div>
