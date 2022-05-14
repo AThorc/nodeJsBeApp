@@ -12,6 +12,10 @@ import moment from 'moment'
 
 import AuthService from "../services/auth.service";
 
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
+
+
 const Statistiche = () => {
   const initialFiltroDataState = {
     dataDa: null,
@@ -36,6 +40,18 @@ const Statistiche = () => {
   const [filtroData, setFiltroData] = useState(initialFiltroDataState);
 
 
+  const [labelMacroServiziHC, setLabelMacroServiziHC] = useState([]);
+  const addLabelMacroServiziHC = (newLabelMacroServiziHC) => setLabelMacroServiziHC(state => [...state, newLabelMacroServiziHC]);
+
+  const [dataMacroServiziHC, setDataMacroServiziHC] = useState([]);
+  const addDataMacroServiziHC = (newDataMacroServiziHC) => setDataMacroServiziHC(state => [...state, newDataMacroServiziHC]);
+
+  const [labelPartnerHC, setLabelPartnerHC] = useState([]);
+  const addLabelPartnerHC = (newLabelPartnerHC) => setLabelPartnerHC(state => [...state, newLabelPartnerHC]);
+
+  const [dataPartnerHC, setDataPartnerHC] = useState([]);
+  const addDataPartnerHC = (newDataPartnerHC) => setDataPartnerHC(state => [...state, newDataPartnerHC]);
+
   const handleInputChange = event => {
     console.log(event.target);
     const { name, value } = event.target;
@@ -52,7 +68,8 @@ const Statistiche = () => {
     user: AuthService.getCurrentUser(),
     options: {
       chart: {
-        type: 'bar'
+        type: 'bar',
+        stacked:true
       },
       plotOptions: {
         bar: {
@@ -87,7 +104,10 @@ const Statistiche = () => {
               return '#'+Math.floor(Math.random()*16777215).toString(16);
           }
 
-      }],      
+      }],
+      dataLabels: {
+        enabled: false
+      },
     },   
 
   };
@@ -159,7 +179,7 @@ const Statistiche = () => {
   }
 
 
-  const addDataInSerie = macroservizi =>{
+  const addDataInSerieOld = macroservizi =>{
     var defs = [];
     for(var i in macroservizi){
       var macroservizio = macroservizi[i];
@@ -201,8 +221,86 @@ const Statistiche = () => {
 
   }
 
+  const addDataInSerie = macroservizi =>{
+    var defs = [];
+    for(var i in macroservizi){
+      var macroservizio = macroservizi[i];
 
-  const addDataPartnersInSerie = partners =>{
+      //PRENDO LA SOMMA DEI FATTURATI SOC E PARTNER DI OGNI MACROSERVIZI
+      defs = retrieveLegami(macroservizio, defs);
+
+    }
+    Promise.all(defs).then(() => {
+      //Lista def di appoggio
+      var defsTmp = [];
+
+      for(var i in defs){
+        var def = defs[i];
+        var dataTotPratica = [];
+        var dataNetto = [];
+        var dataCompensoPartner = [];
+        var dataIncassato = [];
+        
+        var dataNettoHc = [];
+        var dataCompensoPartnerHc = [];
+        var dataIncassatoHc = [];
+
+        defsTmp.push(
+        def.then(function(result){
+          dataTotPratica.push(result.elementTotPratica);
+          dataNetto.push(result.elementNetto);
+          dataCompensoPartner.push(result.elementCompensoPartner);
+          dataIncassato.push(result.elementIncassato);
+          console.log('result');
+          console.log(result);
+          addMacroServiziFormatted({servizi: result.servizi, 
+            totalePratica: result.elementTotPratica.y, netto:  result.elementNetto.y, 
+            compensoPartner:  result.elementCompensoPartner.y, incassato:  result.elementIncassato.y,
+            
+            dataInizio: result.dataInizio});
+          
+          
+          addLabelMacroServiziHC(result.servizi);
+
+          dataNettoHc.push(result.elementNetto.y);
+          dataCompensoPartnerHc.push(result.elementCompensoPartner.y);
+          dataIncassatoHc.push(result.elementIncassato.y);
+          
+          
+        })
+        );
+      }
+
+      Promise.all(defsTmp).then(() => {
+        //var serieTotPratica= {name:'Totale Pratica', data: dataTotPratica};
+        var serieNetto = {name:'Netto', data: dataNetto,  stack: 1};        
+        var serieCompensoPartner = {name:'Compenso Partner', data: dataCompensoPartner,  stack: 1}; 
+        var serieIncassato = {name:'Incassato', data: dataIncassato, stack: 2};        
+        //addSerie(serieTotPratica);
+        addSerie(serieNetto);
+        addSerie(serieCompensoPartner);
+        addSerie(serieIncassato);
+
+
+        var serieNettoHC = {name:'Netto', data: dataNettoHc,  stack: 1};        
+        var serieCompensoPartnerHC = {name:'Compenso Partner', data: dataCompensoPartnerHc,  stack: 1}; 
+        var serieIncassatoHC = {name:'Incassato', data: dataIncassatoHc, stack: 2};  
+
+        addDataMacroServiziHC(serieCompensoPartnerHC);
+        addDataMacroServiziHC(serieNettoHC);        
+        addDataMacroServiziHC(serieIncassatoHC);
+        // highOptions.series.push(serieNetto);
+        // highOptions.series.push(serieCompensoPartner);
+        // highOptions.series.push(serieIncassato);
+
+      });
+     
+    });
+
+  }
+
+
+  const addDataPartnersInSerieOld = partners =>{
     var defs = [];
     for(var i in partners){
       var partner = partners[i];
@@ -246,13 +344,88 @@ const Statistiche = () => {
 
   }
 
+
+  const addDataPartnersInSerie = partners =>{
+    var defs = [];
+    for(var i in partners){
+      var partner = partners[i];
+
+    
+      //PRENDO LA SOMMA DEI FATTURATI SOC E PARTNER DI OGNI MACROSERVIZI
+      defs = retrieveLegamiByPartnerId(partner, defs);      
+
+
+    }
+    Promise.all(defs).then(() => {
+      //Lista def di appoggio
+      var defsTmp = [];
+
+      for(var i in defs){
+        var def = defs[i];
+        var dataTotPratica = [];
+        var dataNetto = [];
+        var dataCompensoPartner = [];
+        var dataIncassato = [];
+
+        var dataNettoHc = [];
+        var dataCompensoPartnerHc = [];
+        var dataIncassatoHc = [];
+        
+
+        defsTmp.push(
+        def.then(function(result){
+          dataTotPratica.push(result.elementTotPratica);
+          dataNetto.push(result.elementNetto);
+          dataCompensoPartner.push(result.elementCompensoPartner);
+          dataIncassato.push(result.elementIncassato);
+
+          console.log('result');
+          console.log(result);
+          addPartnersFormatted({denominazione: result.denominazione, totalePratica: result.elementTotPratica.y, netto:  result.elementNetto.y, 
+                                compensoPartner:  result.elementCompensoPartner.y, incassato:  result.elementIncassato.y, 
+                                dataInizio: result.dataInizio})
+
+          addLabelPartnerHC(result.denominazione);
+          dataNettoHc.push(result.elementNetto.y)
+          dataCompensoPartnerHc.push(result.elementCompensoPartner.y)
+          dataIncassatoHc.push(result.elementIncassato.y)
+          
+
+
+        })
+        );
+      }
+
+      Promise.all(defsTmp).then(() => {
+        //var serieTotPratica= {name:'Totale Pratica', data: dataTotPratica};
+        var serieNetto = {name:'Netto', data: dataNetto,  stack: 'male'};        
+        var serieCompensoPartner = {name:'Compenso Partner', data: dataCompensoPartner,  stack: 'male'}; 
+        var serieIncassato = {name:'Incassato', data: dataIncassato, stack: 'female'};    
+        //addPartnersSerie(serieTotPratica);
+        addPartnersSerie(serieNetto);
+        addPartnersSerie(serieCompensoPartner);
+        addPartnersSerie(serieIncassato);
+
+        var serieNettoHC = {name:'Netto', data: dataNettoHc,  stack: 1};        
+        var serieCompensoPartnerHC = {name:'Compenso Partner', data: dataCompensoPartnerHc,  stack: 1}; 
+        var serieIncassatoHC = {name:'Incassato', data: dataIncassatoHc, stack: 2};  
+
+        addDataPartnerHC(serieCompensoPartnerHC);
+        addDataPartnerHC(serieNettoHC);        
+        addDataPartnerHC(serieIncassatoHC);
+      });
+     
+    });
+
+  }
+
   const addSerie = (newSerie) => setSeries(state => [...state, newSerie]);
   const addMacroServiziFormatted = (newMacroServiziFormatted) => setMacroServiziFormatted(state => [...state, newMacroServiziFormatted]);
 
   const addPartnersSerie = (newPartnersSerie) => setPartnersSeries(state => [...state, newPartnersSerie]);
   const addPartnersFormatted = (newPartnersFormatted) => setPartnersFormatted(state => [...state, newPartnersFormatted]);
 
-  const retrieveLegami = (macroservizio, defs) => {
+  const retrieveLegamiOld = (macroservizio, defs) => {
     if(user){
       var servizioid = macroservizio.id;
       var fatturatoSoc = 0;
@@ -285,7 +458,48 @@ const Statistiche = () => {
     }
   };
 
-  const retrieveLegamiByPartnerId = (partner, defs) => {
+  const retrieveLegami = (macroservizio, defs) => {
+    if(user){
+      var servizioid = macroservizio.id;
+      var totalePratica = 0;
+      var netto = 0;
+      var compensoPartner = 0;
+      var incassato = 0;      
+
+      
+      var def =
+      LegameDataService.findByServizioId(servizioid)
+      .then(response => {
+        for(const i in response.data){
+          var legame = response.data[i];
+          if( ((filtroData.dataDa &&  moment(legame.dataInizio).format('YYYY-MM-DD') >= filtroData.dataDa) || filtroData.dataDa == null ) && ( (filtroData.dataA && moment(legame.dataInizio).format('YYYY-MM-DD') <= filtroData.dataA)|| filtroData.dataA == null ) ){
+            totalePratica += (legame.totalePratica || 0);
+            netto += ((legame.totalePratica - legame.compensoPartner ) || 0);
+            compensoPartner += (legame.compensoPartner || 0);
+            incassato += (legame.incassato || 0);
+          }          
+        }
+        var category = splitLabels(macroservizio.servizi);
+        var elementTotPratica = {x: category, y: totalePratica};
+        var elementNetto = {x: category, y: netto};
+        var elementCompensoPartner = {x: category, y: compensoPartner};
+        var elementIncassato = {x: category, y: incassato};
+        return {elementTotPratica: elementTotPratica, elementNetto: elementNetto, elementCompensoPartner: elementCompensoPartner, elementIncassato: elementIncassato,
+                 servizi: macroservizio.servizi, dataInizio: macroservizio.dataInizio};
+
+      })
+      .catch(e => {
+        console.log(e);
+        //def.reject('Error on findByServizioId');
+      });
+      defs.push(def);
+      
+      return defs;
+    }
+  };
+
+
+  const retrieveLegamiByPartnerIdOld = (partner, defs) => {
     if(user){
       var fatturatoSoc = 0;
       var fatturatoPartner = 0;
@@ -305,6 +519,48 @@ const Statistiche = () => {
         var elementSoc = {x: partner.denominazione, y: fatturatoSoc};
         var elementPartner = {x: partner.denominazione, y: fatturatoPartner};
         return {elementSoc: elementSoc, elementPartner: elementPartner, denominazione: partner.denominazione, dataInizio: partner.dataInizio};
+
+      })
+      .catch(e => {
+        console.log(e);
+        //def.reject('Error on findByServizioId');
+      });
+      defs.push(def);      
+
+
+     
+      return defs;
+    }
+  };
+
+  const retrieveLegamiByPartnerId = (partner, defs) => {
+    if(user){
+      var totalePratica = 0;
+      var netto = 0;
+      var compensoPartner = 0;
+      var incassato = 0;      
+
+
+
+      
+      var def =
+      LegameDataService.findByPartnerId(partner.id)
+      .then(response => {
+        for(const i in response.data){
+          var legame = response.data[i];
+          if( ((filtroData.dataDa &&  moment(legame.dataInizio).format('YYYY-MM-DD') >= filtroData.dataDa) || filtroData.dataDa == null ) && ( (filtroData.dataA && moment(legame.dataInizio).format('YYYY-MM-DD') <= filtroData.dataA)|| filtroData.dataA == null ) ){
+            totalePratica += (legame.totalePratica || 0);
+            netto += ((legame.totalePratica - legame.compensoPartner ) || 0);
+            compensoPartner += (legame.compensoPartner || 0);
+            incassato += (legame.incassato || 0);
+          }
+        }
+        var elementTotPratica = {x: partner.denominazione, y: totalePratica};
+        var elementNetto = {x: partner.denominazione, y: netto};
+        var elementCompensoPartner = {x: partner.denominazione, y: compensoPartner};
+        var elementIncassato = {x: partner.denominazione, y: incassato};
+        return {elementTotPratica: elementTotPratica, elementNetto: elementNetto, elementCompensoPartner: elementCompensoPartner, elementIncassato: elementIncassato, 
+                denominazione: partner.denominazione, dataInizio: partner.dataInizio};
 
       })
       .catch(e => {
@@ -380,7 +636,7 @@ const Statistiche = () => {
   };
 
 
-  const renderTablePartnersHeader = () => {
+  const renderTablePartnersHeaderOld = () => {
     var header = [];
     header.push(<th key={1}>Partner</th>);    
     header.push(<th key={3}>Fatturato Multifinance</th>);
@@ -388,8 +644,18 @@ const Statistiche = () => {
     return header;
   };
 
+  const renderTablePartnersHeader = () => {
+    var header = [];
+    header.push(<th key={1}>Partner</th>);    
+    header.push(<th key={2}>Totale Pratica</th>);
+    header.push(<th key={3}>Netto</th>);
+    header.push(<th key={4}>Compenso Partner</th>);
+    header.push(<th key={5}>Incassato</th>);
+    return header;
+  };
 
-  const renderTableHeader = () => {
+
+  const renderTableHeaderOld = () => {
     var header = [];
     header.push(<th key={1}>Servizi</th>);    
     header.push(<th key={3}>Fatturato Multifinance</th>);
@@ -397,7 +663,17 @@ const Statistiche = () => {
     return header;
  };
 
-  const renderTableData = (filtro) => {
+ const renderTableHeader = () => {
+  var header = [];
+  header.push(<th key={1}>Servizi</th>);    
+  header.push(<th key={2}>Totale Pratica</th>);
+  header.push(<th key={3}>Netto</th>);
+  header.push(<th key={4}>Compenso Partner</th>);
+  header.push(<th key={5}>Incassato</th>);
+  return header;
+};
+
+  const renderTableDataOld = (filtro) => {
     console.log('macroServiziFormatted');
     console.log(macroServiziFormatted);
     var macroServiziFormattedFiltered=macroServiziFormatted;
@@ -413,7 +689,26 @@ const Statistiche = () => {
     })
   };
 
-  const renderTablePartnersData = (filtro) => {
+
+  const renderTableData = (filtro) => {
+    console.log('macroServiziFormatted');
+    console.log(macroServiziFormatted);
+    var macroServiziFormattedFiltered=macroServiziFormatted;
+    //if(filtro) macroServiziFormattedFiltered=macroServiziFormatted.filter(p => ( ( (filtroData.dataDa &&  moment(p.dataInizio).format('YYYY-MM-DD') >= filtroData.dataDa)|| filtroData.dataDa == null ) && (filtroData.dataA && moment(p.dataInizio).format('YYYY-MM-DD') <= filtroData.dataA)|| filtroData.dataA == null ) ) ;
+    return macroServiziFormattedFiltered.map((macroServizioFormatted, index) => {
+      return (
+          <tr key={index}>
+            <td>{macroServizioFormatted.servizi}</td>       
+            <td>{macroServizioFormatted.totalePratica}</td>  
+            <td>{macroServizioFormatted.totalePratica - macroServizioFormatted.compensoPartner}</td>                                                 
+            <td>{macroServizioFormatted.compensoPartner}</td>                                                 
+            <td>{macroServizioFormatted.incassato}</td>                                                 
+          </tr>
+      )
+    })
+  };
+
+  const renderTablePartnersDataOld = (filtro) => {
     console.log('partnersFormatted');
     console.log(partnersFormatted);
     var partnersFormattedFiltered=partnersFormatted;
@@ -430,7 +725,29 @@ const Statistiche = () => {
     })
   };
 
+  const renderTablePartnersData = (filtro) => {
+    console.log('partnersFormatted');
+    console.log(partnersFormatted);
+    var partnersFormattedFiltered=partnersFormatted;
+    //if(filtro) partnersFormattedFiltered=partnersFormatted.filter(p => ( ( (filtroData.dataDa &&  moment(p.dataInizio).format('YYYY-MM-DD') >= filtroData.dataDa)|| filtroData.dataDa == null ) && (filtroData.dataA && moment(p.dataInizio).format('YYYY-MM-DD') <= filtroData.dataA)|| filtroData.dataA == null ) ) ;
+    return partnersFormattedFiltered
+    .map((partnerFormatted, index) => {
+      return (
+          <tr key={index}>
+            <td>{partnerFormatted.denominazione}</td>       
+            <td>{partnerFormatted.totalePratica}</td>  
+            <td>{partnerFormatted.totalePratica - partnerFormatted.compensoPartner}</td>    
+            <td>{partnerFormatted.compensoPartner}</td>  
+            <td>{partnerFormatted.incassato}</td>                                               
+          </tr>
+      )
+    })
+  };
+
   const applicaFiltro = () =>{
+    setDataMacroServiziHC([]);
+    setDataPartnerHC([]);
+
     renderTableData(true);
     renderTablePartnersData(true);
 
@@ -438,6 +755,87 @@ const Statistiche = () => {
     retrieveMacroservizi();
   }
 
+  const highOptionsMS = {
+    title: {
+      text: 'Performance servizi'
+  },
+    chart: {
+      type: "bar",
+      width: 1200,
+      height: 750
+    },
+    xAxis: {
+      // categories: [""]
+      categories: labelMacroServiziHC
+    },    
+    legend: {
+      reversed: false
+    },
+    plotOptions: {
+      series: {
+        stacking: "normal"
+      }
+    },
+    // series: [
+    //   {
+    //     name: "HDS",
+    //     data: [5,34,5,45,6],
+    //     stack: 1
+    //   },
+    //   {
+    //     name: "36LB",
+    //     data: [2],
+    //     stack: 1
+    //   },
+    //   {
+    //     name: "Pack",
+    //     data: [3],
+    //     stack: 2
+    //   }
+    // ],
+    series: dataMacroServiziHC
+  };
+
+  const highOptionsPartner = {
+    title: {
+      text: 'Performance partner'
+  },
+    chart: {
+      type: "bar",
+      width: 1200,
+      height: 750
+    },
+    xAxis: {
+      // categories: [""]
+      categories: labelPartnerHC
+    },    
+    legend: {
+      reversed: false
+    },
+    plotOptions: {
+      series: {
+        stacking: "normal"
+      }
+    },
+    // series: [
+    //   {
+    //     name: "HDS",
+    //     data: [5,34,5,45,6],
+    //     stack: 1
+    //   },
+    //   {
+    //     name: "36LB",
+    //     data: [2],
+    //     stack: 1
+    //   },
+    //   {
+    //     name: "Pack",
+    //     data: [3],
+    //     stack: 2
+    //   }
+    // ],
+    series: dataPartnerHC
+  };
 
   if(user){
     return (
@@ -479,7 +877,7 @@ const Statistiche = () => {
           </div>
           <div className="row">            
             {macroServiziFormatted && macroServiziFormatted.length > 0 ? (              
-              <div className="half1-statistiche table-responsive text-nowrap">
+              <div className="table-responsive text-nowrap">
                 <h4>Performance servizi</h4>
                 <table id='servizi' className="table w-auto">
                   <tbody>
@@ -491,14 +889,27 @@ const Statistiche = () => {
               </div>
             )}           
 
-            <div className="half2-statistiche mixed-chart">
-              <Chart
+            <div className="mixed-chart">
+              {/* <Chart
                 options={barChart.options}
                 series={series}
                 type="bar"
-                width="600"
-                height="300"
-              />
+                width="1200"
+                height="600"
+              /> */}
+              <HighchartsReact highcharts={Highcharts}
+               options={highOptionsMS}
+               
+               />              
+
+              {/* <HighchartsReact
+                options={barChart.options}
+                series={series}
+                type="bar"
+                width="1200"
+                height="600"
+              /> */}
+               
             </div>
           </div>
         </div>
@@ -508,7 +919,7 @@ const Statistiche = () => {
         <div className="app">
           <div className="row">            
             {macroServiziFormatted && macroServiziFormatted.length > 0 ? (              
-              <div className="half1-statistiche table-responsive text-nowrap">
+              <div className="table-responsive text-nowrap">
                 <h4>Performance partner</h4>
                 <table id='servizi' className="table w-auto">
                   <tbody>
@@ -520,13 +931,18 @@ const Statistiche = () => {
               </div>
             )}           
 
-            <div className="half2-statistiche mixed-chart">
-              <Chart
+            <div className="mixed-chart">
+              {/* <Chart
                 options={partnerBarChart.options}
                 series={partnersSeries}
                 type="bar"
-                width="800"
-                height="300"
+                width="1200"
+                height="600"
+              /> */}
+
+              <HighchartsReact highcharts={Highcharts}
+              options={highOptionsPartner}
+              
               />
             </div>
           </div>
