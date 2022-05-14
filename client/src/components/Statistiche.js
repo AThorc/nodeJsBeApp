@@ -12,6 +12,10 @@ import moment from 'moment'
 
 import AuthService from "../services/auth.service";
 
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
+
+
 const Statistiche = () => {
   const initialFiltroDataState = {
     dataDa: null,
@@ -35,6 +39,12 @@ const Statistiche = () => {
   
   const [filtroData, setFiltroData] = useState(initialFiltroDataState);
 
+
+  const [labelMacroServiziHC, setLabelMacroServiziHC] = useState([]);
+  const addLabelMacroServiziHC = (newLabelMacroServiziHC) => setLabelMacroServiziHC(state => [...state, newLabelMacroServiziHC]);
+
+  const [dataMacroServiziHC, setDataMacroServiziHC] = useState([]);
+  const addDataMacroServiziHC = (newDataMacroServiziHC) => setDataMacroServiziHC(state => [...state, newDataMacroServiziHC]);
 
   const handleInputChange = event => {
     console.log(event.target);
@@ -225,6 +235,9 @@ const Statistiche = () => {
         var dataCompensoPartner = [];
         var dataIncassato = [];
         
+        var dataNettoHc = [];
+        var dataCompensoPartnerHc = [];
+        var dataIncassatoHc = [];
 
         defsTmp.push(
         def.then(function(result){
@@ -238,20 +251,42 @@ const Statistiche = () => {
             totalePratica: result.elementTotPratica.y, netto:  result.elementNetto.y, 
             compensoPartner:  result.elementCompensoPartner.y, incassato:  result.elementIncassato.y,
             
-            dataInizio: result.dataInizio})
+            dataInizio: result.dataInizio});
+          
+          
+          addLabelMacroServiziHC(result.servizi);
+
+          dataNettoHc.push(result.elementNetto.y)
+          dataCompensoPartnerHc.push(result.elementCompensoPartner.y)
+          dataIncassatoHc.push(result.elementIncassato.y)
+          
+          
         })
         );
       }
 
       Promise.all(defsTmp).then(() => {
         //var serieTotPratica= {name:'Totale Pratica', data: dataTotPratica};
-        var serieNetto = {name:'Netto', data: dataNetto};        
-        var serieCompensoPartner = {name:'Compenso Partner', data: dataCompensoPartner}; 
-        var serieIncassato = {name:'Incassato', data: dataIncassato};        
+        var serieNetto = {name:'Netto', data: dataNetto,  stack: 1};        
+        var serieCompensoPartner = {name:'Compenso Partner', data: dataCompensoPartner,  stack: 1}; 
+        var serieIncassato = {name:'Incassato', data: dataIncassato, stack: 2};        
         //addSerie(serieTotPratica);
         addSerie(serieNetto);
         addSerie(serieCompensoPartner);
         addSerie(serieIncassato);
+
+
+        var serieNettoHC = {name:'Netto', data: dataNettoHc,  stack: 1};        
+        var serieCompensoPartnerHC = {name:'Compenso Partner', data: dataCompensoPartnerHc,  stack: 1}; 
+        var serieIncassatoHC = {name:'Incassato', data: dataIncassatoHc, stack: 2};  
+
+        addDataMacroServiziHC(serieCompensoPartnerHC);
+        addDataMacroServiziHC(serieNettoHC);        
+        addDataMacroServiziHC(serieIncassatoHC);
+        // highOptions.series.push(serieNetto);
+        // highOptions.series.push(serieCompensoPartner);
+        // highOptions.series.push(serieIncassato);
+
       });
      
     });
@@ -345,9 +380,9 @@ const Statistiche = () => {
 
       Promise.all(defsTmp).then(() => {
         //var serieTotPratica= {name:'Totale Pratica', data: dataTotPratica};
-        var serieNetto = {name:'Netto', data: dataNetto};        
-        var serieCompensoPartner = {name:'Compenso Partner', data: dataCompensoPartner}; 
-        var serieIncassato = {name:'Incassato', data: dataIncassato}; 
+        var serieNetto = {name:'Netto', data: dataNetto,  stack: 'male'};        
+        var serieCompensoPartner = {name:'Compenso Partner', data: dataCompensoPartner,  stack: 'male'}; 
+        var serieIncassato = {name:'Incassato', data: dataIncassato, stack: 'female'};    
         //addPartnersSerie(serieTotPratica);
         addPartnersSerie(serieNetto);
         addPartnersSerie(serieCompensoPartner);
@@ -684,6 +719,8 @@ const Statistiche = () => {
   };
 
   const applicaFiltro = () =>{
+    setDataMacroServiziHC([]);
+
     renderTableData(true);
     renderTablePartnersData(true);
 
@@ -691,6 +728,46 @@ const Statistiche = () => {
     retrieveMacroservizi();
   }
 
+  const highOptionsMS = {
+    title: {
+      text: 'Performance servizi'
+  },
+    chart: {
+      type: "bar",
+      width: 1200,
+      height: 750
+    },
+    xAxis: {
+      // categories: [""]
+      categories: labelMacroServiziHC
+    },    
+    legend: {
+      reversed: false
+    },
+    plotOptions: {
+      series: {
+        stacking: "normal"
+      }
+    },
+    // series: [
+    //   {
+    //     name: "HDS",
+    //     data: [5,34,5,45,6],
+    //     stack: 1
+    //   },
+    //   {
+    //     name: "36LB",
+    //     data: [2],
+    //     stack: 1
+    //   },
+    //   {
+    //     name: "Pack",
+    //     data: [3],
+    //     stack: 2
+    //   }
+    // ],
+    series: dataMacroServiziHC
+  };
 
   if(user){
     return (
@@ -745,13 +822,26 @@ const Statistiche = () => {
             )}           
 
             <div className="mixed-chart">
-              <Chart
+              {/* <Chart
                 options={barChart.options}
                 series={series}
                 type="bar"
                 width="1200"
                 height="600"
-              />
+              /> */}
+              <HighchartsReact highcharts={Highcharts}
+               options={highOptionsMS}
+               
+               />              
+
+              {/* <HighchartsReact
+                options={barChart.options}
+                series={series}
+                type="bar"
+                width="1200"
+                height="600"
+              /> */}
+               
             </div>
           </div>
         </div>
