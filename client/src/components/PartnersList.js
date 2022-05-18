@@ -453,7 +453,8 @@ const PartnersList = () => {
       for(var pid in clientiPartner){
         var pName = getPartnerName(pid);
         var ws = wb.addWorksheet(pName);
-        var cols = ['Nome Servizio', 'Ragione Sociale', 'Codice Fiscale', 'Tipo', 'Data Inizio', 'Fatturato Partner', 'Fatturato Multifinance', 'Acconto', 'Saldo', 'Note'];
+        //var cols = ['Nome Servizio', 'Ragione Sociale', 'Codice Fiscale', 'Tipo', 'Data Inizio', 'Fatturato Partner', 'Fatturato Multifinance', 'Acconto', 'Saldo', 'Note'];
+        var cols = ['Nome Servizio', 'Ragione Sociale', 'Codice Fiscale', 'Tipo', 'Data inizio', 'Totale Pratica', 'Incassato', 'Da Incassare', 'Compenso Partner', 'Netto','Note'];
 
         //Inserisco nomi colonne
 
@@ -469,7 +470,8 @@ const PartnersList = () => {
           console.log(cliente.dataInizio);
           
           //Inserisco le righe
-          const righe = ws.addRow([cliente.servizioName, cliente.ragioneSociale, cliente.codiceFiscale, cliente.tipo, cliente.dataInizio, cliente.fatturatoPartner, cliente.fatturatoSocieta, cliente.acconto, cliente.saldo, cliente.note]);
+          //const righe = ws.addRow([cliente.servizioName, cliente.ragioneSociale, cliente.codiceFiscale, cliente.tipo, cliente.dataInizio, cliente.fatturatoPartner, cliente.fatturatoSocieta, cliente.acconto, cliente.saldo, cliente.note]);
+          const righe = ws.addRow([cliente.servizioName, cliente.ragioneSociale, cliente.codiceFiscale, cliente.tipo, cliente.dataInizio, cliente.totalePratica, cliente.incassato, cliente.totalePratica - cliente.incassato, cliente.compensoPartner, cliente.totalePratica - cliente.compensoPartner, cliente.note]);
 
         }
 
