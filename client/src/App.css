@@ -28,7 +28,7 @@
 .edit-anagrafica-form {
   margin: auto;
   width: 126%;
-  margin-left: 11%;
+  margin-left: 0%!important;
 }
 
 
@@ -191,7 +191,7 @@ body.react-confirm-alert-body-element {
 
 .lista-macroservizi-wrapper{
   margin-top: 3%;
-  width: 1400px;
+  width: 1620px;
 }
 
 .note-wrapper{
