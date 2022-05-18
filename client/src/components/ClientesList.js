@@ -60,7 +60,8 @@ const ClientesList = props => {
     if(user){
       ClienteDataService.getAll()
       .then(response => {
-        setClientes(response.data);
+        //setClientes(response.data);
+        setClientes(response.data.sort((a, b) => a.ragioneSociale.toLowerCase() > b.ragioneSociale.toLowerCase() ? 1 : -1));
         console.log(response.data);
       })
       .catch(e => {
