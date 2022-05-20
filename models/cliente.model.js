@@ -39,12 +39,12 @@ module.exports = mongoose => {
         socio5: String,
         socio6: String,
         segnalatore: String,
-        percentualeSocio1: Number,
-        percentualeSocio2: Number,
-        percentualeSocio3: Number,
-        percentualeSocio4: Number,
-        percentualeSocio5: Number,
-        percentualeSocio6: Number
+        percentualeSocio1: String,
+        percentualeSocio2: String,
+        percentualeSocio3: String,
+        percentualeSocio4: String,
+        percentualeSocio5: String,
+        percentualeSocio6: String
       },
       { timestamps: true }
     );
