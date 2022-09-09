@@ -83,6 +83,7 @@ exports.findAll = (req, res) => {
   var condition = req.query.servizioid ? { servizioid: servizioid} : {};
   condition = req.query.servizioid && req.query.clienteid ? { servizioid: servizioid, clienteid: clienteid } :condition;
   condition = !req.query.servizioid && req.query.partnerid ? { partnerid: partnerid } :condition;
+  condition = !req.query.servizioid && req.query.clienteid ? { clienteid: clienteid } :condition;
 
   Legame.find(condition)
     .then(data => {
