@@ -228,45 +228,52 @@ const ClientesList = props => {
    
   };
 
-  const deleteCliente = () => {
+  async function deleteCliente () {
     if(user && showAdminBoard){
-      ClienteDataService.remove(currentCliente.id)
-      .then(response => {
-        // console.log(response.data);
-        // refreshList();
-
-        var modifica = {        
-          data: new Date(),          
-          userid: user.id,
-          username: user.username,
-        };
-        //Creo il record di modifica
-        ModificaDataService.create(modifica).then(response => {        
-          props.history.push("/anagrafica");
-          window.location.reload();
-          console.log(response.data);
+      
+      var responseLegami = await LegameDataService.findByClienteId(currentCliente.id);
+      debugger
+      if(responseLegami.data.length > 0){
+        alert("Impossibile cancellare il cliente in quanto possiede dei servizi!");        
+      }else{
+        ClienteDataService.remove(currentCliente.id)
+        .then(response => {
+          // console.log(response.data);
+          // refreshList();
+  
+          var modifica = {        
+            data: new Date(),          
+            userid: user.id,
+            username: user.username,
+          };
+          //Creo il record di modifica
+          ModificaDataService.create(modifica).then(response => {        
+            props.history.push("/anagrafica");
+            window.location.reload();
+            console.log(response.data);
+          })
+          .catch(e => {
+            console.log(e);
+          });
+  
+          // //Cancello tutti i legami del cliente da cancellare
+          // LegameDataService.findByClienteId(currentCliente.id)
+          // .then(responseLegami => {
+          //   var legami = responseLegami.data;
+          //   if(legami.length > 0){
+          //     for(var i in legami){
+          //       var legame = legami[i];
+          //       LegameDataService.remove(legame.id);
+          //     }
+          //   }
+  
+          // })
+  
         })
         .catch(e => {
           console.log(e);
         });
-
-        //Cancello tutti i legami del cliente da cancellare
-        LegameDataService.findByClienteId(currentCliente.id)
-        .then(responseLegami => {
-          var legami = responseLegami.data;
-          if(legami.length > 0){
-            for(var i in legami){
-              var legame = legami[i];
-              LegameDataService.remove(legame.id);
-            }
-          }
-
-        })
-
-      })
-      .catch(e => {
-        console.log(e);
-      });
+      }
     }
     
   };

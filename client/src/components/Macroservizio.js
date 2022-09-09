@@ -8,6 +8,7 @@ import ConfirmDialog from "./confirmDialog.component";
 import moment from 'moment';
 
 import ModificaDataService from "../services/ModificaService";
+import LegameDataService from "../services/LegameService";
 
 const Macroservizio = props => {
   const initialMacroservizioState = {
@@ -61,33 +62,40 @@ const Macroservizio = props => {
    
   };
 
-  const deleteMacroservizio = () => {
-    if(user){
-      MacroservizioDataService.remove(currentMacroservizio.id)
-      .then(response => {
-        // console.log(response.data);
-        // props.history.push("/listaMacroservizi");
+  const deleteMacroservizio = async() => {
+    if(user){      
+      var responseLegami = await LegameDataService.findByServizioId(currentMacroservizio.id);
+      debugger
+      if(responseLegami.data.length > 0){
+        alert("Impossibile cancellare il macroservizio in quanto possiede dei servizi!");        
+      }else{
+        MacroservizioDataService.remove(currentMacroservizio.id)
+        .then(response => {
+          // console.log(response.data);
+          // props.history.push("/listaMacroservizi");
 
-        var modifica = {        
-          data: new Date(),          
-          userid: user.id,
-          username: user.username,
-        };
-        //Creo il record di modifica
-        ModificaDataService.create(modifica).then(response => {        
-          props.history.push("/listaMacroservizi");
-          window.location.reload();
-          console.log(response.data);
+          var modifica = {        
+            data: new Date(),          
+            userid: user.id,
+            username: user.username,
+          };
+          //Creo il record di modifica
+          ModificaDataService.create(modifica).then(response => {        
+            props.history.push("/listaMacroservizi");
+            window.location.reload();
+            console.log(response.data);
+          })
+          .catch(e => {
+            console.log(e);
+          });
+
+
         })
         .catch(e => {
           console.log(e);
         });
-
-
-      })
-      .catch(e => {
-        console.log(e);
-      });
+      }
+      
     }
     
   };
