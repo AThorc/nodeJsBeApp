@@ -9,6 +9,8 @@ import moment from 'moment'
 
 import ModificaDataService from "../services/ModificaService";
 
+import LegameDataService from "../services/LegameService";
+
 const Partner = props => {
   const initialPartnerState = {
     id: null,
@@ -61,9 +63,14 @@ const Partner = props => {
    
   };
 
-  const deletePartner = () => {
+  const deletePartner = async() => {
     if(user){
-      PartnerDataService.remove(currentPartner.id)
+      var responseLegami = await LegameDataService.findByPartnerId(currentPartner.id);
+      debugger
+      if(responseLegami.data.length > 0){
+        alert("Impossibile cancellare il partner in quanto possiede dei servizi!");        
+      }else{
+        PartnerDataService.remove(currentPartner.id)
       .then(response => {        
         var modifica = {        
           data: new Date(),          
@@ -83,6 +90,8 @@ const Partner = props => {
       .catch(e => {
         console.log(e);
       });
+      }
+      
     }
     
   };
