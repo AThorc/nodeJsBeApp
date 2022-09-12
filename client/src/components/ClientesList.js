@@ -907,29 +907,26 @@ const ClientesList = props => {
 
 				
 			        	<br></br>
-                
-                { showAlertDialog ? (                  
-                  <Dialog
-                    open={showAlertDialog}
-                    onClose={handleCloseAlert}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                    className="alert-error"
-                  >                    
-                    <DialogTitle id="alert-dialog-title">
-                      {"Alert"}
-                    </DialogTitle>
-                    <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                      Impossibile cancellare il cliente in quanto possiede dei servizi!
-                    </DialogContentText>
-                  </DialogContent>
-                  <DialogActions>
-                    <Button onClick={handleCloseAlert}>Chiudi</Button>                    
-                  </DialogActions>
-                  </Dialog>
-                  ) : (<div></div>)
-                }
+                                                 
+                <Dialog
+                  open={showAlertDialog}
+                  onClose={handleCloseAlert}
+                  aria-labelledby="alert-dialog-title"
+                  aria-describedby="alert-dialog-description"
+                  className="alert-error"
+                >                    
+                  <DialogTitle id="alert-dialog-title">
+                    {"Alert"}
+                  </DialogTitle>
+                  <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                    Impossibile cancellare il cliente in quanto possiede dei servizi!
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleCloseAlert}>Chiudi</Button>                    
+                </DialogActions>
+                </Dialog>
 
 
                 <ConfirmDialog 
