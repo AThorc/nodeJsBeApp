@@ -93,6 +93,7 @@ const ClientesList = props => {
   const setActiveCliente = (cliente, index) => {
     setCurrentCliente(cliente);
     setCurrentIndex(index);
+    window.scrollTo(0, 0);
   };
 
   const setActiveServizio = (servizio, index) => {
@@ -315,6 +316,7 @@ const ClientesList = props => {
                     onChange={handleInputChange}
                     name="ragioneSociale"
                     disabled={!showAdminBoard}
+                    autoFocus="true"
                 />
             </td>                         
             <td>
@@ -898,6 +900,26 @@ const ClientesList = props => {
           {currentCliente ? (
               <div className="wrapper-anagrafica">
                 <h4>Cliente</h4>
+                <ConfirmDialog 
+                  title= 'Cancella'
+                  message= 'Sei sicuro di voler cancellare il cliente?'
+                  onClickYes= {deleteCliente}
+                  className={"btn btn-danger " + (!showAdminBoard ? "d-none" : "")}
+                />
+
+                <ConfirmDialog 
+                  title= 'Aggiorna'
+                  message= 'Sei sicuro di voler aggiornare il cliente?'
+                  onClickYes= {updateCliente}
+                  className={"btn btn-primary "+ (!showAdminBoard ? "d-none" : "")}  
+                />
+
+                <Link
+                  to={"/clientes/" + currentCliente.id}
+                  className="btn btn-warning"
+                >
+                  Visualizza servizi                
+                </Link>
                   <div>
                     <table id='clientiById' className="table table-anagrafica">
                       {renderTableData()}
@@ -928,26 +950,7 @@ const ClientesList = props => {
                 </Dialog>
 
 
-                <ConfirmDialog 
-                  title= 'Cancella'
-                  message= 'Sei sicuro di voler cancellare il cliente?'
-                  onClickYes= {deleteCliente}
-                  className={"btn btn-danger " + (!showAdminBoard ? "d-none" : "")}
-                />
-
-                <ConfirmDialog 
-                  title= 'Aggiorna'
-                  message= 'Sei sicuro di voler aggiornare il cliente?'
-                  onClickYes= {updateCliente}
-                  className={"btn btn-primary "+ (!showAdminBoard ? "d-none" : "")}  
-                />
-
-                <Link
-                  to={"/clientes/" + currentCliente.id}
-                  className="btn btn-warning"
-                >
-                  Visualizza servizi                
-                </Link>
+               
 				  
               </div>
               
