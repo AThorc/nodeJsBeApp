@@ -10,6 +10,13 @@ import moment from 'moment';
 import ModificaDataService from "../services/ModificaService";
 import LegameDataService from "../services/LegameService";
 
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
+
 const Macroservizio = props => {
   const initialMacroservizioState = {
     id: null,
@@ -20,6 +27,8 @@ const Macroservizio = props => {
   const [message, setMessage] = useState("");
 
   const user = AuthService.getCurrentUser();
+
+  const [showAlertDialog, setShowAlertDialog] = useState(false);
 
   const getMacroservizio = id => {
     if(user){
@@ -67,7 +76,8 @@ const Macroservizio = props => {
       var responseLegami = await LegameDataService.findByServizioId(currentMacroservizio.id);
       debugger
       if(responseLegami.data.length > 0){
-        alert("Impossibile cancellare il macroservizio in quanto possiede dei servizi!");        
+        //alert("Impossibile cancellare il macroservizio in quanto possiede dei servizi!");    
+        setShowAlertDialog(true);
       }else{
         MacroservizioDataService.remove(currentMacroservizio.id)
         .then(response => {
@@ -98,6 +108,10 @@ const Macroservizio = props => {
       
     }
     
+  };
+
+  const handleCloseAlert = () => {
+    setShowAlertDialog(false);
   };
 
   if(user){
@@ -134,6 +148,27 @@ const Macroservizio = props => {
               
             </form>          
   
+            <Dialog
+                open={showAlertDialog}
+                onClose={handleCloseAlert}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+                className="alert-error"
+              >                    
+                <DialogTitle id="alert-dialog-title">
+                  {"Alert"}
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                    Impossibile cancellare il macroservizio in quanto possiede dei servizi!
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleCloseAlert}>Chiudi</Button>                    
+                </DialogActions>
+            </Dialog>
+  
+
             <ConfirmDialog 
               title= 'Cancella'
               message= 'Sei sicuro di voler cancellare il macroservizio?'

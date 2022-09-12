@@ -7,7 +7,7 @@ import { Link, useHistory } from "react-router-dom";
 import AuthService from "../services/auth.service";
 
 import ConfirmDialog from "./confirmDialog.component";
-//import Alert from '@mui/material/Alert';
+
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -919,13 +919,13 @@ const ClientesList = props => {
                     {"Alert"}
                   </DialogTitle>
                   <DialogContent>
-                  <DialogContentText id="alert-dialog-description">
-                    Impossibile cancellare il cliente in quanto possiede dei servizi!
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleCloseAlert}>Chiudi</Button>                    
-                </DialogActions>
+                    <DialogContentText id="alert-dialog-description">
+                      Impossibile cancellare il cliente in quanto possiede dei servizi!
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleCloseAlert}>Chiudi</Button>                    
+                  </DialogActions>
                 </Dialog>
 
 
