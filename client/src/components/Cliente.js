@@ -646,14 +646,14 @@ const Cliente = props => {
           <div className="edit-anagrafica-form">
             <h4>Lista macroservizi {currentCliente.ragioneSociale}</h4>           
             <div className="lista-macroservizi-wrapper">
-              <div className="half1">
+              {/* <div className="half1"> */}
         
-                <ul className="list-group percent-max-content">
+                <ul className="list-group-servizi percent-max-content">
                   {macroservizi &&
                     macroservizi.map((macroservizio, index) => (
                       <li
                         className={
-                          "list-group-item " + (index === currentIndex ? "active" : "")
+                          "list-group-item-custom marginLeft1 " + (index === currentIndex ? "customActive" : "")
                         }
                         onClick={() => setActiveMacroservizio(macroservizio, index)}
                         key={index}
@@ -664,15 +664,15 @@ const Cliente = props => {
                           onClick={() => handleInserisciServizioClick(macroservizio, currentCliente, index)}
                         >
                           <BsPlusLg />
-                        </button>                       
+                        </button>                    
                       </li>
                       
                     ))}
                 </ul>                                                        
-              </div>              
-
+              {/* </div>               */}
+              <br></br><br></br>
               {currentListaLegameMacroservizio && currentListaLegameMacroservizio.length > 0 ? (
-                <div className="half2 table-responsive text-nowrap">
+                <div className="table-responsive text-nowrap">
                   <table id='servizi' className="table w-auto">
                     <tbody>
                         <tr>{renderTableHeader()}</tr>
