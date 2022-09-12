@@ -7,6 +7,14 @@ import { Link, useHistory } from "react-router-dom";
 import AuthService from "../services/auth.service";
 
 import ConfirmDialog from "./confirmDialog.component";
+//import Alert from '@mui/material/Alert';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
+
 
 import moment from 'moment';
 
@@ -37,6 +45,7 @@ const ClientesList = props => {
 
   const [newNaturaGiuridica, setNewNaturaGiuridica] = useState(null);
 
+  const [showAlertDialog, setShowAlertDialog] = useState(false);
 
 
   useEffect(() => {
@@ -234,7 +243,8 @@ const ClientesList = props => {
       var responseLegami = await LegameDataService.findByClienteId(currentCliente.id);
       debugger
       if(responseLegami.data.length > 0){
-        alert("Impossibile cancellare il cliente in quanto possiede dei servizi!");        
+        //alert("Impossibile cancellare il cliente in quanto possiede dei servizi!");
+        setShowAlertDialog(true);
       }else{
         ClienteDataService.remove(currentCliente.id)
         .then(response => {
@@ -283,6 +293,10 @@ const ClientesList = props => {
     setNewNaturaGiuridica(value);
   };
   
+
+  const handleCloseAlert = () => {
+    setShowAlertDialog(false);
+  };
 
 
   const renderTableData = () => {  
@@ -894,6 +908,30 @@ const ClientesList = props => {
 				
 			        	<br></br>
                 
+                { showAlertDialog ? (                  
+                  <Dialog
+                    open={showAlertDialog}
+                    onClose={handleCloseAlert}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                    className="alert-error"
+                  >                    
+                    <DialogTitle id="alert-dialog-title">
+                      {"Alert"}
+                    </DialogTitle>
+                    <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                      Impossibile cancellare il cliente in quanto possiede dei servizi!
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleCloseAlert}>Chiudi</Button>                    
+                  </DialogActions>
+                  </Dialog>
+                  ) : (<div></div>)
+                }
+
+
                 <ConfirmDialog 
                   title= 'Cancella'
                   message= 'Sei sicuro di voler cancellare il cliente?'

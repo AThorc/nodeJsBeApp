@@ -223,3 +223,11 @@ body.react-confirm-alert-body-element {
 .marginLeft7{
   margin-left: 7%;
 }
+
+
+.alert-error {
+  padding: 20px;
+  color: #f44336; /* Red */
+  color: white;
+  margin-bottom: 15px;
+}
