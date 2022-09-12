@@ -29,7 +29,8 @@ exports.create = (req, res) => {
       // saldo: req.body.saldo
       totalePratica: req.body.totalePratica,
       incassato:  req.body.incassato,
-      compensoPartner: req.body.compensoPartner
+      compensoPartner: req.body.compensoPartner,
+      statoPratica: req.body.statoPratica
     });
   
     // Save Legame in the database

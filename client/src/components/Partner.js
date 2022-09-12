@@ -74,7 +74,6 @@ const Partner = props => {
   const deletePartner = async() => {
     if(user){
       var responseLegami = await LegameDataService.findByPartnerId(currentPartner.id);
-      debugger
       if(responseLegami.data.length > 0){
         //alert("Impossibile cancellare il partner in quanto possiede dei servizi!");
         setShowAlertDialog(true);    

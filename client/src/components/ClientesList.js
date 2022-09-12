@@ -241,7 +241,6 @@ const ClientesList = props => {
     if(user && showAdminBoard){
       
       var responseLegami = await LegameDataService.findByClienteId(currentCliente.id);
-      debugger
       if(responseLegami.data.length > 0){
         //alert("Impossibile cancellare il cliente in quanto possiede dei servizi!");
         setShowAlertDialog(true);

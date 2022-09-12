@@ -74,7 +74,6 @@ const Macroservizio = props => {
   const deleteMacroservizio = async() => {
     if(user){      
       var responseLegami = await LegameDataService.findByServizioId(currentMacroservizio.id);
-      debugger
       if(responseLegami.data.length > 0){
         //alert("Impossibile cancellare il macroservizio in quanto possiede dei servizi!");    
         setShowAlertDialog(true);
