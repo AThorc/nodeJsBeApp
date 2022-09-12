@@ -51,6 +51,8 @@ const Cliente = props => {
     "CONSULENZA DIREZIONALE": ['Anticorruzione/Antiriciclaggio', 'Certificazione di Qualità', 'Sicurezza sul lavoro', 'Privacy', 'Consulenza'],
   };
 
+  const statoPraticaList = [ "In lavorazione",  "Erogata",  "Rifiutata"] ;
+
   const initialLegameState = {
     id: null,
     tipo: "",
@@ -62,7 +64,8 @@ const Cliente = props => {
     saldo: undefined,
     totalePratica: undefined,
     incassato: undefined,
-    compensoPartner: undefined
+    compensoPartner: undefined,
+    statoPratica: undefined
 
   };
   const [currentCliente, setCurrentCliente] = useState(initialClienteState);
@@ -79,6 +82,8 @@ const Cliente = props => {
   const [currentListaLegameMacroservizio, setCurrentListaLegameMacroservizio] = useState(null);
 
   const [newTipoLegame, setNewTipoLegame] = useState(null);
+
+  const [selectedStatoPratica, setSelectedStatoPratica] = useState(null);
 
   const [partnersFatturatoLegame, setPartnersFatturatoLegame] = useState([]);
 
@@ -213,6 +218,12 @@ const Cliente = props => {
     setNewTipoLegame(value);
   };
 
+
+  const handleInputStatoPraticaChange = event => {
+    const { name, value } = event.target;
+    setSelectedStatoPratica(value);
+  };
+
   const handleInputLegameChange = (event, index) => {
     const { name, value } = event.target;
     console.log('handleInputLegameChange');
@@ -272,9 +283,11 @@ const Cliente = props => {
   const renderTableHeader = () => {
     var header = Object.keys(currentListaLegameMacroservizio[0])
     header =  header.map((key, index) => {
-       if(['clienteid', 'partnerid', 'tipo'].includes(key))
+       //if(['clienteid', 'partnerid', 'tipo'].includes(key))
+       if(['partnerid', 'tipo'].includes(key))
         return <th key={index}>{initCap(key).replace('id','')}</th>
     })
+    header.push(<th key={3}>Stato Pratica</th>);
     header.push(<th key={4}>Data inizio</th>);
     header.push(<th key={5}>Totale Pratica</th>);
     header.push(<th key={6}>Incassato</th>);
@@ -325,8 +338,7 @@ const Cliente = props => {
     return currentListaLegameMacroservizio.map((legame, index) => {
       //const { clienteid, createdAt, id, partnerid, servizioid, tipo, updatedAt, fatturatoPartner, fatturatoSocieta } = legame //destructuring
       return (          
-          <tr key={legame.id}>
-            <td>{currentCliente.ragioneSociale}</td>         
+          <tr key={legame.id}>                    
             <td>
                 <select className="form-control" disabled={!showAdminBoard} defaultValue={legame.partnerid} onClick={_handlePartnerChange} onChange={_handlePartnerChange}>
                   <option value={legame.partnerid} disabled >{getDenominazionePartner(legame.partnerid)}</option>    
@@ -380,6 +392,21 @@ const Cliente = props => {
                 </select>
             </div> */}
 
+            <td>
+              <select disabled={!showAdminBoard} className="form-control" defaultValue={legame.statoPratica?legame.statoPratica:''} key={index} onClick={(e) => handleInputStatoPraticaChange(e, index)} onChange={(e) => handleInputStatoPraticaChange(e, index)}>
+                    <option value={legame.statoPratica?legame.statoPratica:''} disabled>{legame.statoPratica?legame.statoPratica:''}</option>
+                      {statoPraticaList &&
+                        statoPraticaList.map((stato, index) => {
+                            if(legame.statoPratica != stato){
+                              return(                  
+                            
+                                <option value={stato} key={index} >{stato}</option>                    
+                              )
+                            }                        
+                          }
+                        )}
+                </select>
+            </td> 
             <td>
               <input
                       type="date"
@@ -533,7 +560,7 @@ const Cliente = props => {
                 title= {<BsFillPencilFill />}
                 message= 'Sei sicuro di voler aggiornare il servizio?'
                 //onClickYes= {() => updateLegame(legame.id, {clientid: legame.clienteid, partnerid: partner.length>0?partner:legame.partnerid, tipo: newTipoLegame?newTipoLegame:legame.tipo, dataInizio: legame.dataInizio, fatturatoPartner: legame.fatturatoPartner, fatturatoSocieta: legame.fatturatoSocieta, acconto: legame.acconto, saldo: legame.saldo})}
-                onClickYes= {() => updateLegame(legame.id, {clientid: legame.clienteid, partnerid: partner.length>0?partner:legame.partnerid, tipo: newTipoLegame?newTipoLegame:legame.tipo, dataInizio: legame.dataInizio, totalePratica: legame.totalePratica, incassato: legame.incassato, compensoPartner: legame.compensoPartner})}
+                onClickYes= {() => updateLegame(legame.id, {clientid: legame.clienteid, partnerid: partner.length>0?partner:legame.partnerid, tipo: newTipoLegame?newTipoLegame:legame.tipo, dataInizio: legame.dataInizio, totalePratica: legame.totalePratica, incassato: legame.incassato, compensoPartner: legame.compensoPartner, statoPratica: selectedStatoPratica ? selectedStatoPratica: legame.statoPratica})}
                 className={"btn btn-primary " + (!showAdminBoard ? "d-none" : "")}
               />
 
@@ -646,14 +673,14 @@ const Cliente = props => {
           <div className="edit-anagrafica-form">
             <h4>Lista macroservizi {currentCliente.ragioneSociale}</h4>           
             <div className="lista-macroservizi-wrapper">
-              <div className="half1">
+              {/* <div className="half1"> */}
         
-                <ul className="list-group percent-max-content">
+                <ul className="list-group-servizi percent-max-content">
                   {macroservizi &&
                     macroservizi.map((macroservizio, index) => (
                       <li
                         className={
-                          "list-group-item " + (index === currentIndex ? "active" : "")
+                          "list-group-item-custom marginLeft1 " + (index === currentIndex ? "customActive" : "")
                         }
                         onClick={() => setActiveMacroservizio(macroservizio, index)}
                         key={index}
@@ -664,15 +691,15 @@ const Cliente = props => {
                           onClick={() => handleInserisciServizioClick(macroservizio, currentCliente, index)}
                         >
                           <BsPlusLg />
-                        </button>                       
+                        </button>                    
                       </li>
                       
                     ))}
                 </ul>                                                        
-              </div>              
-
+              {/* </div>               */}
+              <br></br><br></br>
               {currentListaLegameMacroservizio && currentListaLegameMacroservizio.length > 0 ? (
-                <div className="half2 table-responsive text-nowrap">
+                <div className="table-responsive text-nowrap">
                   <table id='servizi' className="table w-auto">
                     <tbody>
                         <tr>{renderTableHeader()}</tr>

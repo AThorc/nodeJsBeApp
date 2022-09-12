@@ -233,3 +233,38 @@ body.react-confirm-alert-body-element {
 .marginLeft7{
   margin-left: 7%;
 }
+
+.list-group-servizi {
+  /* flex-direction: column; */
+  padding-left: 0px;
+  margin-bottom: 0;
+  border-radius: 0.25rem;
+  -webkit-columns:5!important;
+  -moz-columns:5!important;
+  columns:5!important;
+  /* display: flex; */
+  /* padding-left: 0px; */
+  /* margin-bottom: 0;
+  border-radius: 0.25rem; */
+  /* -webkit-columns:3;
+  -moz-columns:3;
+  columns:3; */
+  
+}
+
+.marginLeft1{
+  margin-left:0%;
+  min-inline-size: fit-content
+}
+
+.customActive{
+  background-color: #007bff!important;
+}
+
+.list-group-item-custom {
+  position: relative;
+  display: block;
+  padding: 0.75rem 0.28rem;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+}

@@ -519,7 +519,7 @@ const MacroserviziList = () => {
         var mName = getMacroservizioName(mid);
         var ws = wb.addWorksheet(mName);
         //var cols = ['Nome Partner', 'Ragione Sociale', 'Codice Fiscale', 'Tipo', 'Data inizio', 'Fatturato Partner', 'Fatturato Multifinance', 'Acconto', 'Saldo', 'Note'];
-        var cols = ['Nome Partner', 'Ragione Sociale', 'Codice Fiscale', 'Tipo', 'Data inizio', 'Totale Pratica', 'Incassato', 'Da Incassare', 'Compenso Partner', 'Netto','Note'];
+        var cols = ['Nome Partner', 'Ragione Sociale', 'Codice Fiscale', 'Tipo', 'Stato Pratica', 'Data inizio', 'Totale Pratica', 'Incassato', 'Da Incassare', 'Compenso Partner', 'Netto','Note'];
 
         //Inserisco nomi colonne
 
@@ -536,7 +536,7 @@ const MacroserviziList = () => {
           
           //Inserisco le righe
           //const righe = ws.addRow([cliente.partnerName, cliente.ragioneSociale, cliente.codiceFiscale, cliente.tipo, cliente.dataInizio, cliente.fatturatoPartner, cliente.fatturatoSocieta, cliente.acconto, cliente.saldo, cliente.note]);
-          const righe = ws.addRow([cliente.partnerName, cliente.ragioneSociale, cliente.codiceFiscale, cliente.tipo, cliente.dataInizio, cliente.totalePratica, cliente.incassato, cliente.totalePratica - cliente.incassato, cliente.compensoPartner, cliente.totalePratica - cliente.compensoPartner, cliente.note]);
+          const righe = ws.addRow([cliente.partnerName, cliente.ragioneSociale, cliente.codiceFiscale, cliente.tipo, cliente.statoPratica, cliente.dataInizio, cliente.totalePratica, cliente.incassato, cliente.totalePratica - cliente.incassato, cliente.compensoPartner, cliente.totalePratica - cliente.compensoPartner, cliente.note]);
 
         }
 

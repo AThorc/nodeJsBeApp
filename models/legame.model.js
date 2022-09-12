@@ -33,7 +33,8 @@ module.exports = mongoose => {
         saldo: Number,
         totalePratica: Number,
         incassato: Number,
-        compensoPartner: Number
+        compensoPartner: Number,
+        statoPratica: String
       },
       { timestamps: true }
     );

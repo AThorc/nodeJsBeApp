@@ -11,6 +11,13 @@ import ModificaDataService from "../services/ModificaService";
 
 import LegameDataService from "../services/LegameService";
 
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
+
 const Partner = props => {
   const initialPartnerState = {
     id: null,
@@ -22,6 +29,7 @@ const Partner = props => {
   const [message, setMessage] = useState("");
 
   const user = AuthService.getCurrentUser();
+  const [showAlertDialog, setShowAlertDialog] = useState(false);
 
   const getPartner = id => {
     if(user){
@@ -66,9 +74,9 @@ const Partner = props => {
   const deletePartner = async() => {
     if(user){
       var responseLegami = await LegameDataService.findByPartnerId(currentPartner.id);
-      debugger
       if(responseLegami.data.length > 0){
-        alert("Impossibile cancellare il partner in quanto possiede dei servizi!");        
+        //alert("Impossibile cancellare il partner in quanto possiede dei servizi!");
+        setShowAlertDialog(true);    
       }else{
         PartnerDataService.remove(currentPartner.id)
       .then(response => {        
@@ -94,6 +102,10 @@ const Partner = props => {
       
     }
     
+  };
+
+  const handleCloseAlert = () => {
+    setShowAlertDialog(false);
   };
 
   if(user){
@@ -143,6 +155,26 @@ const Partner = props => {
               </div> */}
            
             </form>          
+
+            <Dialog
+                open={showAlertDialog}
+                onClose={handleCloseAlert}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+                className="alert-error"
+              >                    
+                <DialogTitle id="alert-dialog-title">
+                  {"Alert"}
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                    Impossibile cancellare il partner in quanto possiede dei servizi!
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleCloseAlert}>Chiudi</Button>                    
+                </DialogActions>
+            </Dialog>
   
             <ConfirmDialog 
               title= 'Cancella'

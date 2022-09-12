@@ -8,6 +8,14 @@ import AuthService from "../services/auth.service";
 
 import ConfirmDialog from "./confirmDialog.component";
 
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
+
+
 import moment from 'moment';
 
 import ModificaDataService from "../services/ModificaService";
@@ -37,6 +45,7 @@ const ClientesList = props => {
 
   const [newNaturaGiuridica, setNewNaturaGiuridica] = useState(null);
 
+  const [showAlertDialog, setShowAlertDialog] = useState(false);
 
 
   useEffect(() => {
@@ -84,6 +93,7 @@ const ClientesList = props => {
   const setActiveCliente = (cliente, index) => {
     setCurrentCliente(cliente);
     setCurrentIndex(index);
+    window.scrollTo(0, 0);
   };
 
   const setActiveServizio = (servizio, index) => {
@@ -232,9 +242,9 @@ const ClientesList = props => {
     if(user && showAdminBoard){
       
       var responseLegami = await LegameDataService.findByClienteId(currentCliente.id);
-      debugger
       if(responseLegami.data.length > 0){
-        alert("Impossibile cancellare il cliente in quanto possiede dei servizi!");        
+        //alert("Impossibile cancellare il cliente in quanto possiede dei servizi!");
+        setShowAlertDialog(true);
       }else{
         ClienteDataService.remove(currentCliente.id)
         .then(response => {
@@ -284,6 +294,10 @@ const ClientesList = props => {
   };
   
 
+  const handleCloseAlert = () => {
+    setShowAlertDialog(false);
+  };
+
 
   const renderTableData = () => {  
     return (
@@ -302,6 +316,7 @@ const ClientesList = props => {
                     onChange={handleInputChange}
                     name="ragioneSociale"
                     disabled={!showAdminBoard}
+                    autoFocus="true"
                 />
             </td>                         
             <td>
@@ -885,15 +900,6 @@ const ClientesList = props => {
           {currentCliente ? (
               <div className="wrapper-anagrafica">
                 <h4>Cliente</h4>
-                  <div>
-                    <table id='clientiById' className="table table-anagrafica">
-                      {renderTableData()}
-                    </table> 
-                  </div>  
-
-				
-			        	<br></br>
-                
                 <ConfirmDialog 
                   title= 'Cancella'
                   message= 'Sei sicuro di voler cancellare il cliente?'
@@ -914,6 +920,37 @@ const ClientesList = props => {
                 >
                   Visualizza servizi                
                 </Link>
+                  <div>
+                    <table id='clientiById' className="table table-anagrafica">
+                      {renderTableData()}
+                    </table> 
+                  </div>  
+
+				
+			        	<br></br>
+                                                 
+                <Dialog
+                  open={showAlertDialog}
+                  onClose={handleCloseAlert}
+                  aria-labelledby="alert-dialog-title"
+                  aria-describedby="alert-dialog-description"
+                  className="alert-error"
+                >                    
+                  <DialogTitle id="alert-dialog-title">
+                    {"Alert"}
+                  </DialogTitle>
+                  <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                      Impossibile cancellare il cliente in quanto possiede dei servizi!
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleCloseAlert}>Chiudi</Button>                    
+                  </DialogActions>
+                </Dialog>
+
+
+               
 				  
               </div>
               
