@@ -268,3 +268,7 @@ body.react-confirm-alert-body-element {
   background-color: #fff;
   border: 1px solid rgba(0, 0, 0, 0.125);
 }
+
+.width1400{
+  width: 1400px!important;
+}

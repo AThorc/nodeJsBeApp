@@ -699,7 +699,7 @@ const Cliente = props => {
               {/* </div>               */}
               <br></br><br></br>
               {currentListaLegameMacroservizio && currentListaLegameMacroservizio.length > 0 ? (
-                <div className="table-responsive text-nowrap">
+                <div className="table-responsive text-nowrap width1400">
                   <table id='servizi' className="table w-auto">
                     <tbody>
                         <tr>{renderTableHeader()}</tr>
