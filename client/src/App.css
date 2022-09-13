@@ -195,9 +195,10 @@ body.react-confirm-alert-body-element {
 }
 
 .note-wrapper{
-  width: 1230px;
-  margin-top: 33%;
-  margin-left: 11%;
+  /* width: 1230px; */
+  width: 1400px;
+  margin-top: 3%;
+  /* margin-left: 11%; */
 }
 
 .note-button-margin-top{
