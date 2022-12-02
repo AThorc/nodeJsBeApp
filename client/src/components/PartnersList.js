@@ -452,6 +452,7 @@ const PartnersList = () => {
 
       for(var pid in clientiPartner){
         var pName = getPartnerName(pid);
+        pName = pName.replaceAll("/","-").replaceAll("\\","-");
         var ws = wb.addWorksheet(pName);
         //var cols = ['Nome Servizio', 'Ragione Sociale', 'Codice Fiscale', 'Tipo', 'Data Inizio', 'Fatturato Partner', 'Fatturato Multifinance', 'Acconto', 'Saldo', 'Note'];
         var cols = ['Nome Servizio', 'Ragione Sociale', 'Codice Fiscale', 'Tipo', 'Stato Pratica', 'Data inizio', 'Totale Pratica', 'Incassato', 'Da Incassare', 'Compenso Partner', 'Netto','Note'];
