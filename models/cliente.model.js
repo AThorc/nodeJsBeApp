@@ -44,7 +44,11 @@ module.exports = mongoose => {
         percentualeSocio3: String,
         percentualeSocio4: String,
         percentualeSocio5: String,
-        percentualeSocio6: String
+        percentualeSocio6: String,
+        codiceUnivoco: String,
+        tipoDocumento: String,
+        numeroDocumento: String,
+        scadenzaDocumento: Date
       },
       { timestamps: true }
     );
