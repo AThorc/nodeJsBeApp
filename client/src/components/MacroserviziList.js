@@ -533,6 +533,7 @@ const MacroserviziList = () => {
           console.log(cliente.dataInizio);
           cliente.dataInizio = cliente.dataInizio ? new Date(cliente.dataInizio).toLocaleDateString("en-GB"): '';          
           console.log(cliente.dataInizio);
+          cliente.partnerName = cliente.partnerName.replaceAll("/","-").replaceAll("\\","-");
           
           //Inserisco le righe
           //const righe = ws.addRow([cliente.partnerName, cliente.ragioneSociale, cliente.codiceFiscale, cliente.tipo, cliente.dataInizio, cliente.fatturatoPartner, cliente.fatturatoSocieta, cliente.acconto, cliente.saldo, cliente.note]);
