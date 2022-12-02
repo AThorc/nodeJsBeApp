@@ -466,12 +466,12 @@ const PartnersList = () => {
           var cliente = clientiPartner[pid][j];
           console.log('DATA INIZIO');
           console.log(cliente.dataInizio);
-          cliente.dataInizio = new Date(cliente.dataInizio).toLocaleDateString("en-GB");          
+          cliente.dataInizio = cliente.dataInizio ? new Date(cliente.dataInizio).toLocaleDateString("en-GB"):'';          
           console.log(cliente.dataInizio);
           
           //Inserisco le righe
           //const righe = ws.addRow([cliente.servizioName, cliente.ragioneSociale, cliente.codiceFiscale, cliente.tipo, cliente.dataInizio, cliente.fatturatoPartner, cliente.fatturatoSocieta, cliente.acconto, cliente.saldo, cliente.note]);
-          const righe = ws.addRow([cliente.servizioName, cliente.ragioneSociale, cliente.codiceFiscale, cliente.tipo, cliente.statoPratica, cliente.dataInizio, cliente.totalePratica, cliente.incassato, cliente.totalePratica - cliente.incassato, cliente.compensoPartner, cliente.totalePratica - cliente.compensoPartner, cliente.note]);
+          const righe = ws.addRow([cliente.servizioName, cliente.ragioneSociale, cliente.codiceFiscale, cliente.tipo, cliente.statoPratica, cliente.dataInizio, cliente.totalePratica, cliente.incassato, (cliente.totalePratica && cliente.incassato)?cliente.totalePratica - cliente.incassato:'', cliente.compensoPartner, (cliente.totalePratica && cliente.compensoPartner)?cliente.totalePratica - cliente.compensoPartner:'', cliente.note]);
 
         }
 
