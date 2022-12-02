@@ -196,7 +196,9 @@ const ClientesList = props => {
                   return e;
                 });
 
-    var cols = ['Ragione sociale', 'Codice fiscale', 'Partita IVA', 'Legale rappresentante', 'Telefono',
+    var cols = ['Ragione sociale', 'Codice fiscale', 'Partita IVA', 
+    'Codice univoco', 'Tipologia documento', 'Numero documento', 'Scadenza documento',
+    'Legale rappresentante', 'Telefono',
     'Cellulare', 'Mail', 'Pec', 'Sede', 'Localita', 'Cap', 'Data costituzione', 'Inizio attivita',
     'Tipo', 'Dimensione', 'Att Istat Ateco 2007', 'Settore', 'Natura Giuridica', 'Segnalatore',
     'Socio 1', 'Percentuale Socio 1', 'Socio 2', 'Percentuale Socio 2', 'Socio 3', 'Percentuale Socio 3',
@@ -210,7 +212,9 @@ const ClientesList = props => {
     for(var i in data){
       var cliente = data[i];
       //Inserisco le righe
-      const righe = ws.addRow([cliente.ragioneSociale, cliente.codiceFiscale, cliente.partitaIVA, cliente.legaleRappresentate, cliente.telefono, cliente.cellulare, cliente.mail, cliente.pec, cliente.sede,
+      const righe = ws.addRow([cliente.ragioneSociale, cliente.codiceFiscale, cliente.partitaIVA, 
+                              cliente.codiceUnivoco, cliente.tipoDocumento, cliente.numeroDocumento, cliente.scadenzaDocumento,
+                              cliente.legaleRappresentate, cliente.telefono, cliente.cellulare, cliente.mail, cliente.pec, cliente.sede,
                               cliente.localita, cliente.cap, cliente.dataCostituzione, cliente.inizioAttivita, cliente.tipo, cliente.dimensione, cliente.attIstatAteco2007,
                               cliente.settore, cliente.naturaGiuridica, cliente.segnalatore, cliente.socio1, cliente.percentualeSocio1, cliente.socio2, cliente.percentualeSocio2,
                               cliente.socio3, cliente.percentualeSocio3, cliente.socio4, cliente.percentualeSocio4, cliente.socio5, cliente.percentualeSocio5, cliente.socio6, cliente.percentualeSocio6

@@ -41,13 +41,19 @@ const AddCliente = props => {
     percentualeSocio3: "",
     percentualeSocio4: "",
     percentualeSocio5: "",
-    percentualeSocio6: ""
+    percentualeSocio6: "",
+    codiceUnivoco: "",
+    tipoDocumento: "",
+    numeroDocumento: "",
+    scadenzaDocumento: ""
 
   };
   const [cliente, setCliente] = useState(initialClienteState);
   const [submitted, setSubmitted] = useState(false);
 
   const [newNaturaGiuridica, setNewNaturaGiuridica] = useState(null);
+
+  const [newTipologiaDocumento, setNewTipologiaDocumento] = useState(null);
 
   const user = AuthService.getCurrentUser();
 
@@ -59,6 +65,11 @@ const AddCliente = props => {
   const handleInputNGChange = event => {
     const { name, value } = event.target;
     setNewNaturaGiuridica(value);
+  };
+
+  const handleInputTipoDochange = event => {
+    const { name, value } = event.target;
+    setNewTipologiaDocumento(value);
   };
 
   const saveCliente = () => {
@@ -97,6 +108,10 @@ const AddCliente = props => {
         percentualeSocio4: cliente.percentualeSocio4,
         percentualeSocio5: cliente.percentualeSocio5,
         percentualeSocio6: cliente.percentualeSocio6,
+        codiceUnivoco: cliente.codiceUnivoco,
+        tipoDocumento: newTipologiaDocumento,
+        numeroDocumento: cliente.numeroDocumento,
+        scadenzaDocumento: cliente.scadenzaDocumento,
       };
 
       ClienteDataService.create(data)
@@ -133,7 +148,11 @@ const AddCliente = props => {
           percentualeSocio3: response.data.percentualeSocio3,
           percentualeSocio4: response.data.percentualeSocio4,
           percentualeSocio5: response.data.percentualeSocio5,
-          percentualeSocio6: response.data.percentualeSocio6
+          percentualeSocio6: response.data.percentualeSocio6,
+          codiceUnivoco: response.data.codiceUnivoco,
+          tipoDocumento: response.data.tipoDocumento,
+          numeroDocumento: response.data.numeroDocumento,
+          scadenzaDocumento: response.data.scadenzaDocumento
         });
         setSubmitted(true);        
         props.history.push("/anagrafica");
@@ -162,10 +181,17 @@ const AddCliente = props => {
     "Società cooperativa"
   ];
 
+  const tipologieDocumento = [
+    "Patente",
+    "Carta d'identità",
+    "Passaporto"
+  ];
+
+
   const renderTableData = () => {  
     return (
         <tbody>       
-          <tr key={1}>
+          <tr key={0}>
             <td>
               <label>
                 <strong>Ragione sociale:</strong>
@@ -223,6 +249,67 @@ const AddCliente = props => {
                 />
             </td>
           </tr>
+
+          <tr key={1}>
+            <td>
+              <label>
+                <strong>Codice univoco:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="codiceUnivoco"
+                    required
+                    value={cliente.codiceUnivoco}
+                    onChange={handleInputChange}
+                    name="codiceUnivoco"
+                />
+            </td>                         
+            <td>
+               <div className="form-group box">              
+                  <label>
+                    <strong>Tipo documento:</strong>
+                  </label>{" "}<br/>
+                  <select defaultValue={'DEFAULT'} onClick={(e) => handleInputTipoDochange(e)} onChange={(e) => handleInputTipoDochange(e)}>
+                    <option disabled value="DEFAULT">{cliente.tipoDocumento?cliente.tipoDocumento:"Seleziona la tipologia del documento"}</option>    
+                    {
+                        tipologieDocumento && tipologieDocumento.map((tipoDoc, index) => (                  
+                        
+                          <option  value={tipoDoc} key={index} >{tipoDoc}</option>               
+                      ))}
+                    </select>
+                </div>
+            </td>
+            <td>
+              <label>
+                <strong>Numero documento:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="numeroDocumento"
+                    required
+                    value={cliente.numeroDocumento}
+                    onChange={handleInputChange}
+                    name="numeroDocumento"
+                />
+            </td>          
+            <td>
+              <label>
+                <strong>Scadenza documento:</strong>
+              </label>{" "}
+              <input
+                    type="date"
+                    className="form-control fit-content"
+                    id="scadenzaDocumento"
+                    required
+                    value={moment(cliente.scadenzaDocumento).format('YYYY-MM-DD')} 
+                    onChange={handleInputChange}
+                    name="scadenzaDocumento"
+                />
+            </td>
+          </tr>
+
 
           <tr key={2}>
             <td>
