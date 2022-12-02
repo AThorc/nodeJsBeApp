@@ -49,6 +49,11 @@ exports.create = (req, res) => {
       percentualeSocio4: req.body.percentualeSocio4,
       percentualeSocio5: req.body.percentualeSocio5,
       percentualeSocio6: req.body.percentualeSocio6,
+      codiceUnivoco: req.body.codiceUnivoco,
+      tipoDocumento: req.body.tipoDocumento,
+      numeroDocumento: req.body.numeroDocumento,
+      scadenzaDocumento: req.body.scadenzaDocumento
+
 
     });
   

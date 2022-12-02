@@ -45,6 +45,8 @@ const ClientesList = props => {
 
   const [newNaturaGiuridica, setNewNaturaGiuridica] = useState(null);
 
+  const [newTipologiaDocumento, setNewTipologiaDocumento] = useState(null);
+
   const [showAlertDialog, setShowAlertDialog] = useState(false);
 
 
@@ -123,6 +125,12 @@ const ClientesList = props => {
     " Società in accomandita semplice",
     "Srl unipersonale",
     "Società cooperativa"
+  ];
+
+  const tipologieDocumento = [
+    "Patente",
+    "Carta d'identità",
+    "Passaporto"
   ];
 
   const removeAllServizios = () => {
@@ -224,6 +232,7 @@ const ClientesList = props => {
       currentCliente.userid = user.id;
       currentCliente.username = user.username;
       if(newNaturaGiuridica && newNaturaGiuridica != 'DEFAULT') currentCliente.naturaGiuridica = newNaturaGiuridica;
+      if(newTipologiaDocumento && newTipologiaDocumento != 'DEFAULT') currentCliente.tipoDocumento = newTipologiaDocumento;
       ClienteDataService.update(currentCliente.id, currentCliente)
       .then(response => {
         console.log(response.data);
@@ -292,6 +301,11 @@ const ClientesList = props => {
     const { name, value } = event.target;
     setNewNaturaGiuridica(value);
   };
+
+  const handleInputTipoDochange = event => {
+    const { name, value } = event.target;
+    setNewTipologiaDocumento(value);
+  };
   
 
   const handleCloseAlert = () => {
@@ -302,7 +316,7 @@ const ClientesList = props => {
   const renderTableData = () => {  
     return (
         <tbody>       
-          <tr key={1}>
+          <tr key={0}>
             <td>
               <label>
                 <strong>Ragione sociale:</strong>
@@ -352,7 +366,75 @@ const ClientesList = props => {
             
           </tr>
 
-          <tr key={2}>
+          <tr key={1}>
+            <td>
+              <label>
+                <strong>Codice univoco:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="codiceUnivoco"
+                    required
+                    value={currentCliente.codiceUnivoco}
+                    onChange={handleInputChange}
+                    name="codiceUnivoco"
+                    disabled={!showAdminBoard}
+                    autoFocus="true"
+                />
+            </td>                         
+            <td>
+              <div className="form-group box">              
+                  <label>
+                    <strong>Tipo documento:</strong>
+                  </label>{" "}<br/>
+                  <select defaultValue={'DEFAULT'} onClick={(e) => handleInputTipoDochange(e)} onChange={(e) => handleInputTipoDochange(e)}>
+                    <option disabled={!showAdminBoard} value="DEFAULT">{currentCliente.tipoDocumento?currentCliente.tipoDocumento:"Seleziona la tipologia del documento"}</option>    
+                    {
+                        tipologieDocumento && tipologieDocumento.map((tipoDoc, index) => (                  
+                        
+                          <option disabled={!showAdminBoard} value={tipoDoc} key={index} >{tipoDoc}</option>                    
+                      ))}
+                    </select>
+                </div>
+            </td>                       
+          </tr>
+
+          <tr key={1}>
+            <td>
+              <label>
+                <strong>Numero documento:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="numeroDocumento"
+                    required
+                    value={currentCliente.numeroDocumento}
+                    onChange={handleInputChange}
+                    name="numeroDocumento"
+                    disabled={!showAdminBoard}
+                    autoFocus="true"
+                />
+            </td>                         
+            <td>
+              <label>
+                <strong>Scadenza documento:</strong>
+              </label>{" "}
+              <input
+                    type="date"
+                    className="form-control fit-content"
+                    id="scadenzaDocumento"
+                    required
+                    value={moment(currentCliente.scadenzaDocumento).format('YYYY-MM-DD')} 
+                    onChange={handleInputChange}
+                    name="scadenzaDocumento"
+                    disabled={!showAdminBoard}
+                />
+            </td>                       
+          </tr>
+
+          <tr key={3}>
             <td>
                 <label>
                   <strong>Legale rappresentante:</strong>
@@ -401,7 +483,7 @@ const ClientesList = props => {
             </td>                    
           </tr>
 
-          <tr key={3}>
+          <tr key={4}>
           <td>
               <label>
                 <strong>Mail:</strong>
@@ -451,7 +533,7 @@ const ClientesList = props => {
            
           </tr>
 
-          <tr key={4}>
+          <tr key={5}>
           <td>
               <label>
                 <strong>Località:</strong>
@@ -499,7 +581,7 @@ const ClientesList = props => {
             </td>       
           </tr>
 
-          <tr key={5}>
+          <tr key={6}>
             
           <td>
               <label>
@@ -549,7 +631,7 @@ const ClientesList = props => {
             
            
           </tr>
-          <tr key={6}>
+          <tr key={7}>
           <td>
               <label>
                 <strong>Att Istat Ateco 2007:</strong>
@@ -581,7 +663,7 @@ const ClientesList = props => {
                 />
             </td>                     
           </tr>
-          <tr key={7}>
+          <tr key={8}>
             <td>
               <div className="form-group box">              
                 <label>
@@ -614,7 +696,7 @@ const ClientesList = props => {
             </td>
           </tr>
 
-          <tr key={8}>    
+          <tr key={9}>    
 
             <td>
               <label>
@@ -649,7 +731,7 @@ const ClientesList = props => {
             </td>
           </tr>
 
-          <tr key={9}>  
+          <tr key={10}>  
             <td>
               <label>
                 <strong>Socio 2:</strong>
@@ -683,7 +765,7 @@ const ClientesList = props => {
             </td>
           </tr>
 
-          <tr key={10}>
+          <tr key={11}>
             <td>
               <label>
                 <strong>Socio 3:</strong>
@@ -718,7 +800,7 @@ const ClientesList = props => {
 
           </tr>
 
-          <tr key={11}>
+          <tr key={12}>
             <td>
               <label>
                 <strong>Socio 4:</strong>
@@ -753,7 +835,7 @@ const ClientesList = props => {
 
           </tr>
 
-          <tr key={12}>
+          <tr key={13}>
             <td>
               <label>
                 <strong>Socio 5:</strong>
@@ -788,7 +870,7 @@ const ClientesList = props => {
 
           </tr>
 
-          <tr key={13}>
+          <tr key={14}>
             <td>
               <label>
                 <strong>Socio 6:</strong>
