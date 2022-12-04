@@ -15,7 +15,6 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 
-
 import moment from 'moment';
 
 import ModificaDataService from "../services/ModificaService";
@@ -48,6 +47,8 @@ const ClientesList = props => {
   const [newTipologiaDocumento, setNewTipologiaDocumento] = useState(null);
 
   const [showAlertDialog, setShowAlertDialog] = useState(false);
+
+  const [showClienteDialog, setShowClienteDialog] = useState(false);
 
 
   useEffect(() => {
@@ -94,8 +95,9 @@ const ClientesList = props => {
 
   const setActiveCliente = (cliente, index) => {
     setCurrentCliente(cliente);
-    setCurrentIndex(index);
-    window.scrollTo(0, 0);
+    setCurrentIndex(index);    
+    //window.scrollTo(0, 0);
+    setShowClienteDialog(true);
   };
 
   const setActiveServizio = (servizio, index) => {
@@ -316,7 +318,10 @@ const ClientesList = props => {
     setShowAlertDialog(false);
   };
 
-
+  const handleCloseClienteAlert = () => {
+    setShowClienteDialog(false);
+  };
+    
   const renderTableData = () => {  
     return (
         <tbody>       
@@ -981,7 +986,9 @@ const ClientesList = props => {
             Remove All
           </button>          
         </div>
-        <div className="col-md-6">
+
+
+        {/* <div className="col-md-6">
         
           {currentCliente ? (
               <div className="wrapper-anagrafica">
@@ -1048,10 +1055,90 @@ const ClientesList = props => {
             )}        
 
 
-        </div> 
-        
+        </div>  */}
+
+      {currentCliente ? (
+            <Dialog
+                open={showClienteDialog}
+                onClose={handleCloseClienteAlert}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+                //className="alert-error"
+                //aria-labelledby="responsive-dialog-title"
+                fullWidth
+                maxWidth="lg"
+              >                    
+                <DialogTitle id="alert-dialog-title">
+                  {currentCliente.ragioneSociale}
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                    <div className="wrapper-anagrafica">
+                      <ConfirmDialog 
+                        title= 'Cancella'
+                        message= 'Sei sicuro di voler cancellare il cliente?'
+                        onClickYes= {deleteCliente}
+                        className={"btn btn-danger " + (!showAdminBoard ? "d-none" : "")}
+                      />
+
+                      <ConfirmDialog 
+                        title= 'Aggiorna'
+                        message= 'Sei sicuro di voler aggiornare il cliente?'
+                        onClickYes= {updateCliente}
+                        className={"btn btn-primary "+ (!showAdminBoard ? "d-none" : "")}  
+                      />
+
+                      <Link
+                        to={"/clientes/" + currentCliente.id}
+                        className="btn btn-warning"
+                      >
+                        Visualizza servizi                
+                      </Link>
+                        <div>
+                          <table id='clientiById' className="table table-anagrafica">
+                            {renderTableData()}
+                          </table> 
+                        </div>  
+
+              
+                      <br></br>
+                                                      
+                      <Dialog
+                        open={showAlertDialog}
+                        onClose={handleCloseAlert}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                        className="alert-error"
+                      >                    
+                        <DialogTitle id="alert-dialog-title">
+                          {"Alert"}
+                        </DialogTitle>
+                        <DialogContent>
+                          <DialogContentText id="alert-dialog-description">
+                            Impossibile cancellare il cliente in quanto possiede dei servizi!
+                          </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                          <Button onClick={handleCloseAlert}>Chiudi</Button>                    
+                        </DialogActions>
+                      </Dialog>
+
+
+                    
+                
+                    </div>
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleCloseClienteAlert}>Chiudi</Button>                    
+                </DialogActions>
+              </Dialog>
+              
+        ): (
+        <div> 
+        </div>
+       )}
       </div>
-      
       
     );
   }else{
