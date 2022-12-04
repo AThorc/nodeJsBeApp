@@ -273,3 +273,9 @@ body.react-confirm-alert-body-element {
 .width1400{
   width: 1400px!important;
 }
+
+.rowScadenziario{
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: inherit;
+}

@@ -50,6 +50,8 @@ import ApexChart from "./components/Statistiche";
 
 import ModificaDataService from "./services/ModificaService";
 
+import Scadenziario from "./components/Scadenziario";
+
 require('dotenv').config();
 
 class App extends Component {
@@ -165,6 +167,15 @@ class App extends Component {
                   </Link>
                 </li>
               )}
+
+            {currentUser && (
+                <li className="nav-item ">
+                  <Link to={"/scadenziario"} className="nav-link">
+                    Scadenziario
+                  </Link>
+                </li>
+              )}
+
             </ul>  
 
             {currentUser ? (
@@ -227,6 +238,7 @@ class App extends Component {
             <Route exact path="/associaServizio/:id" component={AssociaServizio} />
             <Route exact path="/inserisciServizio/:id/:clienteid" component={InserisciServizio} />
             <Route exact path="/statistiche" component={ApexChart} />
+            <Route exact path="/scadenziario" component={Scadenziario} />
 
           </Switch>
         </div>
