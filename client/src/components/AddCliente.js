@@ -5,6 +5,13 @@ import AuthService from "../services/auth.service";
 
 import moment from 'moment';
 
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
+
 
 const AddCliente = props => {
   const initialClienteState = {
@@ -55,6 +62,12 @@ const AddCliente = props => {
 
   const [newTipologiaDocumento, setNewTipologiaDocumento] = useState(null);
 
+  const [showAlertDialog, setShowAlertDialog] = useState(false);
+
+  const handleCloseAlert = () => {
+    setShowAlertDialog(false);
+  };
+
   const user = AuthService.getCurrentUser();
 
   const handleInputChange = event => {
@@ -73,6 +86,14 @@ const AddCliente = props => {
   };
 
   const saveCliente = () => {
+    //Logica controllo valorizzazione dati obbligatori: ragione sociale, partiva iva, ateco
+    if(cliente.ragioneSociale==undefined || cliente.ragioneSociale=='' || cliente.partitaIVA==undefined || cliente.partitaIVA==''||
+      cliente.attIstatAteco2007==undefined || cliente.attIstatAteco2007==''
+    ){
+      setShowAlertDialog(true);
+      return;
+    }    
+
     if(user){
       var data = {        
         codiceFiscale: cliente.codiceFiscale,
@@ -747,6 +768,28 @@ const AddCliente = props => {
               </div>                        
           </div>
         )}
+
+        <Dialog
+          open={showAlertDialog}
+          onClose={handleCloseAlert}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+          className="alert-error"
+        >                    
+          <DialogTitle id="alert-dialog-title">
+            {"Warning"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Attenzione inserire dati obbligatori: ragione sociale, partita IVA e codice ATECO!
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseAlert}>Chiudi</Button>                    
+          </DialogActions>
+        </Dialog>
+
+
       </div>
     );
   }else{
