@@ -8,7 +8,14 @@ import ConfirmDialog from "./confirmDialog.component";
 
 import AuthService from "../services/auth.service";
 
-import moment from 'moment'
+import moment from 'moment';
+
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
 
 const InserisciServizio = props => {
   const initialMacroservizioState = {
@@ -78,6 +85,13 @@ const InserisciServizio = props => {
 
   const [compensoPartner, setCompensoPartner] = useState(null);
 
+  
+  const [showAlertDialog, setShowAlertDialog] = useState(false);
+
+  const handleCloseAlert = () => {
+    setShowAlertDialog(false);
+  };
+
   const handleInputChange = event => {
     const { name, value } = event.target;
     setMacroservizio({ ...macroservizio, [name]: value });
@@ -100,6 +114,14 @@ const InserisciServizio = props => {
 
   const saveLegame = () => {
     if(user){
+
+      //Logica controllo valorizzazione dati obbligatori: data inizio
+      if(legame.dataInizio == undefined || legame.dataInizio == ''){
+        setShowAlertDialog(true);
+        return;
+      }
+
+
       console.log('LEGAME');
       console.log(legame);
       var data = {
@@ -548,6 +570,27 @@ const InserisciServizio = props => {
               
           </div>
         )}
+
+        <Dialog
+          open={showAlertDialog}
+          onClose={handleCloseAlert}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+          className="alert-error"
+        >                    
+          <DialogTitle id="alert-dialog-title">
+            {"Warning"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Attenzione inserire dati obbligatori: data inizio!
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseAlert}>Chiudi</Button>                    
+          </DialogActions>
+        </Dialog>
+
       </div>
     );
   }else{

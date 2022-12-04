@@ -85,16 +85,16 @@ const AddCliente = props => {
     setNewTipologiaDocumento(value);
   };
 
-  const saveCliente = () => {
-    //Logica controllo valorizzazione dati obbligatori: ragione sociale, partiva iva, ateco
-    if(cliente.ragioneSociale==undefined || cliente.ragioneSociale=='' || cliente.partitaIVA==undefined || cliente.partitaIVA==''||
-      cliente.attIstatAteco2007==undefined || cliente.attIstatAteco2007==''
-    ){
-      setShowAlertDialog(true);
-      return;
-    }    
-
+  const saveCliente = () => {       
     if(user){
+      //Logica controllo valorizzazione dati obbligatori: ragione sociale, partiva iva, ateco
+      if(cliente.ragioneSociale==undefined || cliente.ragioneSociale=='' || cliente.partitaIVA==undefined || cliente.partitaIVA==''||
+        cliente.attIstatAteco2007==undefined || cliente.attIstatAteco2007==''
+      ){
+        setShowAlertDialog(true);
+        return;
+      }
+
       var data = {        
         codiceFiscale: cliente.codiceFiscale,
         partitaIVA: cliente.partitaIVA,
@@ -745,7 +745,8 @@ const AddCliente = props => {
 
   if(user){
     return (
-      <div className="submit-form">
+      // <div className="submit-form">
+      <div>
         {submitted ? (
           <div>
             <h4>Cliente inserito correttamente!</h4>
@@ -754,8 +755,10 @@ const AddCliente = props => {
             </button>
           </div>
         ) : (
-          <div className="table-inserisci-anag">
-              <div className="wrapper-anagrafica">
+          // <div className="table-inserisci-anag">
+          <div>
+              {/* <div className="wrapper-anagrafica"> */}
+              <div>
                 <h4>Cliente</h4>
                   <div >
                     <table id='clientiById' className="table table-anagrafica">
