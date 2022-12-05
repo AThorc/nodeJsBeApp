@@ -1058,6 +1058,7 @@ const ClientesList = props => {
         </div>  */}
 
       {currentCliente ? (
+          <div>  
             <Dialog
                 open={showClienteDialog}
                 onClose={handleCloseClienteAlert}
@@ -1074,65 +1075,66 @@ const ClientesList = props => {
                 <DialogContent>
                   <DialogContentText id="alert-dialog-description">
                     <div className="wrapper-anagrafica">
-                      <ConfirmDialog 
-                        title= 'Cancella'
-                        message= 'Sei sicuro di voler cancellare il cliente?'
-                        onClickYes= {deleteCliente}
-                        className={"btn btn-danger " + (!showAdminBoard ? "d-none" : "")}
-                      />
-
-                      <ConfirmDialog 
-                        title= 'Aggiorna'
-                        message= 'Sei sicuro di voler aggiornare il cliente?'
-                        onClickYes= {updateCliente}
-                        className={"btn btn-primary "+ (!showAdminBoard ? "d-none" : "")}  
-                      />
-
-                      <Link
-                        to={"/clientes/" + currentCliente.id}
-                        className="btn btn-warning"
-                      >
-                        Visualizza servizi                
-                      </Link>
-                        <div>
-                          <table id='clientiById' className="table table-anagrafica">
-                            {renderTableData()}
-                          </table> 
-                        </div>  
+                      
+                      <div>
+                        <table id='clientiById' className="table table-anagrafica">
+                          {renderTableData()}
+                        </table> 
+                      </div>  
 
               
-                      <br></br>
-                                                      
-                      <Dialog
-                        open={showAlertDialog}
-                        onClose={handleCloseAlert}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
-                        className="alert-error"
-                      >                    
-                        <DialogTitle id="alert-dialog-title">
-                          {"Alert"}
-                        </DialogTitle>
-                        <DialogContent>
-                          <DialogContentText id="alert-dialog-description">
-                            Impossibile cancellare il cliente in quanto possiede dei servizi!
-                          </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                          <Button onClick={handleCloseAlert}>Chiudi</Button>                    
-                        </DialogActions>
-                      </Dialog>
-
-
-                    
-                
+                      <br></br>                                                                           
                     </div>
                   </DialogContentText>
-                </DialogContent>
+                </DialogContent>                
                 <DialogActions>
-                  <Button onClick={handleCloseClienteAlert}>Chiudi</Button>                    
+                  <div>
+                    <ConfirmDialog 
+                      title= 'Cancella'
+                      message= 'Sei sicuro di voler cancellare il cliente?'
+                      onClickYes= {deleteCliente}
+                      className={"btn btn-danger " + (!showAdminBoard ? "d-none" : "")}
+                      optionalFunction={handleCloseClienteAlert}               
+                    />
+
+                    <ConfirmDialog 
+                      title= 'Aggiorna'
+                      message= 'Sei sicuro di voler aggiornare il cliente?'
+                      onClickYes= {updateCliente}
+                      className={"btn btn-primary "+ (!showAdminBoard ? "d-none" : "")} 
+                      optionalFunction={handleCloseClienteAlert}
+                    />
+
+                    <Link
+                      to={"/clientes/" + currentCliente.id}
+                      className="btn btn-warning"
+                    >
+                      Visualizza servizi                
+                    </Link>
+                    <Button onClick={handleCloseClienteAlert}>Chiudi</Button>                    
+                  </div>
                 </DialogActions>
               </Dialog>
+              <Dialog
+              open={showAlertDialog}
+              onClose={handleCloseAlert}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+              className="alert-error"
+            >                    
+              <DialogTitle id="alert-dialog-title">
+                {"Alert"}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  Impossibile cancellare il cliente in quanto possiede dei servizi!
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleCloseAlert}>Chiudi</Button>                    
+              </DialogActions>
+            </Dialog>
+            </div>
               
         ): (
         <div> 

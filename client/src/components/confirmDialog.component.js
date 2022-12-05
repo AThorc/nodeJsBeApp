@@ -23,7 +23,9 @@ export default class ConfirmDialog extends React.Component {
       ]
 
     });
+    if(this.props.optionalFunction)this.props.optionalFunction();
   };
+
 
   render() {
     return (
