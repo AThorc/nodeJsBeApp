@@ -89,7 +89,7 @@ const AddCliente = props => {
     if(user){
       //Logica controllo valorizzazione dati obbligatori: ragione sociale, partiva iva, ateco
       if(cliente.ragioneSociale==undefined || cliente.ragioneSociale=='' || cliente.partitaIVA==undefined || cliente.partitaIVA==''||
-        cliente.attIstatAteco2007==undefined || cliente.attIstatAteco2007==''
+        cliente.numeroDocumento==undefined || cliente.numeroDocumento=='' || cliente.scadenzaDocumento==undefined || cliente.scadenzaDocumento==''
       ){
         setShowAlertDialog(true);
         return;
@@ -784,7 +784,7 @@ const AddCliente = props => {
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              Attenzione inserire dati obbligatori: ragione sociale, partita IVA e codice ATECO!
+              Attenzione inserire dati obbligatori: ragione sociale, partita iva, numero documento e scadenza documento!
             </DialogContentText>
           </DialogContent>
           <DialogActions>
