@@ -1063,7 +1063,7 @@ const ClientesList = props => {
         {/* <div className="col-md-8"> */}
         <div>
           <div className="input-group mb-3">
-            <div className="widthRs">
+            <div className="widthRs marginRight">
               <input
                 type="text"
                 className="form-control"
@@ -1072,7 +1072,7 @@ const ClientesList = props => {
                 onChange={onChangeSearchRagioneSociale}
               />
             </div>
-            <div className="widthPIva">
+            <div className="widthPIva marginRight">
               <input
                 type="text"
                 className="form-control"
@@ -1101,7 +1101,7 @@ const ClientesList = props => {
               />
             </div>
             <div><h4>.</h4></div>
-            <div className="width9">
+            <div className="width9 marginRight">
               <input
                 type="text"
                 className="form-control"
@@ -1111,7 +1111,6 @@ const ClientesList = props => {
               />
             </div>         
             
-            <div className="input-group-append">
               {/* <button
                 className="btn btn-outline-secondary"
                 type="button"
@@ -1119,20 +1118,23 @@ const ClientesList = props => {
               >
                 Cerca
               </button> */}
+            <div className="marginRight">
               <button
-              className={"btn btn-success float-right " + (!showAdminBoard ? "d-none" : "")}
-              type="button"
-              onClick={handleAggiungiClienteClick}
-            >
-              Aggiungi cliente
-            </button>
-            <button
-              className={"btn btn-primary float-right "}
-              type="button"
-              onClick={handleEsportaClientiClick}
-            >
-              Esporta lista clienti
-            </button>
+                className={"btn btn-success float-right " + (!showAdminBoard ? "d-none" : "")}
+                type="button"
+                onClick={handleAggiungiClienteClick}
+              >
+                Aggiungi cliente
+              </button>
+            </div>
+            <div>
+              <button
+                className={"btn btn-primary float-right "}
+                type="button"
+                onClick={handleEsportaClientiClick}
+              >
+                Esporta lista clienti
+              </button>
             </div>
           </div>
         </div>
