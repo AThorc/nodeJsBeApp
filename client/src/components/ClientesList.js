@@ -32,6 +32,9 @@ const ClientesList = props => {
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchRagioneSociale, setSearchRagioneSociale] = useState("");
   const [searchPartitaIva, setSearchPartitaIva] = useState("");
+  const [searchAteco12, setSearchAteco12] = useState("");
+  const [searchAteco34, setSearchAteco34] = useState("");
+  const [searchAteco56, setSearchAteco56] = useState("");
 
   const [servizios, setServizios] = useState([]);
   const [currentServizio, setCurrentServizio] = useState(null);
@@ -103,6 +106,101 @@ const ClientesList = props => {
       });
     }    
   };
+
+
+  const onChangeAteco12 = e => {
+    if(user){
+      const searchAteco12 = e.target.value;
+      setSearchAteco12(searchAteco12);
+      if(searchAteco12 == undefined || searchAteco12 == ''){
+        retrieveClientes();
+      }else{
+        findByAteco12(searchAteco12);
+      }
+      
+    }
+  };
+
+  
+  const findByAteco12 = (searchAteco12) => {
+    if(user){
+      ClienteDataService.getAll()
+      .then(response => {
+        //setClientes(response.data);
+        setClientes(response.data.sort((a, b) => a.ragioneSociale.toLowerCase() > b.ragioneSociale.toLowerCase() ? 1 : -1)
+                                  .filter(cliente => cliente.attIstatAteco2007.substring(0,2).includes(searchAteco12)));
+        console.log(response.data);
+        refreshSearchedList();
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }    
+  };
+
+
+  const onChangeAteco34 = e => {
+    if(user){
+      const searchAteco34 = e.target.value;
+      setSearchAteco34(searchAteco34);
+      if(searchAteco34 == undefined || searchAteco34 == ''){
+        retrieveClientes();
+      }else{
+        findByAteco34(searchAteco34);
+      }
+      
+    }
+  };
+
+  
+  const findByAteco34 = (searchAteco34) => {
+    if(user){
+      ClienteDataService.getAll()
+      .then(response => {
+        //setClientes(response.data);
+        setClientes(response.data.sort((a, b) => a.ragioneSociale.toLowerCase() > b.ragioneSociale.toLowerCase() ? 1 : -1)
+                                  .filter(cliente => cliente.attIstatAteco2007.substring(3,5).includes(searchAteco34)));
+        console.log(response.data);
+        refreshSearchedList();
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }    
+  };
+
+
+
+  const onChangeAteco56 = e => {
+    if(user){
+      const searchAteco56 = e.target.value;
+      setSearchAteco56(searchAteco56);
+      if(searchAteco56 == undefined || searchAteco56 == ''){
+        retrieveClientes();
+      }else{
+        findByAteco56(searchAteco56);
+      }
+      
+    }
+  };
+
+  const findByAteco56 = (searchAteco56) => {
+    if(user){
+      ClienteDataService.getAll()
+      .then(response => {
+        //setClientes(response.data);
+        setClientes(response.data.sort((a, b) => a.ragioneSociale.toLowerCase() > b.ragioneSociale.toLowerCase() ? 1 : -1)
+                                  .filter(cliente => cliente.attIstatAteco2007.substring(6).includes(searchAteco56)));
+        console.log(response.data);
+        refreshSearchedList();
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }    
+  };
+
+
 
   const retrieveClientes = () => {
     if(user){
@@ -961,24 +1059,58 @@ const ClientesList = props => {
 
   if(user){
     return (
-      <div className="list row">
+      <div>
         {/* <div className="col-md-8"> */}
         <div>
           <div className="input-group mb-3">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Cerca per ragione sociale"
-              value={searchRagioneSociale}
-              onChange={onChangeSearchRagioneSociale}
-            />
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Cerca per partita iva"
-              value={searchPartitaIva}
-              onChange={onChangePartitaIva}
-            />
+            <div className="widthRs">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Cerca per ragione sociale"
+                value={searchRagioneSociale}
+                onChange={onChangeSearchRagioneSociale}
+              />
+            </div>
+            <div className="widthPIva">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Cerca per partita iva"
+                value={searchPartitaIva}
+                onChange={onChangePartitaIva}
+              />
+            </div>
+            <div className="width9">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Ateco 12"
+                value={searchAteco12}
+                onChange={onChangeAteco12}
+              />
+            </div>
+            <div><h4>.</h4></div>
+            <div className="width9">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Ateco 34"
+                value={searchAteco34}
+                onChange={onChangeAteco34}
+              />
+            </div>
+            <div><h4>.</h4></div>
+            <div className="width9">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Ateco 56"
+                value={searchAteco56}
+                onChange={onChangeAteco56}
+              />
+            </div>         
+            
             <div className="input-group-append">
               {/* <button
                 className="btn btn-outline-secondary"

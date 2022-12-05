@@ -279,3 +279,17 @@ body.react-confirm-alert-body-element {
   flex-wrap: wrap;
   margin-left: inherit;
 }
+
+.width9{
+  width: 9%!important;
+}
+
+
+.widthRs{
+  width: 20%!important;
+}
+
+
+.widthPIva{
+  width: 16%!important;
+}
