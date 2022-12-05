@@ -65,6 +65,12 @@ const ClientesList = props => {
     if(user){
       const searchRagioneSociale = e.target.value;
       setSearchRagioneSociale(searchRagioneSociale);
+      if(searchRagioneSociale == undefined || searchRagioneSociale == ''){
+        retrieveClientes();
+      }else{
+        findByRs(searchRagioneSociale);
+      }
+      
     }
   };
 
@@ -148,11 +154,12 @@ const ClientesList = props => {
     }    
   };
 
-  const findByRs = () => {
+  const findByRs = (searchRagioneSociale) => {
     if(user){
       ClienteDataService.findByRs(searchRagioneSociale)
       .then(response => {
-        setClientes(response.data);
+        //setClientes(response.data);
+        setClientes(response.data.sort((a, b) => a.ragioneSociale.toLowerCase() > b.ragioneSociale.toLowerCase() ? 1 : -1));
         console.log(response.data);
         refreshSearchedList();
       })
@@ -936,13 +943,13 @@ const ClientesList = props => {
               onChange={onChangeSearchRagioneSociale}
             />
             <div className="input-group-append">
-              <button
+              {/* <button
                 className="btn btn-outline-secondary"
                 type="button"
                 onClick={findByRs}
               >
                 Cerca
-              </button>
+              </button> */}
               <button
               className={"btn btn-success float-right " + (!showAdminBoard ? "d-none" : "")}
               type="button"
