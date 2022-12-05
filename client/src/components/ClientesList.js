@@ -32,6 +32,7 @@ const ClientesList = props => {
   const [currentCliente, setCurrentCliente] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchRagioneSociale, setSearchRagioneSociale] = useState("");
+  const [searchPartitaIva, setSearchPartitaIva] = useState("");
 
   const [servizios, setServizios] = useState([]);
   const [currentServizio, setCurrentServizio] = useState(null);
@@ -71,6 +72,35 @@ const ClientesList = props => {
       }
       
     }
+  };
+
+  const onChangePartitaIva = e => {
+    if(user){
+      const searchPartitaIva = e.target.value;
+      setSearchPartitaIva(searchPartitaIva);
+      if(searchPartitaIva == undefined || searchPartitaIva == ''){
+        retrieveClientes();
+      }else{
+        findByPartitaIva(searchPartitaIva);
+      }
+      
+    }
+  };
+
+  const findByPartitaIva = (searchPartitaIva) => {
+    if(user){
+      ClienteDataService.getAll()
+      .then(response => {
+        //setClientes(response.data);
+        setClientes(response.data.sort((a, b) => a.ragioneSociale.toLowerCase() > b.ragioneSociale.toLowerCase() ? 1 : -1)
+                                  .filter(cliente => cliente.partitaIVA.includes(searchPartitaIva)));
+        console.log(response.data);
+        refreshSearchedList();
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }    
   };
 
   const retrieveClientes = () => {
@@ -936,6 +966,13 @@ const ClientesList = props => {
               placeholder="Cerca per ragione sociale"
               value={searchRagioneSociale}
               onChange={onChangeSearchRagioneSociale}
+            />
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Cerca per partita iva"
+              value={searchPartitaIva}
+              onChange={onChangePartitaIva}
             />
             <div className="input-group-append">
               {/* <button
