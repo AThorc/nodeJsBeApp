@@ -54,6 +54,10 @@ const ClientesList = props => {
 
   const [showClienteDialog, setShowClienteDialog] = useState(false);
 
+  const [showAlertDatiObbligDialog, setShowAlertDatiObbligDialog] = useState(false);
+
+  
+
 
   useEffect(() => {
     if(user){
@@ -370,6 +374,16 @@ const ClientesList = props => {
 
   const updateCliente = () => {
     if(user && showAdminBoard){
+
+      //Logica controllo valorizzazione dati obbligatori: ragione sociale, partiva iva, ateco, numero e scadenza documento
+      if(currentCliente.ragioneSociale==undefined || currentCliente.ragioneSociale=='' || currentCliente.partitaIVA==undefined || currentCliente.partitaIVA==''||
+        currentCliente.numeroDocumento==undefined || currentCliente.numeroDocumento=='' || currentCliente.scadenzaDocumento==undefined || currentCliente.scadenzaDocumento==''
+      ){
+        setShowAlertDatiObbligDialog(true);
+        return;
+      }
+
+
       currentCliente.userid = user.id;
       currentCliente.username = user.username;
       if(newNaturaGiuridica && newNaturaGiuridica != 'DEFAULT') currentCliente.naturaGiuridica = newNaturaGiuridica;
@@ -451,6 +465,10 @@ const ClientesList = props => {
 
   const handleCloseAlert = () => {
     setShowAlertDialog(false);
+  };
+
+  const handleCloseAlertDatiObblig = () => {
+    setShowAlertDatiObbligDialog(false);
   };
 
   const handleCloseClienteAlert = () => {
@@ -1294,24 +1312,45 @@ const ClientesList = props => {
                 </DialogActions>
               </Dialog>
               <Dialog
-              open={showAlertDialog}
-              onClose={handleCloseAlert}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-              className="alert-error"
-            >                    
-              <DialogTitle id="alert-dialog-title">
-                {"Alert"}
-              </DialogTitle>
-              <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                  Impossibile cancellare il cliente in quanto possiede dei servizi!
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleCloseAlert}>Chiudi</Button>                    
-              </DialogActions>
-            </Dialog>
+                  open={showAlertDialog}
+                  onClose={handleCloseAlert}
+                  aria-labelledby="alert-dialog-title"
+                  aria-describedby="alert-dialog-description"
+                  className="alert-error"
+                >                    
+                  <DialogTitle id="alert-dialog-title">
+                    {"Alert"}
+                  </DialogTitle>
+                  <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                      Impossibile cancellare il cliente in quanto possiede dei servizi!
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleCloseAlert}>Chiudi</Button>                    
+                  </DialogActions>
+                </Dialog>
+
+                <Dialog
+                  open={showAlertDatiObbligDialog}
+                  onClose={handleCloseAlertDatiObblig}
+                  aria-labelledby="alert-dialog-title-dati-obblig"
+                  aria-describedby="alert-dialog-description-dati-obblig"
+                  className="alert-error"
+                >                    
+                <DialogTitle id="alert-dialog-title-dati-obblig">
+                  {"Warning"}
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description-dati-obblig">
+                    Attenzione inserire dati obbligatori: ragione sociale, partita iva, numero documento e scadenza documento!
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleCloseAlertDatiObblig}>Chiudi</Button>                    
+                </DialogActions>
+              </Dialog>
+
             </div>
               
         ): (
