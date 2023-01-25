@@ -62,7 +62,10 @@ const InserisciServizio = props => {
     tipo: "",
     dimensione: "",
     attIstatAteco2007: "",
-    settore: ""
+    settore: "",
+    ateco12: "",
+    ateco34: "",
+    ateco56: ""
   };
 
   const [macroservizio, setMacroservizio] = useState(initialMacroservizioState);

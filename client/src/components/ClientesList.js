@@ -116,7 +116,7 @@ const ClientesList = props => {
     if(user){
       const searchAteco12 = e.target.value;
       setSearchAteco12(searchAteco12);
-      if(searchAteco12 == undefined || searchAteco12 == ''){
+      if((searchAteco12 == undefined || searchAteco12 == '') && (searchAteco34 == undefined || searchAteco34 == '')  && (searchAteco56 == undefined || searchAteco56 == '')){
         retrieveClientes();
       }else{
         findByAteco12(searchAteco12);
@@ -131,8 +131,10 @@ const ClientesList = props => {
       ClienteDataService.getAll()
       .then(response => {
         //setClientes(response.data);
+        // setClientes(response.data.sort((a, b) => a.ragioneSociale.toLowerCase() > b.ragioneSociale.toLowerCase() ? 1 : -1)
+        //                           .filter(cliente => cliente.attIstatAteco2007.substring(0,2).includes(searchAteco12)));
         setClientes(response.data.sort((a, b) => a.ragioneSociale.toLowerCase() > b.ragioneSociale.toLowerCase() ? 1 : -1)
-                                  .filter(cliente => cliente.attIstatAteco2007.substring(0,2).includes(searchAteco12)));
+                                 .filter(cliente => cliente.ateco12.includes(searchAteco12)&& cliente.ateco34.includes(searchAteco34) && cliente.ateco56.includes(searchAteco56)));
         console.log(response.data);
         refreshSearchedList();
       })
@@ -147,7 +149,7 @@ const ClientesList = props => {
     if(user){
       const searchAteco34 = e.target.value;
       setSearchAteco34(searchAteco34);
-      if(searchAteco34 == undefined || searchAteco34 == ''){
+      if((searchAteco12 == undefined || searchAteco12 == '') && (searchAteco34 == undefined || searchAteco34 == '')  && (searchAteco56 == undefined || searchAteco56 == '')){
         retrieveClientes();
       }else{
         findByAteco34(searchAteco34);
@@ -162,8 +164,10 @@ const ClientesList = props => {
       ClienteDataService.getAll()
       .then(response => {
         //setClientes(response.data);
+        // setClientes(response.data.sort((a, b) => a.ragioneSociale.toLowerCase() > b.ragioneSociale.toLowerCase() ? 1 : -1)
+        //                           .filter(cliente => cliente.attIstatAteco2007.substring(3,5).includes(searchAteco34)));
         setClientes(response.data.sort((a, b) => a.ragioneSociale.toLowerCase() > b.ragioneSociale.toLowerCase() ? 1 : -1)
-                                  .filter(cliente => cliente.attIstatAteco2007.substring(3,5).includes(searchAteco34)));
+                                 .filter(cliente => cliente.ateco12.includes(searchAteco12)&& cliente.ateco34.includes(searchAteco34) && cliente.ateco56.includes(searchAteco56)));
         console.log(response.data);
         refreshSearchedList();
       })
@@ -179,7 +183,7 @@ const ClientesList = props => {
     if(user){
       const searchAteco56 = e.target.value;
       setSearchAteco56(searchAteco56);
-      if(searchAteco56 == undefined || searchAteco56 == ''){
+      if((searchAteco12 == undefined || searchAteco12 == '') && (searchAteco34 == undefined || searchAteco34 == '')  && (searchAteco56 == undefined || searchAteco56 == '')){
         retrieveClientes();
       }else{
         findByAteco56(searchAteco56);
@@ -193,8 +197,10 @@ const ClientesList = props => {
       ClienteDataService.getAll()
       .then(response => {
         //setClientes(response.data);
+        // setClientes(response.data.sort((a, b) => a.ragioneSociale.toLowerCase() > b.ragioneSociale.toLowerCase() ? 1 : -1)
+        //                           .filter(cliente => cliente.attIstatAteco2007.substring(6).includes(searchAteco56)));
         setClientes(response.data.sort((a, b) => a.ragioneSociale.toLowerCase() > b.ragioneSociale.toLowerCase() ? 1 : -1)
-                                  .filter(cliente => cliente.attIstatAteco2007.substring(6).includes(searchAteco56)));
+                                 .filter(cliente => cliente.ateco12.includes(searchAteco12)&& cliente.ateco34.includes(searchAteco34) && cliente.ateco56.includes(searchAteco56)));
         console.log(response.data);
         refreshSearchedList();
       })
@@ -341,7 +347,10 @@ const ClientesList = props => {
     'Codice univoco', 'Tipologia documento', 'Numero documento', 'Scadenza documento',
     'Legale rappresentante', 'Telefono',
     'Cellulare', 'Mail', 'Pec', 'Sede', 'Localita', 'Cap', 'Data costituzione', 'Inizio attivita',
-    'Tipo', 'Dimensione', 'Att Istat Ateco 2007', 'Settore', 'Natura Giuridica', 'Segnalatore',
+    'Tipo', 'Dimensione', 
+    //'Att Istat Ateco 2007', 
+    'Ateco12', 'Ateco34', 'Ateco56',
+    'Settore', 'Natura Giuridica', 'Segnalatore',
     'Socio 1', 'Percentuale Socio 1', 'Socio 2', 'Percentuale Socio 2', 'Socio 3', 'Percentuale Socio 3',
     'Socio 4', 'Percentuale Socio 4', 'Socio 5', 'Percentuale Socio 5', 'Socio 6', 'Percentuale Socio 6',];
 
@@ -356,7 +365,9 @@ const ClientesList = props => {
       const righe = ws.addRow([cliente.ragioneSociale, cliente.codiceFiscale, cliente.partitaIVA, 
                               cliente.codiceUnivoco, cliente.tipoDocumento, cliente.numeroDocumento, cliente.scadenzaDocumento,
                               cliente.legaleRappresentate, cliente.telefono, cliente.cellulare, cliente.mail, cliente.pec, cliente.sede,
-                              cliente.localita, cliente.cap, cliente.dataCostituzione, cliente.inizioAttivita, cliente.tipo, cliente.dimensione, cliente.attIstatAteco2007,
+                              cliente.localita, cliente.cap, cliente.dataCostituzione, cliente.inizioAttivita, cliente.tipo, cliente.dimensione, 
+                              //cliente.attIstatAteco2007,
+                              cliente.ateco12, cliente.ateco34, cliente.ateco56, 
                               cliente.settore, cliente.naturaGiuridica, cliente.segnalatore, cliente.socio1, cliente.percentualeSocio1, cliente.socio2, cliente.percentualeSocio2,
                               cliente.socio3, cliente.percentualeSocio3, cliente.socio4, cliente.percentualeSocio4, cliente.socio5, cliente.percentualeSocio5, cliente.socio6, cliente.percentualeSocio6
                              ]);
@@ -794,7 +805,7 @@ const ClientesList = props => {
            
           </tr>
           <tr key={7}>
-          <td>
+            {/* <td>
               <label>
                 <strong>Att Istat Ateco 2007:</strong>
               </label>{" "}
@@ -808,7 +819,55 @@ const ClientesList = props => {
                     name="attIstatAteco2007"
                     disabled={!showAdminBoard}
                 />
+            </td> */}
+            <td>
+              <label>
+                <strong>Ateco 12:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="ateco12"
+                    required
+                    value={currentCliente.ateco12}
+                    onChange={handleInputChange}
+                    name="ateco12"
+                    disabled={!showAdminBoard}
+                />
             </td>
+            <td>
+              <label>
+                <strong>Ateco 34:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="ateco34"
+                    required
+                    value={currentCliente.ateco34}
+                    onChange={handleInputChange}
+                    name="ateco34"
+                    disabled={!showAdminBoard}
+                />
+            </td>
+            <td>
+              <label>
+                <strong>Ateco 56:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="ateco56"
+                    required
+                    value={currentCliente.ateco56}
+                    onChange={handleInputChange}
+                    name="ateco56"
+                    disabled={!showAdminBoard}
+                />
+            </td>
+                        
+          </tr>
+          <tr key={8}>
             <td>
               <label>
                 <strong>Settore:</strong>
@@ -823,9 +882,7 @@ const ClientesList = props => {
                     name="settore"
                     disabled={!showAdminBoard}
                 />
-            </td>                     
-          </tr>
-          <tr key={8}>
+            </td>        
             <td>
               <div className="form-group box">              
                 <label>

@@ -52,7 +52,10 @@ const AddCliente = props => {
     codiceUnivoco: "",
     tipoDocumento: "",
     numeroDocumento: "",
-    scadenzaDocumento: ""
+    scadenzaDocumento: "",
+    ateco12: "",
+    ateco34: "",
+    ateco56: ""
 
   };
   const [cliente, setCliente] = useState(initialClienteState);
@@ -133,6 +136,9 @@ const AddCliente = props => {
         tipoDocumento: newTipologiaDocumento,
         numeroDocumento: cliente.numeroDocumento,
         scadenzaDocumento: cliente.scadenzaDocumento,
+        ateco12: cliente.ateco12,
+        ateco34: cliente.ateco34,
+        ateco56: cliente.ateco56
       };
 
       ClienteDataService.create(data)
@@ -173,7 +179,10 @@ const AddCliente = props => {
           codiceUnivoco: response.data.codiceUnivoco,
           tipoDocumento: response.data.tipoDocumento,
           numeroDocumento: response.data.numeroDocumento,
-          scadenzaDocumento: response.data.scadenzaDocumento
+          scadenzaDocumento: response.data.scadenzaDocumento,
+          ateco12: response.data.ateco12,
+          ateco34: response.data.ateco34,
+          ateco56: response.data.ateco56
         });
         setSubmitted(true);        
         props.history.push("/anagrafica");
@@ -492,8 +501,9 @@ const AddCliente = props => {
                     onChange={handleInputChange}
                     name="dimensione"
                 />
-            </td>       
-            <td>
+            </td>   
+                
+            {/* <td>
               <label>
                 <strong>Att Istat Ateco 2007:</strong>
               </label>{" "}
@@ -506,7 +516,8 @@ const AddCliente = props => {
                     onChange={handleInputChange}
                     name="attIstatAteco2007"
                 />
-            </td>
+            </td> */}            
+            
             <td>
               <label>
                 <strong>Settore:</strong>
@@ -523,7 +534,55 @@ const AddCliente = props => {
             </td>       
           </tr>
 
+
           <tr key={5}>
+            <td>
+              <label>
+                <strong>Ateco 12:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="ateco12"
+                    required
+                    value={cliente.ateco12}
+                    onChange={handleInputChange}
+                    name="ateco12"
+                />
+            </td>
+
+            <td>
+              <label>
+                <strong>Ateco 34:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="ateco34"
+                    required
+                    value={cliente.ateco34}
+                    onChange={handleInputChange}
+                    name="ateco34"
+                />
+            </td>
+
+            <td>
+              <label>
+                <strong>Ateco 56:</strong>
+              </label>{" "}
+              <input
+                    type="text"
+                    className="form-control fit-content"
+                    id="ateco56"
+                    required
+                    value={cliente.ateco56}
+                    onChange={handleInputChange}
+                    name="ateco56"
+                />
+            </td>
+          </tr>
+
+          <tr key={6}>
             <td>
               <div className="form-group box">              
                 <label>
@@ -554,7 +613,7 @@ const AddCliente = props => {
                 />
             </td>
           </tr>
-          <tr key={6}>
+          <tr key={7}>
             <td>
               <label>
                 <strong>Socio 1:</strong>
@@ -584,7 +643,7 @@ const AddCliente = props => {
                 />
             </td>
           </tr>
-          <tr key={7}>
+          <tr key={8}>
             <td>
               <label>
                 <strong>Socio 2:</strong>
@@ -614,7 +673,7 @@ const AddCliente = props => {
                 />
             </td>
           </tr>
-          <tr key={8}> 
+          <tr key={9}> 
             <td>
               <label>
                 <strong>Socio 3:</strong>
@@ -645,7 +704,7 @@ const AddCliente = props => {
             </td>           
            
           </tr>
-          <tr key={9}>
+          <tr key={10}>
             <td>
               <label>
                 <strong>Socio 4:</strong>
@@ -676,7 +735,7 @@ const AddCliente = props => {
             </td>
           </tr>  
           
-          <tr key={10}>
+          <tr key={11}>
             <td>
               <label>
                 <strong>Socio 5:</strong>
@@ -706,7 +765,7 @@ const AddCliente = props => {
                 />
             </td>
           </tr>
-          <tr key={11}>
+          <tr key={12}>
             <td>
               <label>
                 <strong>Socio 6:</strong>

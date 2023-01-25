@@ -52,7 +52,10 @@ exports.create = (req, res) => {
       codiceUnivoco: req.body.codiceUnivoco,
       tipoDocumento: req.body.tipoDocumento,
       numeroDocumento: req.body.numeroDocumento,
-      scadenzaDocumento: req.body.scadenzaDocumento
+      scadenzaDocumento: req.body.scadenzaDocumento,
+      ateco12: req.body.ateco12,
+      ateco34: req.body.ateco34,
+      ateco56: req.body.ateco56
 
 
     });

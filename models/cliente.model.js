@@ -48,7 +48,10 @@ module.exports = mongoose => {
         codiceUnivoco: String,
         tipoDocumento: String,
         numeroDocumento: String,
-        scadenzaDocumento: Date
+        scadenzaDocumento: Date,
+        ateco12: String,
+        ateco34: String,
+        ateco56: String
       },
       { timestamps: true }
     );
