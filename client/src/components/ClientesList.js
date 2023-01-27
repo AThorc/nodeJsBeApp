@@ -50,6 +50,12 @@ const ClientesList = props => {
 
   const [showAlertDialog, setShowAlertDialog] = useState(false);
 
+  const [showClienteDialog, setShowClienteDialog] = useState(false);
+
+  const [showAlertDatiObbligDialog, setShowAlertDatiObbligDialog] = useState(false);
+
+  
+
 
   useEffect(() => {
     if(user){
@@ -270,6 +276,16 @@ const ClientesList = props => {
 
   const updateCliente = () => {
     if(user && showAdminBoard){
+
+      //Logica controllo valorizzazione dati obbligatori: ragione sociale, partiva iva, ateco, numero e scadenza documento
+      if(currentCliente.ragioneSociale==undefined || currentCliente.ragioneSociale=='' || currentCliente.partitaIVA==undefined || currentCliente.partitaIVA==''||
+        currentCliente.numeroDocumento==undefined || currentCliente.numeroDocumento=='' || currentCliente.scadenzaDocumento==undefined || currentCliente.scadenzaDocumento==''
+      ){
+        setShowAlertDatiObbligDialog(true);
+        return;
+      }
+
+
       currentCliente.userid = user.id;
       currentCliente.username = user.username;
       if(newNaturaGiuridica && newNaturaGiuridica != 'DEFAULT') currentCliente.naturaGiuridica = newNaturaGiuridica;
@@ -353,7 +369,14 @@ const ClientesList = props => {
     setShowAlertDialog(false);
   };
 
+  const handleCloseAlertDatiObblig = () => {
+    setShowAlertDatiObbligDialog(false);
+  };
 
+  const handleCloseClienteAlert = () => {
+    setShowClienteDialog(false);
+  };
+    
   const renderTableData = () => {  
     return (
         <tbody>       
@@ -1092,8 +1115,112 @@ const ClientesList = props => {
             )}        
 
 
-        </div> 
-        
+        </div>
+
+      {currentCliente ? (
+          <div>  
+            <Dialog
+                open={showClienteDialog}
+                onClose={handleCloseClienteAlert}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+                //className="alert-error"
+                //aria-labelledby="responsive-dialog-title"
+                fullWidth
+                maxWidth="lg"
+              >                    
+                <DialogTitle id="alert-dialog-title">
+                  {currentCliente.ragioneSociale}
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                    <div className="wrapper-anagrafica">
+                      
+                      <div>
+                        <table id='clientiById' className="table table-anagrafica">
+                          {renderTableData()}
+                        </table> 
+                      </div>  
+
+              
+                      <br></br>                                                                           
+                    </div>
+                  </DialogContentText>
+                </DialogContent>                
+                <DialogActions>
+                  <div>
+                    <ConfirmDialog 
+                      title= 'Cancella'
+                      message= 'Sei sicuro di voler cancellare il cliente?'
+                      onClickYes= {deleteCliente}
+                      className={"btn btn-danger " + (!showAdminBoard ? "d-none" : "")}
+                      optionalFunction={handleCloseClienteAlert}               
+                    />
+
+                    <ConfirmDialog 
+                      title= 'Aggiorna'
+                      message= 'Sei sicuro di voler aggiornare il cliente?'
+                      onClickYes= {updateCliente}
+                      className={"btn btn-primary "+ (!showAdminBoard ? "d-none" : "")} 
+                      optionalFunction={handleCloseClienteAlert}
+                    />
+
+                    <Link
+                      to={"/clientes/" + currentCliente.id}
+                      className="btn btn-warning"
+                    >
+                      Visualizza servizi                
+                    </Link>
+                    <Button onClick={handleCloseClienteAlert}>Chiudi</Button>                    
+                  </div>
+                </DialogActions>
+              </Dialog>
+              <Dialog
+                  open={showAlertDialog}
+                  onClose={handleCloseAlert}
+                  aria-labelledby="alert-dialog-title"
+                  aria-describedby="alert-dialog-description"
+                  className="alert-error"
+                >                    
+                  <DialogTitle id="alert-dialog-title">
+                    {"Alert"}
+                  </DialogTitle>
+                  <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                      Impossibile cancellare il cliente in quanto possiede dei servizi!
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleCloseAlert}>Chiudi</Button>                    
+                  </DialogActions>
+                </Dialog>
+
+                <Dialog
+                  open={showAlertDatiObbligDialog}
+                  onClose={handleCloseAlertDatiObblig}
+                  aria-labelledby="alert-dialog-title-dati-obblig"
+                  aria-describedby="alert-dialog-description-dati-obblig"
+                  className="alert-error"
+                >                    
+                <DialogTitle id="alert-dialog-title-dati-obblig">
+                  {"Warning"}
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description-dati-obblig">
+                    Attenzione inserire dati obbligatori: ragione sociale, partita iva, numero documento e scadenza documento!
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleCloseAlertDatiObblig}>Chiudi</Button>                    
+                </DialogActions>
+              </Dialog>
+
+            </div>
+              
+        ): (
+        <div> 
+        </div>
+       )}
       </div>
       
       
