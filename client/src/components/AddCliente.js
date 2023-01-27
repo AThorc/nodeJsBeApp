@@ -87,7 +87,7 @@ const AddCliente = props => {
 
   const saveCliente = () => {       
     if(user){
-      //Logica controllo valorizzazione dati obbligatori: ragione sociale, partiva iva, ateco
+      //Logica controllo valorizzazione dati obbligatori: ragione sociale, partiva iva, ateco, numero e scadenza documento
       if(cliente.ragioneSociale==undefined || cliente.ragioneSociale=='' || cliente.partitaIVA==undefined || cliente.partitaIVA==''||
         cliente.numeroDocumento==undefined || cliente.numeroDocumento=='' || cliente.scadenzaDocumento==undefined || cliente.scadenzaDocumento==''
       ){
