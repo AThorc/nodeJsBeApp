@@ -594,6 +594,9 @@ const MacroserviziList = () => {
             delete newRecord.id;
             newRecord.dataCostituzione = new Date(newRecord.dataCostituzione).toLocaleDateString("en-GB");
             newRecord.inizioAttivita = new Date(newRecord.inizioAttivita).toLocaleDateString("en-GB");
+            if(newRecord.scadenzaDocumento != undefined && newRecord.scadenzaDocumento != ''){
+              newRecord.scadenzaDocumento = new Date(newRecord.scadenzaDocumento).toLocaleDateString("en-GB");
+            }            
 
             if(j == 0){
               cols = Object.keys(newRecord);

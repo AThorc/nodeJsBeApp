@@ -135,6 +135,9 @@ const ClientesList = props => {
   
 
   const setActiveCliente = (cliente, index) => {
+    if(cliente.scadenzaDocumento == undefined){
+      cliente.scadenzaDocumento = '';
+    }
     setCurrentCliente(cliente);
     setCurrentIndex(index);
     window.scrollTo(0, 0);
@@ -236,6 +239,9 @@ const ClientesList = props => {
                   delete e.id;
                   e.dataCostituzione = new Date(e.dataCostituzione).toLocaleDateString("en-GB");
                   e.inizioAttivita = new Date(e.inizioAttivita).toLocaleDateString("en-GB");
+                  if(e.scadenzaDocumento != undefined && e.scadenzaDocumento != ''){
+                    e.scadenzaDocumento = new Date(e.scadenzaDocumento).toLocaleDateString("en-GB");
+                  }                  
                   return e;
                 });
 
