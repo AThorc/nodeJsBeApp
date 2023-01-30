@@ -61,6 +61,9 @@ const ClientesList = props => {
     if(user){
       retrieveClientes();
       if(history.location.cliente){
+        if(history.location.cliente.scadenzaDocumento == undefined){
+          history.location.cliente.scadenzaDocumento = '';
+        }
         setCurrentCliente(history.location.cliente);
       }
     }     
