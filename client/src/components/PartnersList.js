@@ -525,6 +525,9 @@ const PartnersList = () => {
           delete newRecord.id;
           newRecord.dataCostituzione = new Date(newRecord.dataCostituzione).toLocaleDateString("en-GB");
           newRecord.inizioAttivita = new Date(newRecord.inizioAttivita).toLocaleDateString("en-GB");
+          if(newRecord.scadenzaDocumento != undefined && newRecord.scadenzaDocumento != ''){
+            newRecord.scadenzaDocumento = new Date(newRecord.scadenzaDocumento).toLocaleDateString("en-GB");
+          }          
 
 
           data.push(newRecord);
